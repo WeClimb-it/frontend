@@ -13,7 +13,7 @@ const WINDOW: any = window || {};
 export interface PlaceSuggestion {
   description: string;
   id: string;
-  placeId: string;
+  place_id: string;
   geo?: GeoLocation;
 }
 

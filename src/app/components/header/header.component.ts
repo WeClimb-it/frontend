@@ -112,7 +112,7 @@ export class HeaderComponent {
     }
 
     this.geoService
-      .geocodeByPlaceId(item.placeId)
+      .geocodeByPlaceId(item.place_id)
       .then((results: any) => {
         // Use the first result in the list to get the geometry coordinates
         const { geometry, address_components } = results[0];
