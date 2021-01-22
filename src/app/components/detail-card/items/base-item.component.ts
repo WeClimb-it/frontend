@@ -10,9 +10,8 @@ import {
 import { Router } from '@angular/router';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { GeoLocation } from 'src/app/classes/geolocation.class';
-import { NearbyResult, PhotosResult } from 'src/app/graphql/queries';
-import { Coords } from 'src/app/interfaces/graphql/coords.type';
-import { Photo } from 'src/app/interfaces/photo.interface';
+import { NearbyResult } from 'src/app/graphql/queries';
+import { Coords } from 'src/app/interfaces/graphql';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { getSectionFromItem } from 'src/app/utils/ContentType';
 import { getGoogleMapsUrl } from 'src/app/utils/Map';

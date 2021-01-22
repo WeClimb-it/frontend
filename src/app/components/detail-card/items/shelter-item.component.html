@@ -36,23 +36,23 @@
         &nbsp;{{ 'ALTITUDE' | translate }}:&nbsp;<strong>{{ data.altitude }} mt.</strong>
       </mat-chip>
       <mat-chip
-        *ngIf="data.accomodations_food && data.accomodations_food.length < 4"
+        *ngIf="data.accomodationsFood && data.accomodationsFood.length < 4"
         class="chip"
         color="primary"
         selected
       >
         <mat-icon aria-hidden="false">restaurant_menu</mat-icon>{{ 'SITS' | translate }}:&nbsp;<strong>{{
-          data.accomodations_food
+          data.accomodationsFood
         }}</strong>
       </mat-chip>
       <mat-chip
-        *ngIf="data.accomodations_rooms && data.accomodations_rooms.length < 4"
+        *ngIf="data.accomodationsRooms && data.accomodationsRooms.length < 4"
         class="chip"
         color="primary"
         selected
       >
         <mat-icon aria-hidden="false">home</mat-icon>
-        {{ 'ROOMS' | translate }}:&nbsp;<strong>{{ data.accomodations_rooms }}</strong>
+        {{ 'ROOMS' | translate }}:&nbsp;<strong>{{ data.accomodationsRooms }}</strong>
       </mat-chip>
       <mat-chip *ngIf="data.beds" class="chip" color="primary" selected>
         <mat-icon aria-hidden="false">hotel</mat-icon>
@@ -63,13 +63,13 @@
       <mat-icon aria-hidden="false">calendar_today</mat-icon>
       <div class="capitalize">{{ data.opening }}</div>
     </div>
-    <div *ngIf="data.accomodations_food && data.accomodations_food.length > 4" class="info-box">
+    <div *ngIf="data.accomodationsFood && data.accomodationsFood.length > 4" class="info-box">
       <mat-icon aria-hidden="false">restaurant_menu</mat-icon>
-      <div class="capitalize">{{ data.accomodations_food }}</div>
+      <div class="capitalize">{{ data.accomodationsFood }}</div>
     </div>
-    <div *ngIf="data.accomodations_rooms && data.accomodations_rooms.length > 4" class="info-box">
+    <div *ngIf="data.accomodationsRooms && data.accomodationsRooms.length > 4" class="info-box">
       <mat-icon aria-hidden="false">home</mat-icon>
-      <div class="capitalize">{{ data.accomodations_rooms }}</div>
+      <div class="capitalize">{{ data.accomodationsRooms }}</div>
     </div>
 
     <!-- The lateral subcard -->

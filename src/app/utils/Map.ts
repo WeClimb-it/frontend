@@ -1,5 +1,5 @@
 import { GeoJSONFeature } from '../interfaces/geo/GeoJSONFeature.interface';
-import { Coords } from '../interfaces/graphql/coords.type';
+import { Coords } from '../interfaces/graphql';
 
 /**
  *

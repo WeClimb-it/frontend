@@ -1,10 +1,10 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { GeoLocation } from 'src/app/classes/geolocation.class';
-import { Competition } from 'src/app/interfaces/graphql/competition.type';
+import { Competition } from 'src/app/interfaces/graphql';
 import { ContentType } from 'src/app/utils/ContentType';
 import { getSanitizedCompetitionProperties } from 'src/app/utils/Misc';
+
 import { BaseListItemComponent } from './base-item.component';
 
 @Component({

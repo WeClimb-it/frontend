@@ -7,7 +7,7 @@
     </mat-chip-list>
   </div>
   <div class="text">
-    <h4 (click)="goToExternalNews(data.resource_url)">{{ data.title }}</h4>
+    <h4 (click)="goToExternalNews(data.resourceUrl)">{{ data.title }}</h4>
     <span class="date">{{ creationDate | amDateFormat: 'LL' }}</span>
     <div *ngIf="data.summary" class="summary">{{ data.summary }}</div>
   </div>
@@ -17,6 +17,6 @@
     </div>
   </div>
   <div class="source-link">
-    {{ 'SOURCE' | translate }}: <a href="{{ data.resource_url }}" target="_blank">{{ data.resource_url }}</a>
+    {{ 'SOURCE' | translate }}: <a href="{{ data.resourceUrl }}" target="_blank">{{ data.resourceUrl }}</a>
   </div>
 </div>

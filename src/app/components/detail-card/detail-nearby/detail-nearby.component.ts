@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Coords } from 'src/app/interfaces/graphql/coords.type';
+import { Coords } from 'src/app/interfaces/graphql';
 import { getPoiCategoryClass, getPoiCategoryTag, Poi } from 'src/app/utils/Poi';
 
 @Component({

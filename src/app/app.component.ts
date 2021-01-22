@@ -10,8 +10,8 @@ import { GeoLocation } from './classes/geolocation.class';
 import { SearchOptions } from './components/header/header.component';
 import { NearbyResult, UserInfoResult } from './graphql/queries';
 import { MapUpdateEvent } from './interfaces/events/map-update.interface';
-import { SearchResult } from './interfaces/graphql/searchresult.type';
-import { UserInfo } from './interfaces/graphql/userinfo.type';
+import { SearchResult, UserInfo } from './interfaces/graphql';
+
 import { AppStoreService } from './services/appState.service';
 import { GeoService, PlaceSuggestion } from './services/geo.service';
 import { I18nService } from './services/i18n.service';

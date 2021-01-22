@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Crag } from 'src/app/interfaces/graphql/crag.type';
-import moment from 'moment-timezone';
-import { GeoLocation } from 'src/app/classes/geolocation.class';
-import { BaseListItemComponent } from './base-item.component';
-import { Router } from '@angular/router';
-import { ContentType } from 'src/app/utils/ContentType';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import moment from 'moment-timezone';
+import { Crag } from 'src/app/interfaces/graphql';
+import { ContentType } from 'src/app/utils/ContentType';
+
+import { BaseListItemComponent } from './base-item.component';
 
 @Component({
   selector: 'wci-crag-list-item',

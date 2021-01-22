@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
-import { GeoLocation } from 'src/app/classes/geolocation.class';
-import { News } from 'src/app/interfaces/graphql/news.type';
+import { News } from 'src/app/interfaces/graphql';
 import { ContentType } from 'src/app/utils/ContentType';
+
 import { BaseListItemComponent } from './base-item.component';
 
 @Component({
@@ -23,7 +23,7 @@ export class NewsListItemComponent extends BaseListItemComponent implements OnCh
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data && changes.data.currentValue && changes.data.currentValue !== changes.data.previousValue) {
-      this.creationDate = new Date(changes.data.currentValue.creation_time);
+      this.creationDate = new Date(changes.data.currentValue.creationTime);
     }
   }
 

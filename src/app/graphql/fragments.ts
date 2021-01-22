@@ -18,16 +18,16 @@ export const Crag = `fragment Crag on Crag {
   slug
   title
   descr
-  access_info
+  accessInfo
   coords {
     lat
     lng
   }
   altitude
   exposition
-  bolding_type
-  rock_type
-  quality_rank {
+  boltingType
+  rockType
+  qualityRank {
     score
     crowdedness
     weather
@@ -44,7 +44,7 @@ export const Crag = `fragment Crag on Crag {
   }
   period
   notes
-  resource_url
+  resourceUrl
   sectors {
     crag
     parent {
@@ -55,16 +55,16 @@ export const Crag = `fragment Crag on Crag {
       slug
       title
       descr
-      access_info
+      accessInfo
       coords {
         lat
         lng
       }
       altitude
       exposition
-      bolding_type
-      rock_type
-      quality_rank {
+      boltingType
+      rockType
+      qualityRank {
         score
         crowdedness
         weather
@@ -81,7 +81,7 @@ export const Crag = `fragment Crag on Crag {
       }
       period
       notes
-      resource_url
+      resourceUrl
     }
     slug
     title
@@ -90,7 +90,7 @@ export const Crag = `fragment Crag on Crag {
       lng
     }
     notes
-    quality_rank {
+    qualityRank {
       score
       crowdedness
       weather
@@ -105,9 +105,9 @@ export const Crag = `fragment Crag on Crag {
       max
       votes
     }
-    min_grade
-    max_grade
-    resource_url
+    minGrade
+    maxGrade
+    resourceUrl
     routes {
     sector
     parent {
@@ -120,16 +120,16 @@ export const Crag = `fragment Crag on Crag {
         slug
         title
         descr
-        access_info
+        accessInfo
         coords {
           lat
           lng
         }
         altitude
         exposition
-        bolding_type
-        rock_type
-        quality_rank {
+        boltingType
+        rockType
+        qualityRank {
           score
           crowdedness
           weather
@@ -146,7 +146,7 @@ export const Crag = `fragment Crag on Crag {
         }
         period
         notes
-        resource_url
+        resourceUrl
       }
       slug
       title
@@ -155,7 +155,7 @@ export const Crag = `fragment Crag on Crag {
         lng
       }
       notes
-      quality_rank {
+      qualityRank {
         score
         crowdedness
         weather
@@ -170,24 +170,24 @@ export const Crag = `fragment Crag on Crag {
         max
         votes
       }
-      min_grade
-      max_grade
-      resource_url
+      minGrade
+      maxGrade
+      resourceUrl
     }
     slug
-    seq_num
+    seqNum
     title
     coords {
       lat
       lng
     }
     grade
-    pitons_num
+    pitonsNum
     length
-    route_type
-    gear_type
+    routeType
+    gearType
     notes
-    quality_rank {
+    qualityRank {
       score
       crowdedness
       weather
@@ -202,12 +202,12 @@ export const Crag = `fragment Crag on Crag {
       max
       votes
     }
-    resource_url
-    search_score
+    resourceUrl
+    searchScore
   }
-    search_score
+    searchScore
   }
-  search_score
+  searchScore
 }
 `;
 
@@ -257,16 +257,16 @@ export const Sector = `fragment Sector on Sector {
     slug
     title
     descr
-    access_info
+    accessInfo
     coords {
       lat
       lng
     }
     altitude
     exposition
-    bolding_type
-    rock_type
-    quality_rank {
+    boltingType
+    rockType
+    qualityRank {
       score
       crowdedness
       weather
@@ -283,7 +283,7 @@ export const Sector = `fragment Sector on Sector {
     }
     period
     notes
-    resource_url
+    resourceUrl
   }
   slug
   title
@@ -292,7 +292,7 @@ export const Sector = `fragment Sector on Sector {
     lng
   }
   notes
-  quality_rank {
+  qualityRank {
     score
     crowdedness
     weather
@@ -307,9 +307,9 @@ export const Sector = `fragment Sector on Sector {
     max
     votes
   }
-  min_grade
-  max_grade
-  resource_url
+  minGrade
+  maxGrade
+  resourceUrl
   routes {
     sector
     parent {
@@ -322,16 +322,16 @@ export const Sector = `fragment Sector on Sector {
         slug
         title
         descr
-        access_info
+        accessInfo
         coords {
           lat
           lng
         }
         altitude
         exposition
-        bolding_type
-        rock_type
-        quality_rank {
+        boltingType
+        rockType
+        qualityRank {
           score
           crowdedness
           weather
@@ -348,7 +348,7 @@ export const Sector = `fragment Sector on Sector {
         }
         period
         notes
-        resource_url
+        resourceUrl
       }
       slug
       title
@@ -357,7 +357,7 @@ export const Sector = `fragment Sector on Sector {
         lng
       }
       notes
-      quality_rank {
+      qualityRank {
         score
         crowdedness
         weather
@@ -372,24 +372,24 @@ export const Sector = `fragment Sector on Sector {
         max
         votes
       }
-      min_grade
-      max_grade
-      resource_url
+      minGrade
+      maxGrade
+      resourceUrl
     }
     slug
-    seq_num
+    seqNum
     title
     coords {
       lat
       lng
     }
     grade
-    pitons_num
+    pitonsNum
     length
-    route_type
-    gear_type
+    routeType
+    gearType
     notes
-    quality_rank {
+    qualityRank {
       score
       crowdedness
       weather
@@ -404,10 +404,10 @@ export const Sector = `fragment Sector on Sector {
       max
       votes
     }
-    resource_url
-    search_score
+    resourceUrl
+    searchScore
   }
-  search_score
+  searchScore
 }
 `;
 
@@ -419,16 +419,16 @@ export const SectorCrag = `fragment SectorCrag on SectorCrag {
   slug
   title
   descr
-  access_info
+  accessInfo
   coords {
     lat
     lng
   }
   altitude
   exposition
-  bolding_type
-  rock_type
-  quality_rank {
+  boltingType
+  rockType
+  qualityRank {
     score
     crowdedness
     weather
@@ -445,7 +445,7 @@ export const SectorCrag = `fragment SectorCrag on SectorCrag {
   }
   period
   notes
-  resource_url
+  resourceUrl
 }
 `;
 
@@ -461,16 +461,16 @@ export const Route = `fragment Route on Route {
       slug
       title
       descr
-      access_info
+      accessInfo
       coords {
         lat
         lng
       }
       altitude
       exposition
-      bolding_type
-      rock_type
-      quality_rank {
+      boltingType
+      rockType
+      qualityRank {
         score
         crowdedness
         weather
@@ -487,7 +487,7 @@ export const Route = `fragment Route on Route {
       }
       period
       notes
-      resource_url
+      resourceUrl
     }
     slug
     title
@@ -496,7 +496,7 @@ export const Route = `fragment Route on Route {
       lng
     }
     notes
-    quality_rank {
+    qualityRank {
       score
       crowdedness
       weather
@@ -511,24 +511,24 @@ export const Route = `fragment Route on Route {
       max
       votes
     }
-    min_grade
-    max_grade
-    resource_url
+    minGrade
+    maxGrade
+    resourceUrl
   }
   slug
-  seq_num
+  seqNum
   title
   coords {
     lat
     lng
   }
   grade
-  pitons_num
+  pitonsNum
   length
-  route_type
-  gear_type
+  routeType
+  gearType
   notes
-  quality_rank {
+  qualityRank {
     score
     crowdedness
     weather
@@ -543,8 +543,8 @@ export const Route = `fragment Route on Route {
     max
     votes
   }
-  resource_url
-  search_score
+  resourceUrl
+  searchScore
 }
 `;
 
@@ -558,16 +558,16 @@ export const RouteSector = `fragment RouteSector on RouteSector {
     slug
     title
     descr
-    access_info
+    accessInfo
     coords {
       lat
       lng
     }
     altitude
     exposition
-    bolding_type
-    rock_type
-    quality_rank {
+    boltingType
+    rockType
+    qualityRank {
       score
       crowdedness
       weather
@@ -584,7 +584,7 @@ export const RouteSector = `fragment RouteSector on RouteSector {
     }
     period
     notes
-    resource_url
+    resourceUrl
   }
   slug
   title
@@ -593,7 +593,7 @@ export const RouteSector = `fragment RouteSector on RouteSector {
     lng
   }
   notes
-  quality_rank {
+  qualityRank {
     score
     crowdedness
     weather
@@ -608,15 +608,15 @@ export const RouteSector = `fragment RouteSector on RouteSector {
     max
     votes
   }
-  min_grade
-  max_grade
-  resource_url
+  minGrade
+  maxGrade
+  resourceUrl
 }
 `;
 
 export const Place = `fragment Place on Place {
   _id
-  social_id
+  socialId
   slug
   title
   descr
@@ -628,8 +628,8 @@ export const Place = `fragment Place on Place {
     l
   }
   notes
-  resource_url
-  search_score
+  resourceUrl
+  searchScore
   picture
 }
 `;
@@ -640,7 +640,7 @@ export const Openings = `fragment Openings on Openings {
 `;
 
 export const Event = `fragment Event on Event {
-  social_id
+  socialId
   slug
   title
   descr
@@ -649,10 +649,10 @@ export const Event = `fragment Event on Event {
     lng
   }
   place
-  start_time
-  end_time
-  resource_url
-  search_score
+  startTime
+  endTime
+  resourceUrl
+  searchScore
 }
 `;
 
@@ -664,8 +664,8 @@ export const Competition = `fragment Competition on Competition {
   info {
     categories
     details {
-      event_website
-      info_sheet
+      eventWebsite
+      infoSheet
       text
     }
     place
@@ -677,21 +677,21 @@ export const Competition = `fragment Competition on Competition {
     who
   }
   poster
-  resource_url
+  resourceUrl
   schedule
   slug
-  start_time
-  end_time
+  startTime
+  endTime
   title
-  search_score
+  searchScore
 }
 `;
 
 export const CompetitionInfo = `fragment CompetitionInfo on CompetitionInfo {
   categories
   details {
-    event_website
-    info_sheet
+    eventWebsite
+    infoSheet
     text
   }
   place
@@ -701,8 +701,8 @@ export const CompetitionInfo = `fragment CompetitionInfo on CompetitionInfo {
 `;
 
 export const CompetitionDetails = `fragment CompetitionDetails on CompetitionDetails {
-  event_website
-  info_sheet
+  eventWebsite
+  infoSheet
   text
 }
 `;
@@ -717,13 +717,13 @@ export const News = `fragment News on News {
   media {
     thumb
   }
-  resource_url
+  resourceUrl
   slug
   summary
   title
   lang
-  search_score
-  creation_time
+  searchScore
+  creationTime
 }
 `;
 
@@ -740,11 +740,11 @@ export const Shelter = `fragment Shelter on Shelter {
     lat
     lng
   }
-  access_info
+  accessInfo
   altitude
   opening
-  accomodations_food
-  accomodations_rooms
+  accomodationsFood
+  accomodationsRooms
   beds
   owners
   keepers
@@ -754,15 +754,15 @@ export const Shelter = `fragment Shelter on Shelter {
   web
   facebook
   media
-  search_score
-  resource_url
+  searchScore
+  resourceUrl
 }
 `;
 
 export const Hike = `fragment Hike on Hike {
   slug
   title
-  trail_label
+  trailLabel
   difficulty
   exposition
   elevation {
@@ -770,15 +770,15 @@ export const Hike = `fragment Hike on Hike {
     desc
     low
     high
-    asc_diff_tot
+    ascDiffTot
   }
   grade {
     avg
     max
   }
   length
-  starting_point
-  access_info
+  startingPoint
+  accessInfo
   notes
   descr
   coords {
@@ -787,8 +787,8 @@ export const Hike = `fragment Hike on Hike {
   }
   tracks
   media
-  search_score
-  resource_url
+  searchScore
+  resourceUrl
 }
 `;
 
@@ -797,7 +797,7 @@ export const HikeElevation = `fragment HikeElevation on HikeElevation {
   desc
   low
   high
-  asc_diff_tot
+  ascDiffTot
 }
 `;
 
@@ -855,16 +855,16 @@ export const SearchResult = `fragment SearchResult on SearchResult {
     slug
     title
     descr
-    access_info
+    accessInfo
     coords {
       lat
       lng
     }
     altitude
     exposition
-    bolding_type
-    rock_type
-    quality_rank {
+    boltingType
+    rockType
+    qualityRank {
       score
       crowdedness
       weather
@@ -881,7 +881,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
     }
     period
     notes
-    resource_url
+    resourceUrl
     sectors {
     crag
     parent {
@@ -892,16 +892,16 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       slug
       title
       descr
-      access_info
+      accessInfo
       coords {
         lat
         lng
       }
       altitude
       exposition
-      bolding_type
-      rock_type
-      quality_rank {
+      boltingType
+      rockType
+      qualityRank {
         score
         crowdedness
         weather
@@ -918,7 +918,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       }
       period
       notes
-      resource_url
+      resourceUrl
     }
     slug
     title
@@ -927,7 +927,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       lng
     }
     notes
-    quality_rank {
+    qualityRank {
       score
       crowdedness
       weather
@@ -942,9 +942,9 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       max
       votes
     }
-    min_grade
-    max_grade
-    resource_url
+    minGrade
+    maxGrade
+    resourceUrl
     routes {
     sector
     parent {
@@ -957,16 +957,16 @@ export const SearchResult = `fragment SearchResult on SearchResult {
         slug
         title
         descr
-        access_info
+        accessInfo
         coords {
           lat
           lng
         }
         altitude
         exposition
-        bolding_type
-        rock_type
-        quality_rank {
+        boltingType
+        rockType
+        qualityRank {
           score
           crowdedness
           weather
@@ -983,7 +983,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
         }
         period
         notes
-        resource_url
+        resourceUrl
       }
       slug
       title
@@ -992,7 +992,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
         lng
       }
       notes
-      quality_rank {
+      qualityRank {
         score
         crowdedness
         weather
@@ -1007,24 +1007,24 @@ export const SearchResult = `fragment SearchResult on SearchResult {
         max
         votes
       }
-      min_grade
-      max_grade
-      resource_url
+      minGrade
+      maxGrade
+      resourceUrl
     }
     slug
-    seq_num
+    seqNum
     title
     coords {
       lat
       lng
     }
     grade
-    pitons_num
+    pitonsNum
     length
-    route_type
-    gear_type
+    routeType
+    gearType
     notes
-    quality_rank {
+    qualityRank {
       score
       crowdedness
       weather
@@ -1039,12 +1039,12 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       max
       votes
     }
-    resource_url
-    search_score
+    resourceUrl
+    searchScore
   }
-    search_score
+    searchScore
   }
-    search_score
+    searchScore
   }
   sectors {
     crag
@@ -1056,16 +1056,16 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       slug
       title
       descr
-      access_info
+      accessInfo
       coords {
         lat
         lng
       }
       altitude
       exposition
-      bolding_type
-      rock_type
-      quality_rank {
+      boltingType
+      rockType
+      qualityRank {
         score
         crowdedness
         weather
@@ -1082,7 +1082,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       }
       period
       notes
-      resource_url
+      resourceUrl
     }
     slug
     title
@@ -1091,7 +1091,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       lng
     }
     notes
-    quality_rank {
+    qualityRank {
       score
       crowdedness
       weather
@@ -1106,9 +1106,9 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       max
       votes
     }
-    min_grade
-    max_grade
-    resource_url
+    minGrade
+    maxGrade
+    resourceUrl
     routes {
     sector
     parent {
@@ -1121,16 +1121,16 @@ export const SearchResult = `fragment SearchResult on SearchResult {
         slug
         title
         descr
-        access_info
+        accessInfo
         coords {
           lat
           lng
         }
         altitude
         exposition
-        bolding_type
-        rock_type
-        quality_rank {
+        boltingType
+        rockType
+        qualityRank {
           score
           crowdedness
           weather
@@ -1147,7 +1147,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
         }
         period
         notes
-        resource_url
+        resourceUrl
       }
       slug
       title
@@ -1156,7 +1156,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
         lng
       }
       notes
-      quality_rank {
+      qualityRank {
         score
         crowdedness
         weather
@@ -1171,24 +1171,24 @@ export const SearchResult = `fragment SearchResult on SearchResult {
         max
         votes
       }
-      min_grade
-      max_grade
-      resource_url
+      minGrade
+      maxGrade
+      resourceUrl
     }
     slug
-    seq_num
+    seqNum
     title
     coords {
       lat
       lng
     }
     grade
-    pitons_num
+    pitonsNum
     length
-    route_type
-    gear_type
+    routeType
+    gearType
     notes
-    quality_rank {
+    qualityRank {
       score
       crowdedness
       weather
@@ -1203,10 +1203,10 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       max
       votes
     }
-    resource_url
-    search_score
+    resourceUrl
+    searchScore
   }
-    search_score
+    searchScore
   }
   routes {
     sector
@@ -1220,16 +1220,16 @@ export const SearchResult = `fragment SearchResult on SearchResult {
         slug
         title
         descr
-        access_info
+        accessInfo
         coords {
           lat
           lng
         }
         altitude
         exposition
-        bolding_type
-        rock_type
-        quality_rank {
+        boltingType
+        rockType
+        qualityRank {
           score
           crowdedness
           weather
@@ -1246,7 +1246,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
         }
         period
         notes
-        resource_url
+        resourceUrl
       }
       slug
       title
@@ -1255,7 +1255,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
         lng
       }
       notes
-      quality_rank {
+      qualityRank {
         score
         crowdedness
         weather
@@ -1270,24 +1270,24 @@ export const SearchResult = `fragment SearchResult on SearchResult {
         max
         votes
       }
-      min_grade
-      max_grade
-      resource_url
+      minGrade
+      maxGrade
+      resourceUrl
     }
     slug
-    seq_num
+    seqNum
     title
     coords {
       lat
       lng
     }
     grade
-    pitons_num
+    pitonsNum
     length
-    route_type
-    gear_type
+    routeType
+    gearType
     notes
-    quality_rank {
+    qualityRank {
       score
       crowdedness
       weather
@@ -1302,11 +1302,11 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       max
       votes
     }
-    resource_url
-    search_score
+    resourceUrl
+    searchScore
   }
   events {
-    social_id
+    socialId
     slug
     title
     descr
@@ -1315,10 +1315,10 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       lng
     }
     place
-    start_time
-    end_time
-    resource_url
-    search_score
+    startTime
+    endTime
+    resourceUrl
+    searchScore
   }
   competitions {
     coords {
@@ -1328,8 +1328,8 @@ export const SearchResult = `fragment SearchResult on SearchResult {
     info {
       categories
       details {
-        event_website
-        info_sheet
+        eventWebsite
+        infoSheet
         text
       }
       place
@@ -1341,29 +1341,29 @@ export const SearchResult = `fragment SearchResult on SearchResult {
     who
   }
     poster
-    resource_url
+    resourceUrl
     schedule
     slug
-    start_time
-    end_time
+    startTime
+    endTime
     title
-    search_score
+    searchScore
   }
   news {
     media {
       thumb
     }
-    resource_url
+    resourceUrl
     slug
     summary
     title
     lang
-    search_score
-    creation_time
+    searchScore
+    creationTime
   }
   places {
     _id
-    social_id
+    socialId
     slug
     title
     descr
@@ -1375,8 +1375,8 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       l
     }
     notes
-    resource_url
-    search_score
+    resourceUrl
+    searchScore
     picture
   }
   shelters {
@@ -1387,11 +1387,11 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       lat
       lng
     }
-    access_info
+    accessInfo
     altitude
     opening
-    accomodations_food
-    accomodations_rooms
+    accomodationsFood
+    accomodationsRooms
     beds
     owners
     keepers
@@ -1401,13 +1401,13 @@ export const SearchResult = `fragment SearchResult on SearchResult {
     web
     facebook
     media
-    search_score
-    resource_url
+    searchScore
+    resourceUrl
   }
   hikes {
     slug
     title
-    trail_label
+    trailLabel
     difficulty
     exposition
     elevation {
@@ -1415,15 +1415,15 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       desc
       low
       high
-      asc_diff_tot
+      ascDiffTot
     }
     grade {
       avg
       max
     }
     length
-    starting_point
-    access_info
+    startingPoint
+    accessInfo
     notes
     descr
     coords {
@@ -1432,8 +1432,8 @@ export const SearchResult = `fragment SearchResult on SearchResult {
     }
     tracks
     media
-    search_score
-    resource_url
+    searchScore
+    resourceUrl
   }
   pagination {
     total

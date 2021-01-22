@@ -1,10 +1,10 @@
-import { Component, OnInit, SimpleChanges, OnChanges } from '@angular/core';
-import { BaseCardItemComponent } from './base-item.component';
-import { CurrentWeather } from 'src/app/interfaces/graphql/currentweather.type';
-import { Forecast } from 'src/app/interfaces/graphql/forecast.type';
+import { Component, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
-import { WciApiService } from 'src/app/services/wciApi.service';
 import { ForecastResult } from 'src/app/graphql/queries';
+import { CurrentWeather, Forecast } from 'src/app/interfaces/graphql';
+import { WciApiService } from 'src/app/services/wciApi.service';
+
+import { BaseCardItemComponent } from './base-item.component';
 
 @Component({
   selector: 'wci-with-weather-card-item',

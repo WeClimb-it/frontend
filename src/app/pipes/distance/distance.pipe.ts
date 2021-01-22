@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { GeoLocation } from 'src/app/classes/geolocation.class';
-import { GeoService, JourneyMode } from 'src/app/services/geo.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Coords } from 'src/app/interfaces/graphql/coords.type';
-import { isEmpty } from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { isEmpty } from 'lodash';
+import { GeoLocation } from 'src/app/classes/geolocation.class';
+import { Coords } from 'src/app/interfaces/graphql';
+import { GeoService, JourneyMode } from 'src/app/services/geo.service';
 
 @Pipe({
   name: 'distance',

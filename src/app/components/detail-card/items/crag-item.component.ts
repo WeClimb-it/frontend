@@ -1,8 +1,9 @@
 import { Component, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
-import { Crag } from 'src/app/interfaces/graphql/crag.type';
+import { Crag } from 'src/app/interfaces/graphql';
 import { GeoService } from 'src/app/services/geo.service';
 import { WciApiService } from 'src/app/services/wciApi.service';
+
 import { BaseItemWithDynamicMapComponent } from './withDynamicMap-item.component';
 
 @Component({

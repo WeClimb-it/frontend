@@ -8,14 +8,14 @@
       <div *ngIf="data.descr" class="description">
         {{ data.descr | capitalizeFirst }}
 
-        <div *ngIf="data.starting_point">
-          <strong>{{ 'STARTING_FROM' | translate }}:</strong> {{ data.starting_point | capitalizeFirst }}
+        <div *ngIf="data.startingPoint">
+          <strong>{{ 'STARTING_FROM' | translate }}:</strong> {{ data.startingPoint | capitalizeFirst }}
         </div>
 
-        <div *ngIf="data.access_info" class="more">
+        <div *ngIf="data.accessInfo" class="more">
           <h5>{{ 'HOW_REACH' | translate }}</h5>
           <span>
-            {{ data.access_info | capitalizeFirst }}
+            {{ data.accessInfo | capitalizeFirst }}
           </span>
         </div>
 

@@ -1,8 +1,9 @@
 import { Component, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
-import { Competition } from 'src/app/interfaces/graphql/competition.type';
+import { Competition } from 'src/app/interfaces/graphql';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { getSanitizedCompetitionProperties } from 'src/app/utils/Misc';
+
 import { BaseCardItemComponent } from './base-item.component';
 
 @Component({

@@ -1,19 +1,20 @@
+import { Route } from '@angular/compiler/src/core';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { gql } from 'apollo-angular';
-import { Route } from '@angular/compiler/src/core';
-
 import { DocumentNode } from 'graphql';
 
-import { Competition } from '../interfaces/graphql/competition.type';
-import { Crag } from '../interfaces/graphql/crag.type';
-import { ForecastResult as ForecastResultType } from '../interfaces/graphql/forecastresult.type';
-import { Hike } from '../interfaces/graphql/hike.type';
-import { News } from '../interfaces/graphql/news.type';
-import { Place } from '../interfaces/graphql/place.type';
-import { SearchResult as SearchResultType } from '../interfaces/graphql/searchresult.type';
-import { Sector } from '../interfaces/graphql/sector.type';
-import { Shelter } from '../interfaces/graphql/shelter.type';
-import { UserInfo } from '../interfaces/graphql/userinfo.type';
+import {
+  Competition,
+  Crag,
+  ForecastResult as ForecastResultType,
+  Hike,
+  News,
+  Place,
+  SearchResult as SearchResultType,
+  Sector,
+  Shelter,
+  UserInfo,
+} from '../interfaces/graphql';
 import { Photo } from '../interfaces/photo.interface';
 import * as fragments from './fragments';
 
@@ -69,7 +70,7 @@ export default class {
               routesCount
               sectorsCount
             }
-            resource_url
+            resourceUrl
           }
           places {
             slug
@@ -80,7 +81,7 @@ export default class {
               lng
             }
             picture
-            resource_url
+            resourceUrl
           }
           hikes {
             coords {
@@ -112,10 +113,10 @@ export default class {
               types
             }
             poster
-            resource_url
+            resourceUrl
             slug
-            start_time
-            end_time
+            startTime
+            endTime
             title
           }
         }
@@ -128,7 +129,7 @@ export default class {
       query GetNearby(
         $lat: Float!
         $lng: Float!
-        $distance: Int
+        $distance: Float!
         $minWeather: Float
         $maxWeather: Float
         $minPosition: Float
@@ -212,7 +213,7 @@ export default class {
 
   public static get crags(): DocumentNode {
     return gql`
-      query GetCrags($lat: Float!, $lng: Float!, $start: Int, $end: Int) {
+      query GetCrags($lat: Float!, $lng: Float!, $start: Float, $end: Float) {
         crags(lat: $lat, lng: $lng, start: $start, end: $end) {
           items {
             ...Crag
@@ -270,7 +271,7 @@ export default class {
 
   public static get places(): DocumentNode {
     return gql`
-      query GetPlaces($lat: Float!, $lng: Float!, $start: Int, $end: Int) {
+      query GetPlaces($lat: Float!, $lng: Float!, $start: Float, $end: Float) {
         places(lat: $lat, lng: $lng, start: $start, end: $end) {
           items {
             ...Place
@@ -298,7 +299,7 @@ export default class {
 
   public static get shelters(): DocumentNode {
     return gql`
-      query GetShelters($lat: Float!, $lng: Float!, $start: Int, $end: Int) {
+      query GetShelters($lat: Float!, $lng: Float!, $start: Float, $end: Float) {
         shelters(lat: $lat, lng: $lng, start: $start, end: $end) {
           items {
             ...Shelter
@@ -326,7 +327,7 @@ export default class {
 
   public static get events(): DocumentNode {
     return gql`
-      query GetEvents($lat: Float!, $lng: Float!, $start: Int, $end: Int) {
+      query GetEvents($lat: Float!, $lng: Float!, $start: Float, $end: Float) {
         events(lat: $lat, lng: $lng, start: $start, end: $end) {
           items {
             ...Event
@@ -354,7 +355,7 @@ export default class {
 
   public static get competitions(): DocumentNode {
     return gql`
-      query GetCompetitions($lat: Float!, $lng: Float!, $start: Int, $end: Int) {
+      query GetCompetitions($lat: Float!, $lng: Float!, $start: Float, $end: Float) {
         competitions(lat: $lat, lng: $lng, start: $start, end: $end) {
           items {
             ...Competition
@@ -382,7 +383,7 @@ export default class {
 
   public static get news(): DocumentNode {
     return gql`
-      query GetNews($start: Int, $end: Int) {
+      query GetNews($start: Float, $end: Float) {
         news(start: $start, end: $end) {
           items {
             ...News
@@ -410,7 +411,7 @@ export default class {
 
   public static get hikes(): DocumentNode {
     return gql`
-      query GetHikes($lat: Float!, $lng: Float!, $start: Int, $end: Int) {
+      query GetHikes($lat: Float!, $lng: Float!, $start: Float, $end: Float) {
         hikes(lat: $lat, lng: $lng, start: $start, end: $end) {
           items {
             ...Hike
@@ -438,7 +439,7 @@ export default class {
 
   public static get search(): DocumentNode {
     return gql`
-      query Search($query: String!, $start: Int, $end: Int) {
+      query Search($query: String!, $start: Float, $end: Float) {
         search(query: $query, start: $start, end: $end) {
           locations {
             ...City
@@ -502,7 +503,7 @@ export default class {
 
   public static get osmNodes(): DocumentNode {
     return gql`
-      query OsmNodes($lat: Float!, $lng: Float!, $distance: Int!) {
+      query OsmNodes($lat: Float!, $lng: Float!, $distance: Float!) {
         osmNodes(lat: $lat, lng: $lng, distance: $distance)
       }
     `;

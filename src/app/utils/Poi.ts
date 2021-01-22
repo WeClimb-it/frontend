@@ -1,10 +1,8 @@
-import { Competition } from 'src/app/interfaces/graphql/competition.type';
-import { Crag } from 'src/app/interfaces/graphql/crag.type';
-import { Hike } from 'src/app/interfaces/graphql/hike.type';
-import { Place } from 'src/app/interfaces/graphql/place.type';
-import { Shelter } from 'src/app/interfaces/graphql/shelter.type';
-import { typeOfItem } from './ContentType';
 import { TranslateService } from '@ngx-translate/core';
+import { Competition, Crag, Hike, Place, Shelter } from 'src/app/interfaces/graphql';
+
+import { typeOfItem } from './ContentType';
+
 export type Poi = Crag | Place | Competition | Shelter | Hike | Record<string, any>;
 
 /**

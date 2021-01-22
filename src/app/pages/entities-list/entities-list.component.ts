@@ -13,7 +13,7 @@ import {
   SearchResult,
   SheltersResult,
 } from 'src/app/graphql/queries';
-import { City } from 'src/app/interfaces/graphql/city.type';
+import { City } from 'src/app/interfaces/graphql';
 import { AppStoreService } from 'src/app/services/appState.service';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { ContentType, typeOfItem } from 'src/app/utils/ContentType';

@@ -1,53 +1,53 @@
-import { Apollo } from 'apollo-angular';
-import { FetchPolicy } from '@apollo/client/core';
 import { Injectable } from '@angular/core';
-
+import { FetchPolicy } from '@apollo/client/core';
+import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
+
 import Queries, {
+  CompetitionResult,
+  CompetitionsResult,
   CragResult,
   CragsResult,
   EventResult,
   EventsResult,
   ForecastResult,
+  HikeResult,
+  HikesResult,
   LatestResult,
   NearbyResult,
+  NewsResult,
+  OneNewsResult,
   PlaceResult,
   PlacesResult,
   RouteResult,
   SearchResult,
   SectorResult,
-  UserInfoResult,
-  HikesResult,
-  SheltersResult,
-  CompetitionsResult,
-  NewsResult,
-  HikeResult,
   ShelterResult,
-  CompetitionResult,
-  OneNewsResult,
+  SheltersResult,
+  UserInfoResult,
 } from '../graphql/queries';
 import {
-  CragQueryArgs,
-  CragsQueryArgs,
-  EventQueryArgs,
-  EventsQueryArgs,
-  ForecastQueryArgs,
-  LatestQueryArgs,
-  NearbyQueryArgs,
-  PlaceQueryArgs,
-  PlacesQueryArgs,
-  RouteQueryArgs,
-  SearchQueryArgs,
-  SectorQueryArgs,
-  HikesQueryArgs,
-  ShelterQueryArgs,
-  SheltersQueryArgs,
-  CompetitionsQueryArgs,
-  NewsQueryArgs,
-  HikeQueryArgs,
-  CompetitionQueryArgs,
-  OneNewsQueryArgs,
-} from '../interfaces/graphql/query.type';
+  CompetitionOnQueryArguments,
+  CompetitionsOnQueryArguments,
+  CragOnQueryArguments,
+  CragsOnQueryArguments,
+  EventOnQueryArguments,
+  EventsOnQueryArguments,
+  ForecastOnQueryArguments,
+  HikeOnQueryArguments,
+  HikesOnQueryArguments,
+  LatestOnQueryArguments,
+  NearbyOnQueryArguments,
+  NewsOnQueryArguments,
+  OneNewsOnQueryArguments,
+  PlaceOnQueryArguments,
+  PlacesOnQueryArguments,
+  RouteOnQueryArguments,
+  SearchOnQueryArguments,
+  SectorOnQueryArguments,
+  ShelterOnQueryArguments,
+  SheltersOnQueryArguments,
+} from '../interfaces/graphql';
 
 @Injectable({ providedIn: 'root' })
 export class WciApiService {
@@ -90,35 +90,35 @@ export class WciApiService {
     }).valueChanges as Observable<UserInfoResult>;
   }
 
-  getNearby(opts: NearbyQueryArgs): Observable<NearbyResult> {
+  getNearby(opts: NearbyOnQueryArguments): Observable<NearbyResult> {
     return this.apollo.watchQuery({
       query: Queries.nearby,
       variables: opts,
     }).valueChanges as Observable<NearbyResult>;
   }
 
-  getForecast(opts: ForecastQueryArgs): Observable<ForecastResult> {
+  getForecast(opts: ForecastOnQueryArguments): Observable<ForecastResult> {
     return this.apollo.watchQuery({
       query: Queries.forecast,
       variables: opts,
     }).valueChanges as Observable<ForecastResult>;
   }
 
-  getLatest(opts: LatestQueryArgs): Observable<LatestResult> {
+  getLatest(opts: LatestOnQueryArguments): Observable<LatestResult> {
     return this.apollo.watchQuery({
       query: Queries.latest,
       variables: opts,
     }).valueChanges as Observable<LatestResult>;
   }
 
-  getCrags(opts: CragsQueryArgs): Observable<CragsResult> {
+  getCrags(opts: CragsOnQueryArguments): Observable<CragsResult> {
     return this.apollo.watchQuery({
       query: Queries.crags,
       variables: opts,
     }).valueChanges as Observable<CragsResult>;
   }
 
-  getCrag(opts: CragQueryArgs): Observable<CragResult> {
+  getCrag(opts: CragOnQueryArguments): Observable<CragResult> {
     return this.apollo.watchQuery({
       query: Queries.crag,
       variables: opts,
@@ -129,7 +129,7 @@ export class WciApiService {
     // TODO
   }
 
-  getSector(opts: SectorQueryArgs): Observable<SectorResult> {
+  getSector(opts: SectorOnQueryArguments): Observable<SectorResult> {
     return this.apollo.watchQuery({
       query: Queries.sector,
       variables: opts,
@@ -140,42 +140,42 @@ export class WciApiService {
     // TODO
   }
 
-  getRoute(opts: RouteQueryArgs): Observable<RouteResult> {
+  getRoute(opts: RouteOnQueryArguments): Observable<RouteResult> {
     return this.apollo.watchQuery({
       query: Queries.route,
       variables: opts,
     }).valueChanges as Observable<RouteResult>;
   }
 
-  getPlaces(opts: PlacesQueryArgs): Observable<PlacesResult> {
+  getPlaces(opts: PlacesOnQueryArguments): Observable<PlacesResult> {
     return this.apollo.watchQuery({
       query: Queries.places,
       variables: opts,
     }).valueChanges as Observable<PlacesResult>;
   }
 
-  getPlace(opts: PlaceQueryArgs): Observable<PlaceResult> {
+  getPlace(opts: PlaceOnQueryArguments): Observable<PlaceResult> {
     return this.apollo.watchQuery({
       query: Queries.place,
       variables: opts,
     }).valueChanges as Observable<PlaceResult>;
   }
 
-  getEvents(opts: EventsQueryArgs): Observable<EventsResult> {
+  getEvents(opts: EventsOnQueryArguments): Observable<EventsResult> {
     return this.apollo.watchQuery({
       query: Queries.events,
       variables: opts,
     }).valueChanges as Observable<EventsResult>;
   }
 
-  getEvent(opts: EventQueryArgs): Observable<EventResult> {
+  getEvent(opts: EventOnQueryArguments): Observable<EventResult> {
     return this.apollo.watchQuery({
       query: Queries.event,
       variables: opts,
     }).valueChanges as Observable<EventResult>;
   }
 
-  getSearchResults(opts: SearchQueryArgs): Observable<SearchResult> {
+  getSearchResults(opts: SearchOnQueryArguments): Observable<SearchResult> {
     return this.apollo.watchQuery({
       query: Queries.search,
       variables: opts,
@@ -183,49 +183,49 @@ export class WciApiService {
     }).valueChanges as Observable<SearchResult>;
   }
 
-  getHike(opts: HikeQueryArgs): Observable<HikeResult> {
+  getHike(opts: HikeOnQueryArguments): Observable<HikeResult> {
     return this.apollo.watchQuery({
       query: Queries.hike,
       variables: opts,
     }).valueChanges as Observable<HikeResult>;
   }
 
-  getHikes(opts: HikesQueryArgs): Observable<HikesResult> {
+  getHikes(opts: HikesOnQueryArguments): Observable<HikesResult> {
     return this.apollo.watchQuery({
       query: Queries.hikes,
       variables: opts,
     }).valueChanges as Observable<HikesResult>;
   }
 
-  getShelter(opts: ShelterQueryArgs): Observable<ShelterResult> {
+  getShelter(opts: ShelterOnQueryArguments): Observable<ShelterResult> {
     return this.apollo.watchQuery({
       query: Queries.shelter,
       variables: opts,
     }).valueChanges as Observable<ShelterResult>;
   }
 
-  getShelters(opts: SheltersQueryArgs): Observable<SheltersResult> {
+  getShelters(opts: SheltersOnQueryArguments): Observable<SheltersResult> {
     return this.apollo.watchQuery({
       query: Queries.shelters,
       variables: opts,
     }).valueChanges as Observable<SheltersResult>;
   }
 
-  getCompetition(opts: CompetitionQueryArgs): Observable<CompetitionResult> {
+  getCompetition(opts: CompetitionOnQueryArguments): Observable<CompetitionResult> {
     return this.apollo.watchQuery({
       query: Queries.competition,
       variables: opts,
     }).valueChanges as Observable<CompetitionResult>;
   }
 
-  getCompetitions(opts: CompetitionsQueryArgs): Observable<CompetitionsResult> {
+  getCompetitions(opts: CompetitionsOnQueryArguments): Observable<CompetitionsResult> {
     return this.apollo.watchQuery({
       query: Queries.competitions,
       variables: opts,
     }).valueChanges as Observable<CompetitionsResult>;
   }
 
-  getNews(opts: NewsQueryArgs): Observable<NewsResult> {
+  getNews(opts: NewsOnQueryArguments): Observable<NewsResult> {
     return this.apollo.watchQuery({
       query: Queries.news,
       variables: opts,
@@ -233,7 +233,7 @@ export class WciApiService {
     }).valueChanges as Observable<NewsResult>;
   }
 
-  getOneNews(opts: OneNewsQueryArgs): Observable<OneNewsResult> {
+  getOneNews(opts: OneNewsOnQueryArguments): Observable<OneNewsResult> {
     return this.apollo.watchQuery({
       query: Queries.oneNews,
       variables: opts,

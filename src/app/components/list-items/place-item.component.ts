@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { GeoLocation } from 'src/app/classes/geolocation.class';
-import { Place } from 'src/app/interfaces/graphql/place.type';
-import { ContentType } from 'src/app/utils/ContentType';
-import { BaseListItemComponent } from './base-item.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { Place } from 'src/app/interfaces/graphql';
+import { ContentType } from 'src/app/utils/ContentType';
+
+import { BaseListItemComponent } from './base-item.component';
 
 @Component({
   selector: 'wci-place-list-item',
