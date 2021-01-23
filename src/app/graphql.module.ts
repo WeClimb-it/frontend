@@ -1,12 +1,13 @@
+import { NgModule } from '@angular/core';
+import { ApolloLink, InMemoryCache } from '@apollo/client/core';
 import { APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
-import { InMemoryCache, ApolloLink } from '@apollo/client/core';
-import { NgModule } from '@angular/core';
-
-import { RetryLink } from 'apollo-link-retry';
 import { environment } from 'src/environments/environment';
+
 import { I18nService } from './services/i18n.service';
 import { getEntityCacheId } from './utils/Poi';
+
+// import { RetryLink } from 'apollo-link-retry';
 
 const userSessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
@@ -54,7 +55,7 @@ export function createApollo(httpLink: HttpLink) {
     ssrMode: true,
     queryDeduplication: false,
     link: ApolloLink.from([
-      new RetryLink() as any,
+      // new RetryLink() as any,
       userSessionIdMiddleware,
       userLangMiddleware,
       httpLink.create({ uri: environment.graphql.url }),

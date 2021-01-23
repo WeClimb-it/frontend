@@ -136,6 +136,8 @@ export default class {
         $maxPosition: Float
         $minDifficulty: Float
         $maxDifficulty: Float
+        $start: Float
+        $end: Float
       ) {
         nearby(
           lat: $lat
@@ -147,6 +149,8 @@ export default class {
           maxPosition: $maxPosition
           minDifficulty: $minDifficulty
           maxDifficulty: $maxDifficulty
+          start: $start
+          end: $end
         ) {
           crags {
             slug

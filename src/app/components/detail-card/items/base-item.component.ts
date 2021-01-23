@@ -41,6 +41,8 @@ export class BaseCardItemComponent implements OnChanges {
 
   private disablePerfectScrollbarBreakpoint = 650;
 
+  private nearbyItemsNumber = 4;
+  private nearbyItemsDistance = 80;
   private scrollYPos = 0;
   private scrollStep = 120;
   private scrollDuration = 500; // ms
@@ -51,7 +53,6 @@ export class BaseCardItemComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data && changes.data.currentValue && changes.data.currentValue !== changes.data.previousValue) {
-      // tslint:disable-next-line: max-line-length
       this.staticMapSrc = `https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/${this.data.coords.lng},${this.data.coords.lat},10.19,0/${this.staticMapSizes[0]}x${this.staticMapSizes[1]}@2x?access_token=${this.mapboxToken}`;
 
       this.getNearby();
@@ -79,16 +80,18 @@ export class BaseCardItemComponent implements OnChanges {
   getNearby(): void {
     if (this.data.coords && this.data.coords.lat && this.data.coords.lng) {
       const sub$ = this.api
-        .getNearby({ lat: this.data.coords.lat, lng: this.data.coords.lng, distance: 80, start: 0, end: 4 })
-        .subscribe((res: NearbyResult) => {
+        .getNearbyCancelable({
+          lat: this.data.coords.lat,
+          lng: this.data.coords.lng,
+          distance: this.nearbyItemsDistance,
+          start: 0,
+          end: this.nearbyItemsNumber,
+        })
+        .observable.subscribe((res: NearbyResult) => {
           if (!res.errors) {
-            // TODO: The slice is needed because there is a bug on the BE
-            // where the limits seems to be discarded for the nearby query
-            this.nearbyPois = [
-              ...res.data.nearby.crags.slice(0, 4),
-              ...res.data.nearby.hikes.slice(0, 4),
-              ...res.data.nearby.shelters.slice(0, 4),
-            ].filter((poi: Poi) => poi.slug !== this.data.slug);
+            this.nearbyPois = [...res.data.nearby.crags, ...res.data.nearby.hikes, ...res.data.nearby.shelters].filter(
+              (poi: Poi) => poi.slug !== this.data.slug,
+            );
           }
           sub$.unsubscribe();
         });

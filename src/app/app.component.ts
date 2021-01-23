@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { debounce, isEmpty } from 'lodash';
+import { debounce, isEmpty, isEqual } from 'lodash';
 import moment from 'moment-timezone';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -50,10 +50,14 @@ export class AppComponent implements OnInit {
   private userData: UserInfo;
   private latestSearchOptions: SearchOptions;
 
-  private cancelableNearbySubscription: Subscription;
-  private cancelableOsmSubscription: Subscription;
+  private nearbyQueryController: AbortController;
+  private osmQueryController: AbortController;
 
+  // miles
   private osmRadiusThreshold = 137;
+
+  // ms
+  private mapInteractionDebounceTime = 250;
 
   constructor(
     private translate: TranslateService,
@@ -71,7 +75,7 @@ export class AppComponent implements OnInit {
     });
 
     this.appStore.watchProperty('currentLocation').subscribe((location: GeoLocation) => {
-      if (location) {
+      if (location && !isEqual(location, this.currentLocation)) {
         this.currentLocation = location;
         // this.getLatest();
         this.getNearby();
@@ -79,12 +83,12 @@ export class AppComponent implements OnInit {
     });
 
     this.appStore.watchProperty('currentUserLocation').subscribe((location: GeoLocation) => {
-      if (location) {
+      if (location && !isEqual(location, this.userLocation)) {
         this.userLocation = location;
       }
     });
 
-    this.onMapReadyOrUpdate = debounce(this.onMapReadyOrUpdate, 1500);
+    this.onMapReadyOrUpdate = debounce(this.onMapReadyOrUpdate, this.mapInteractionDebounceTime);
   }
 
   ngOnInit(): void {
@@ -222,33 +226,35 @@ export class AppComponent implements OnInit {
       this.getOsmNearby();
     }
 
-    if (this.cancelableNearbySubscription) {
-      this.cancelableNearbySubscription.unsubscribe();
+    if (this.nearbyQueryController) {
+      this.nearbyQueryController.abort();
     }
 
-    this.cancelableNearbySubscription = this.api
-      .getNearby({
-        lng: this.mapData.coordinates[0],
-        lat: this.mapData.coordinates[1],
-        minWeather: (this.latestSearchOptions && this.latestSearchOptions.minWeather) || 0,
-        maxWeather: (this.latestSearchOptions && this.latestSearchOptions.maxWeather) || 1,
-        minPosition: (this.latestSearchOptions && this.latestSearchOptions.minPosition) || 0,
-        maxPosition: (this.latestSearchOptions && this.latestSearchOptions.maxPosition) || 1,
-        minDifficulty: (this.latestSearchOptions && this.latestSearchOptions.minDifficulty) || 0,
-        maxDifficulty: (this.latestSearchOptions && this.latestSearchOptions.maxDifficulty) || 1,
-        distance: this.mapData.radius,
-      })
-      .subscribe((res: NearbyResult) => {
-        if (res.errors) {
-          throw new Error('Something went wrong during the nearby query');
-        }
+    const { observable: getNearby, controller } = this.api.getNearbyCancelable({
+      lng: this.mapData.coordinates[0],
+      lat: this.mapData.coordinates[1],
+      minWeather: (this.latestSearchOptions && this.latestSearchOptions.minWeather) || 0,
+      maxWeather: (this.latestSearchOptions && this.latestSearchOptions.maxWeather) || 1,
+      minPosition: (this.latestSearchOptions && this.latestSearchOptions.minPosition) || 0,
+      maxPosition: (this.latestSearchOptions && this.latestSearchOptions.maxPosition) || 1,
+      minDifficulty: (this.latestSearchOptions && this.latestSearchOptions.minDifficulty) || 0,
+      maxDifficulty: (this.latestSearchOptions && this.latestSearchOptions.maxDifficulty) || 1,
+      distance: this.mapData.radius,
+    });
 
-        if (!res.loading) {
-          this.isNearbyLoading = false;
-          this.nearbyPois = res.data.nearby;
-          this.cancelableNearbySubscription.unsubscribe();
-        }
-      });
+    this.nearbyQueryController = controller;
+
+    const sub$ = getNearby.subscribe((res: NearbyResult) => {
+      if (res.errors) {
+        throw new Error('Something went wrong during the nearby query');
+      }
+
+      if (!res.loading) {
+        this.isNearbyLoading = false;
+        this.nearbyPois = res.data.nearby;
+        sub$.unsubscribe();
+      }
+    });
   }
 
   /**
@@ -259,29 +265,31 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    if (this.cancelableOsmSubscription) {
-      this.cancelableOsmSubscription.unsubscribe();
+    if (this.osmQueryController) {
+      this.osmQueryController.abort();
     }
 
     this.isOsmNearbyLoading = true;
 
-    this.cancelableOsmSubscription = this.api
-      .getOpenStreetMapNodes({
-        lng: this.mapData.coordinates[0],
-        lat: this.mapData.coordinates[1],
-        distance: this.mapData.radius,
-      })
-      .subscribe((res: { loading: boolean; data: Record<string, object> }) => {
-        if (!res.loading) {
-          if (!isEmpty(res.data) && !isEmpty(res.data.osmNodes)) {
-            const { osmNodes: pois } = res.data;
-            this.nearbyOsmPois = pois;
-          }
+    const { observable: getOpenStreetMapNodes, controller } = this.api.getOpenStreetMapNodesCancelable({
+      lng: this.mapData.coordinates[0],
+      lat: this.mapData.coordinates[1],
+      distance: this.mapData.radius,
+    });
 
-          this.isOsmNearbyLoading = false;
-          this.cancelableOsmSubscription.unsubscribe();
+    this.osmQueryController = controller;
+
+    const sub$ = getOpenStreetMapNodes.subscribe((res: { loading: boolean; data: Record<string, object> }) => {
+      if (!res.loading) {
+        if (!isEmpty(res.data) && !isEmpty(res.data.osmNodes)) {
+          const { osmNodes: pois } = res.data;
+          this.nearbyOsmPois = pois;
         }
-      });
+
+        this.isOsmNearbyLoading = false;
+        sub$.unsubscribe();
+      }
+    });
   }
 
   /**

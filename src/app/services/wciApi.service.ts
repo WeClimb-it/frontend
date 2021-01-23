@@ -53,7 +53,7 @@ import {
 export class WciApiService {
   constructor(private apollo: Apollo) {
     this.getUserInfo = this.getUserInfo.bind(this);
-    this.getNearby = this.getNearby.bind(this);
+    this.getNearbyCancelable = this.getNearbyCancelable.bind(this);
     this.getForecast = this.getForecast.bind(this);
     this.getLatest = this.getLatest.bind(this);
     this.getCrags = this.getCrags.bind(this);
@@ -76,7 +76,7 @@ export class WciApiService {
     this.getNews = this.getNews.bind(this);
     this.getOneNews = this.getOneNews.bind(this);
     this.getPhotos = this.getPhotos.bind(this);
-    this.getOpenStreetMapNodes = this.getOpenStreetMapNodes.bind(this);
+    this.getOpenStreetMapNodesCancelable = this.getOpenStreetMapNodesCancelable.bind(this);
     this.getOpenStreetMapNode = this.getOpenStreetMapNode.bind(this);
   }
 
@@ -85,44 +85,75 @@ export class WciApiService {
   public noCacheFetchPolicy: FetchPolicy = 'no-cache';
 
   getUserInfo(): Observable<UserInfoResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.userInfo,
-    }).valueChanges as Observable<UserInfoResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
-  getNearby(opts: NearbyOnQueryArguments): Observable<NearbyResult> {
-    return this.apollo.watchQuery({
-      query: Queries.nearby,
-      variables: opts,
-    }).valueChanges as Observable<NearbyResult>;
+  getNearbyCancelable(
+    opts: NearbyOnQueryArguments,
+  ): { controller: AbortController; observable: Observable<NearbyResult> } {
+    const controller = new window.AbortController();
+
+    return {
+      controller,
+      observable: this.apollo.query({
+        query: Queries.nearby,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+        context: { fetchOptions: { signal: controller.signal } },
+      }),
+    };
+  }
+
+  getOpenStreetMapNodesCancelable(opts: {
+    lat: number;
+    lng: number;
+    distance: number;
+  }): { controller: AbortController; observable: Observable<object> } {
+    const controller = new window.AbortController();
+    return {
+      controller,
+      observable: this.apollo.query({
+        query: Queries.osmNodes,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+        context: { fetchOptions: { signal: controller.signal } },
+      }),
+    };
   }
 
   getForecast(opts: ForecastOnQueryArguments): Observable<ForecastResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.forecast,
       variables: opts,
-    }).valueChanges as Observable<ForecastResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getLatest(opts: LatestOnQueryArguments): Observable<LatestResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.latest,
       variables: opts,
-    }).valueChanges as Observable<LatestResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getCrags(opts: CragsOnQueryArguments): Observable<CragsResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.crags,
       variables: opts,
-    }).valueChanges as Observable<CragsResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getCrag(opts: CragOnQueryArguments): Observable<CragResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.crag,
       variables: opts,
-    }).valueChanges as Observable<CragResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getSectors(): void {
@@ -130,10 +161,11 @@ export class WciApiService {
   }
 
   getSector(opts: SectorOnQueryArguments): Observable<SectorResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.sector,
       variables: opts,
-    }).valueChanges as Observable<SectorResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getRoutes(): void {
@@ -141,123 +173,130 @@ export class WciApiService {
   }
 
   getRoute(opts: RouteOnQueryArguments): Observable<RouteResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.route,
       variables: opts,
-    }).valueChanges as Observable<RouteResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getPlaces(opts: PlacesOnQueryArguments): Observable<PlacesResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.places,
       variables: opts,
-    }).valueChanges as Observable<PlacesResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getPlace(opts: PlaceOnQueryArguments): Observable<PlaceResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.place,
       variables: opts,
-    }).valueChanges as Observable<PlaceResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getEvents(opts: EventsOnQueryArguments): Observable<EventsResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.events,
       variables: opts,
-    }).valueChanges as Observable<EventsResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getEvent(opts: EventOnQueryArguments): Observable<EventResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.event,
       variables: opts,
-    }).valueChanges as Observable<EventResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getSearchResults(opts: SearchOnQueryArguments): Observable<SearchResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.search,
       variables: opts,
-      fetchPolicy: 'no-cache',
-    }).valueChanges as Observable<SearchResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getHike(opts: HikeOnQueryArguments): Observable<HikeResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.hike,
       variables: opts,
-    }).valueChanges as Observable<HikeResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getHikes(opts: HikesOnQueryArguments): Observable<HikesResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.hikes,
       variables: opts,
-    }).valueChanges as Observable<HikesResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getShelter(opts: ShelterOnQueryArguments): Observable<ShelterResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.shelter,
       variables: opts,
-    }).valueChanges as Observable<ShelterResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getShelters(opts: SheltersOnQueryArguments): Observable<SheltersResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.shelters,
       variables: opts,
-    }).valueChanges as Observable<SheltersResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getCompetition(opts: CompetitionOnQueryArguments): Observable<CompetitionResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.competition,
       variables: opts,
-    }).valueChanges as Observable<CompetitionResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getCompetitions(opts: CompetitionsOnQueryArguments): Observable<CompetitionsResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.competitions,
       variables: opts,
-    }).valueChanges as Observable<CompetitionsResult>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getNews(opts: NewsOnQueryArguments): Observable<NewsResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.news,
       variables: opts,
       fetchPolicy: this.noCacheFetchPolicy,
-    }).valueChanges as Observable<NewsResult>;
+    });
   }
 
   getOneNews(opts: OneNewsOnQueryArguments): Observable<OneNewsResult> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.oneNews,
       variables: opts,
-    }).valueChanges as Observable<OneNewsResult>;
-  }
-
-  getOpenStreetMapNodes(opts: { lat: number; lng: number; distance: number }): Observable<object> {
-    return this.apollo.watchQuery({
-      query: Queries.osmNodes,
-      variables: opts,
-    }).valueChanges as Observable<object>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getOpenStreetMapNode(opts: { nodeId: string }): Observable<object> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.osmNode,
       variables: opts,
-    }).valueChanges as Observable<object>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 
   getPhotos(opts: { query: string }): Observable<object> {
-    return this.apollo.watchQuery({
+    return this.apollo.query({
       query: Queries.photos,
       variables: opts,
-    }).valueChanges as Observable<object>;
+      fetchPolicy: this.noCacheFetchPolicy,
+    });
   }
 }
