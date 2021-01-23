@@ -4,7 +4,7 @@ import { Shelter } from 'src/app/interfaces/graphql';
 import { GeoService } from 'src/app/services/geo.service';
 import { WciApiService } from 'src/app/services/wciApi.service';
 
-import { BaseItemWithDynamicMapComponent } from './withDynamicMap-item.component';
+import { BaseItemWithDynamicMapComponent } from './+withDynamicMap-item.component';
 
 @Component({
   selector: 'wci-shelter-card-item',

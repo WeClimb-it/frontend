@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostListener,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { GeoLocation } from 'src/app/classes/geolocation.class';
@@ -35,21 +27,13 @@ export class BaseCardItemComponent implements OnChanges {
 
   nearbyPois: Poi[] = [];
   // photos: Photo[] = [];
-  disablePerfectScrollbar = false;
 
-  protected staticMapSizes = [303, 360];
-
-  private disablePerfectScrollbarBreakpoint = 650;
+  protected staticMapSizes = [360, 280];
 
   private nearbyItemsNumber = 4;
   private nearbyItemsDistance = 80;
-  private scrollYPos = 0;
-  private scrollStep = 120;
-  private scrollDuration = 500; // ms
 
-  constructor(protected router: Router, protected api: WciApiService) {
-    this.checkPerfectScrollbarPermit();
-  }
+  constructor(protected router: Router, protected api: WciApiService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data && changes.data.currentValue && changes.data.currentValue !== changes.data.previousValue) {
@@ -112,30 +96,4 @@ export class BaseCardItemComponent implements OnChanges {
     });
   }
   */
-
-  /**
-   *
-   */
-  scrollDown(): void {
-    if (!this.scrollbar) {
-      return;
-    }
-    this.scrollYPos += this.scrollStep;
-    this.scrollbar.directiveRef.scrollToY(this.scrollYPos, this.scrollDuration);
-  }
-
-  /**
-   *
-   */
-  onScrollEvent(): void {
-    this.scrollYPos = +this.scrollbar.directiveRef.position(true).y;
-  }
-
-  /**
-   * Disables the perfect-scrollbar in case of small device.
-   */
-  @HostListener('window:resize', ['$event'])
-  checkPerfectScrollbarPermit() {
-    this.disablePerfectScrollbar = window.innerWidth < this.disablePerfectScrollbarBreakpoint;
-  }
 }

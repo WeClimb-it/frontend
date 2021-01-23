@@ -82,9 +82,9 @@ export class WciApiService {
     this.service.init();
   }
 
-  public defaultFetchPolicy: FetchPolicy = 'cache-first';
-  public networkFetchPolicy: FetchPolicy = 'network-only';
-  public noCacheFetchPolicy: FetchPolicy = 'no-cache';
+  defaultFetchPolicy: FetchPolicy = 'cache-first';
+  networkFetchPolicy: FetchPolicy = 'network-only';
+  noCacheFetchPolicy: FetchPolicy = 'no-cache';
 
   getUserInfo(): Observable<UserInfoResult> {
     return from(

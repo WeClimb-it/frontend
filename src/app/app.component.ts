@@ -193,6 +193,13 @@ export class AppComponent implements OnInit {
   /**
    *
    */
+  closeSection(): void {
+    this.router.navigate(['/']);
+  }
+
+  /**
+   *
+   */
   private bootstrap(): void {
     // First, let's retrieve some information about the user
     const sub$ = this.api.getUserInfo().subscribe((res: UserInfoResult) => {

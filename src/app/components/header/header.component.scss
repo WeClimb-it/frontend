@@ -30,7 +30,7 @@ $panelsMaxWidth: 660px;
     background-color: white;
     margin: 0 auto;
     position: relative;
-    z-index: 9999;
+    z-index: $maxZIndex;
 
     input {
       width: calc(100% - 106px);

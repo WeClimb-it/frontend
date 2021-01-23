@@ -11,6 +11,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+
 import { MatSliderModule } from '@angular/material/slider';
 import { Ng5SliderModule } from 'ng5-slider';
 
@@ -31,6 +33,7 @@ import { Ng5SliderModule } from 'ng5-slider';
     MatExpansionModule,
     MatListModule,
     MatMenuModule,
+    MatSidenavModule,
     MatProgressSpinnerModule,
     Ng5SliderModule,
   ],

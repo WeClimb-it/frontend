@@ -34,7 +34,7 @@ export class HeaderComponent {
   @Output() queryChanged: EventEmitter<string> = new EventEmitter<string>();
   @Output() suggestionSelected: EventEmitter<PlaceSuggestion> = new EventEmitter<PlaceSuggestion>();
   @Output() optionsUpdated: EventEmitter<SearchOptions> = new EventEmitter<SearchOptions>();
-  @ViewChild('search') public searchElementRef: ElementRef;
+  @ViewChild('search') searchElementRef: ElementRef;
 
   ENTER_KEY = 13;
   ARROW_UP_KEY = 38;

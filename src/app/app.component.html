@@ -1,11 +1,15 @@
 <div class="main" [ngClass]="{ 'has-content': showContent && !isFloatingContent }" fxLayout="row">
   <div class="actions">
+    <button *ngIf="showContent && isFloatingContent" color="primary" mat-mini-fab (click)="closeSection()">
+      <mat-icon>close</mat-icon>
+    </button>
     <button color="primary" mat-mini-fab [matMenuTriggerFor]="menu">
       <mat-icon>menu</mat-icon>
     </button>
     <button color="primary" mat-mini-fab [matMenuTriggerFor]="languagesMenu">
       <mat-icon>language</mat-icon>
     </button>
+
     <button
       *ngIf="userLocation"
       class="position-selector"
@@ -95,6 +99,7 @@
         (optionsUpdated)="onOptionsUpdated($event)"
       ></wci-header>
     </div>
+
     <wci-map
       *ngIf="currentLocation && userLocation"
       [zoom]="zoom"

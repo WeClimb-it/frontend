@@ -11,8 +11,8 @@
   (moveEnd)="mapInteractionEnd()"
 >
   <!-- The map controls -->
-  <mgl-control mglNavigation position="bottom-left"></mgl-control>
   <mgl-control mglScale unit="metric" position="bottom-right"></mgl-control>
+  <mgl-control mglNavigation position="bottom-right"></mgl-control>
 
   <mgl-image [id]="USER_LOCATION_SYMBOL" [data]="userLocationSymbol" [options]="{ pixelRatio: 2 }"> </mgl-image>
 

@@ -43,7 +43,7 @@ export type ForecastResult = ApolloQueryResult<{ forecast: ForecastResultType }>
 export type PhotosResult = ApolloQueryResult<{ photos: Photo[] }>;
 
 export default class {
-  public static get userInfo(): DocumentNode {
+  static get userInfo(): DocumentNode {
     return gql`
       query {
         userInfo {
@@ -54,7 +54,7 @@ export default class {
     `;
   }
 
-  public static get latest(): DocumentNode {
+  static get latest(): DocumentNode {
     return gql`
       query GetLatest($lat: Float!, $lng: Float!) {
         latest(lat: $lat, lng: $lng) {
@@ -123,7 +123,7 @@ export default class {
     `;
   }
 
-  public static get nearby(): DocumentNode {
+  static get nearby(): DocumentNode {
     return gql`
       query GetNearby(
         $lat: Float!
@@ -214,7 +214,7 @@ export default class {
     `;
   }
 
-  public static get crags(): DocumentNode {
+  static get crags(): DocumentNode {
     return gql`
       query GetCrags($lat: Float!, $lng: Float!, $start: Float, $end: Float) {
         crags(lat: $lat, lng: $lng, start: $start, end: $end) {
@@ -231,7 +231,7 @@ export default class {
     `;
   }
 
-  public static get crag(): DocumentNode {
+  static get crag(): DocumentNode {
     return gql`
       query GetCrag($slug: String!) {
         crag(slug: $slug) {
@@ -242,11 +242,11 @@ export default class {
     `;
   }
 
-  public static get sectors(): DocumentNode {
+  static get sectors(): DocumentNode {
     return gql``;
   }
 
-  public static get sector(): DocumentNode {
+  static get sector(): DocumentNode {
     return gql`
       query GetSector($slug: String!) {
         sector(slug: $slug) {
@@ -257,11 +257,11 @@ export default class {
     `;
   }
 
-  public static get routes(): DocumentNode {
+  static get routes(): DocumentNode {
     return gql``;
   }
 
-  public static get route(): DocumentNode {
+  static get route(): DocumentNode {
     return gql`
       query GetRoute($slug: String!) {
         route(slug: $slug) {
@@ -272,7 +272,7 @@ export default class {
     `;
   }
 
-  public static get places(): DocumentNode {
+  static get places(): DocumentNode {
     return gql`
       query GetPlaces($lat: Float!, $lng: Float!, $start: Float, $end: Float) {
         places(lat: $lat, lng: $lng, start: $start, end: $end) {
@@ -289,7 +289,7 @@ export default class {
     `;
   }
 
-  public static get place(): DocumentNode {
+  static get place(): DocumentNode {
     return gql`
       query GetPlace($slug: String!) {
         place(slug: $slug) {
@@ -300,7 +300,7 @@ export default class {
     `;
   }
 
-  public static get shelters(): DocumentNode {
+  static get shelters(): DocumentNode {
     return gql`
       query GetShelters($lat: Float!, $lng: Float!, $start: Float, $end: Float) {
         shelters(lat: $lat, lng: $lng, start: $start, end: $end) {
@@ -317,7 +317,7 @@ export default class {
     `;
   }
 
-  public static get shelter(): DocumentNode {
+  static get shelter(): DocumentNode {
     return gql`
       query GetShelter($slug: String!) {
         shelter(slug: $slug) {
@@ -328,7 +328,7 @@ export default class {
     `;
   }
 
-  public static get events(): DocumentNode {
+  static get events(): DocumentNode {
     return gql`
       query GetEvents($lat: Float!, $lng: Float!, $start: Float, $end: Float) {
         events(lat: $lat, lng: $lng, start: $start, end: $end) {
@@ -373,7 +373,7 @@ export default class {
     `;
   }
 
-  public static get competition(): DocumentNode {
+  static get competition(): DocumentNode {
     return gql`
       query GetCompetition($slug: String!) {
         competition(slug: $slug) {
@@ -384,7 +384,7 @@ export default class {
     `;
   }
 
-  public static get news(): DocumentNode {
+  static get news(): DocumentNode {
     return gql`
       query GetNews($start: Float, $end: Float) {
         news(start: $start, end: $end) {
@@ -401,7 +401,7 @@ export default class {
     `;
   }
 
-  public static get oneNews(): DocumentNode {
+  static get oneNews(): DocumentNode {
     return gql`
       query GetOneNews($slug: String!) {
         oneNews(slug: $slug) {
@@ -412,7 +412,7 @@ export default class {
     `;
   }
 
-  public static get hikes(): DocumentNode {
+  static get hikes(): DocumentNode {
     return gql`
       query GetHikes($lat: Float!, $lng: Float!, $start: Float, $end: Float) {
         hikes(lat: $lat, lng: $lng, start: $start, end: $end) {
@@ -429,7 +429,7 @@ export default class {
     `;
   }
 
-  public static get hike(): DocumentNode {
+  static get hike(): DocumentNode {
     return gql`
       query GetHike($slug: String!) {
         hike(slug: $slug) {
@@ -440,7 +440,7 @@ export default class {
     `;
   }
 
-  public static get search(): DocumentNode {
+  static get search(): DocumentNode {
     return gql`
       query Search($query: String!, $start: Float, $end: Float) {
         search(query: $query, start: $start, end: $end) {
@@ -493,7 +493,7 @@ export default class {
     `;
   }
 
-  public static get forecast(): DocumentNode {
+  static get forecast(): DocumentNode {
     return gql`
       query Forecast($lat: Float!, $lng: Float!) {
         forecast(lat: $lat, lng: $lng) {
@@ -504,7 +504,7 @@ export default class {
     `;
   }
 
-  public static get osmNodes(): DocumentNode {
+  static get osmNodes(): DocumentNode {
     return gql`
       query OsmNodes($lat: Float!, $lng: Float!, $distance: Float!) {
         osmNodes(lat: $lat, lng: $lng, distance: $distance)
@@ -512,7 +512,7 @@ export default class {
     `;
   }
 
-  public static get osmNode(): DocumentNode {
+  static get osmNode(): DocumentNode {
     return gql`
       query OsmNode($nodeId: String!) {
         osmNode(nodeId: $nodeId)
@@ -520,7 +520,7 @@ export default class {
     `;
   }
 
-  public static get photos(): DocumentNode {
+  static get photos(): DocumentNode {
     return gql`
       query Photos($query: String!) {
         photos(query: $query)

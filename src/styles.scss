@@ -176,7 +176,7 @@ a:visited {
 }
 
 .cdk-overlay-container {
-  z-index: 999999 !important;
+  z-index: $maxZIndex !important;
 
   .mat-dialog-container {
     @include mat-elevation(3, black, 0.8);

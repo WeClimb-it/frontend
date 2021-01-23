@@ -2,124 +2,20 @@
 @import '../../../../colors';
 @import '../../../../mixins';
 
-.container {
-  height: 100%;
-
-  .description {
-    border-radius: 4px;
-  }
-
-  .info {
-    width: 60%;
-    margin-right: 10px;
-
-    h4 {
-      color: black;
-      font-size: 28px;
-      line-height: 28px;
-      font-weight: 700;
-      margin-bottom: 10px;
-
-      &::first-letter {
-        text-transform: capitalize;
-      }
-    }
-
-    .description {
-      color: black;
-      font-size: 18px;
-      line-height: 28px;
-      font-weight: 100;
-
-      .more {
-        margin-top: 15px;
-        margin-bottom: 15px;
-
-        &:last-child {
-          margin-bottom: 0;
-        }
-
-        h5 {
-          color: rgba(black, 0.8);
-          font-size: 20px;
-          line-height: 20px;
-        }
-
-        span {
-          color: rgba(black, 0.8);
-          font-size: 16px;
-          line-height: 26px;
-        }
-
-        mat-accordion {
-          margin-top: 10px;
-          display: block;
-
-          mat-expansion-panel {
-            border: none;
-            box-shadow: none;
-            border-bottom: 1px solid rgba(black, 0.05);
-            border-radius: 0;
-
-            mat-panel-title {
-              text-transform: capitalize;
-              font-weight: 700;
-              font-size: 16px;
-              color: $primary;
-            }
-
-            mat-panel-description {
-              flex-grow: 0;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  .media {
-    width: calc(100% - 10px);
-    margin: 0 auto;
-
-    img {
-      @include mat-elevation(3, black, 0.15);
-      width: calc(100% - 20px);
-      margin-top: 10px;
-      margin-bottom: 10px;
-      border-radius: 4px;
-      padding: 10px;
-    }
-  }
-
-  .extra {
-    width: calc(35% - 5px);
-  }
-}
+$mapHeight: 280px;
 
 .extra {
-  position: relative;
-
   .sub-card {
-    @include mat-elevation(2, black, 0.15);
-
-    max-width: 303px;
-    min-width: 303px;
-    border-radius: 6px;
+    border-radius: 5px;
     overflow: hidden;
-    position: absolute;
-    top: 190px;
-    bottom: 20px;
     background: rgba(black, 0.015);
-
-    &.top {
-      top: 20px;
-    }
   }
 
   .dynamic-map {
     position: relative;
+
     width: 100%;
-    height: 360px;
+    height: $mapHeight;
     background: rgba(black, 0.05);
 
     mgl-map {
@@ -128,32 +24,8 @@
     }
   }
 
-  .go-down-button {
-    position: absolute;
-    bottom: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: $maxZIndex;
-
-    button {
-      width: 42px;
-      height: 42px;
-      color: white;
-      box-shadow: none;
-
-      .mat-icon {
-        width: 28px;
-        height: 28px;
-        font-size: 28px;
-        line-height: 15px;
-        font-weight: bold;
-      }
-    }
-  }
-
   .info-box {
     line-height: 15px;
-    width: 80% !important;
 
     mat-icon {
       float: left;
@@ -164,10 +36,17 @@
     }
   }
 
+  ::ng-deep .mat-chip-list-wrapper {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
   .static-map {
     position: relative;
+
     width: 100%;
-    height: 360px;
+    height: $mapHeight;
+
     background: rgba(black, 0.05);
 
     .marker {
@@ -196,6 +75,7 @@
   .weather {
     width: 100%;
     height: 180px;
+
     color: white;
     text-shadow: rgba(black, 0.3) 0 1px 4px;
     background: rgba(black, 0.05);
@@ -289,14 +169,17 @@
   .directions {
     width: 100%;
     height: 34px;
+
     background: $primaryPale;
     border-top: 1px solid rgba(black, 0.05);
+
     color: white;
     text-shadow: rgba(black, 0.4) 0 1px;
     line-height: 34px;
     font-size: 14px;
     font-weight: 700;
     line-height: 14px;
+
     vertical-align: middle;
 
     &.title {
@@ -328,77 +211,71 @@
   }
 }
 
-@mixin breakpoints() {
-  @media only screen and (max-width: 325px) {
-    .extra .directions {
-      font-size: 13px;
-    }
-  }
+.container {
+  height: 100%;
 
-  @media only screen and (max-width: 650px) {
-    .container {
-      display: block !important;
-      flex-direction: initial !important;
-      overflow: scroll;
-      overflow-x: hidden;
+  .info {
+    width: 100%;
+    margin-bottom: 5px;
 
-      .info,
-      .extra,
-      .sub-card {
-        min-width: initial;
-        max-width: 100%;
-        width: 100%;
-        margin: 0;
-      }
+    h4 {
+      font-size: 19px;
+      line-height: 19px;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      letter-spacing: -0.5px;
+      font-weight: 700;
+      color: black;
 
-      .info {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .extra {
-        margin-top: 10px;
-      }
-
-      .sub-card {
-        margin-top: 30px;
-        position: relative;
-        top: initial;
-        bottom: initial;
-
-        .static-map {
-          img {
-            object-fit: cover;
-          }
-        }
+      &::first-letter {
+        text-transform: capitalize;
       }
     }
-  }
 
-  @media only screen and (min-width: 651px) and (max-width: 768px) {
-    .extra {
-      .sub-card {
-        min-width: initial;
+    .description {
+      color: black;
+      font-size: 15px;
+      line-height: 18px;
 
-        .direction-label {
-          font-size: 13px;
+      .more {
+        margin-top: 15px;
+        margin-bottom: 15px;
+
+        &:last-child {
+          margin-bottom: 0;
         }
 
-        .static-map {
-          img {
-            object-fit: cover;
-          }
+        h5 {
+          color: rgba(black, 0.7);
+          font-size: 15px;
+          line-height: 15px;
         }
 
-        .weather {
-          .when {
-            zoom: 0.8;
-          }
-          .figures {
-            zoom: 0.86;
+        span {
+          color: rgba(black, 0.8);
+          font-size: 14px;
+          line-height: 16px;
+        }
 
-            > div:nth-child(1) {
-              font-size: 20px !important;
+        mat-accordion {
+          margin-top: 10px;
+          display: block;
+
+          mat-expansion-panel {
+            border: none;
+            box-shadow: none;
+            border-bottom: 1px solid rgba(black, 0.05);
+            border-radius: 0;
+
+            mat-panel-title {
+              text-transform: capitalize;
+              font-weight: 700;
+              font-size: 16px;
+              color: $primary;
+            }
+
+            mat-panel-description {
+              flex-grow: 0;
             }
           }
         }
@@ -406,12 +283,17 @@
     }
   }
 
-  @media only screen and (min-width: $mobileBreakpointWidth) and (max-width: $smallScreenBreakpointWidth) {
-    .extra {
-      .sub-card {
-        zoom: 0.7;
-        top: 260px;
-      }
+  .media {
+    width: calc(100% - 5px);
+    margin: 0 auto;
+
+    img {
+      @include mat-elevation(3, black, 0.15);
+      width: calc(100% - 10px);
+      margin-top: 5px;
+      margin-bottom: 5px;
+      border-radius: 4px;
+      padding: 5px;
     }
   }
 }

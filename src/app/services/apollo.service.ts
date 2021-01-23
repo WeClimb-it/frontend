@@ -7,13 +7,13 @@ import { I18nService } from './i18n.service';
 
 @Injectable({ providedIn: 'root' })
 export class ApolloService {
-  public client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient<NormalizedCacheObject>;
 
   private userSessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   constructor() {}
 
-  public init(): void {
+  init(): void {
     const cache = new InMemoryCache({
       // Why this? B/c in certain cases we need an expanded version of the GraphQL item (i.e. crag with sectors)
       // since the same item might be loaded somewhere else w/o expanded props (i.e. sectors) and thus stored in the cache,

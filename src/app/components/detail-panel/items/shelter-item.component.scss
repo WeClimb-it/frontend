@@ -2,8 +2,6 @@
 
 @include item-extras();
 
-@include breakpoints();
-
 .call-button {
   &:last-child {
     padding-bottom: 10px;

@@ -3,10 +3,12 @@
 @import '~@angular/material/theming';
 
 $maxZIndex: 99999;
+$mapZIndex: $maxZIndex - 2;
+$detailPanelZIndex: $maxZIndex - 1;
+
 $sidebarWidth: 330px;
 $sidebarWidthEm: 20.625em;
 $headerHeight: 160px;
 $mobileBreakpointWidth: 1020px;
 $smallScreenBreakpointWidth: 1200px;
 $hugeScreenBreakpointWidth: 1670px;
-$detailCardSmallWidth: 313px;

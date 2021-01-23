@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Place } from 'src/app/interfaces/graphql';
 import { WciApiService } from 'src/app/services/wciApi.service';
 
-import { BaseCardItemComponent } from './base-item.component';
+import { BaseCardItemComponent } from './+base-item.component';
 
 // tslint:disable-next-line: no-string-literal
 const FB = window['FB'] || {};

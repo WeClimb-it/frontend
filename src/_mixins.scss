@@ -8,10 +8,6 @@
 
 @mixin item-extras() {
   .extra {
-    width: calc(30% - 5px);
-    margin-left: 5px;
-    display: inline-block;
-
     mat-chip-list {
       mat-chip {
         pointer-events: none;
@@ -85,11 +81,11 @@
 
     .info-box {
       margin-top: 5px;
+      margin-bottom: 5px;
       font-size: 14px;
       padding: 5px;
       color: rgba(black, 0.8);
       border-radius: 4px;
-      width: 230px;
 
       &:first-of-type {
         margin-top: 10px;

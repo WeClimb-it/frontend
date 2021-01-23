@@ -1,10 +1,10 @@
-import { Component, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import togeojson from '@mapbox/togeojson';
 import { MapMouseEvent } from 'mapbox-gl';
 import { GeoJSONFeature } from 'src/app/interfaces/geo/GeoJSONFeature.interface';
 import { WciApiService } from 'src/app/services/wciApi.service';
-import { BaseItemWithWeatherComponent } from './withWeather-item.component';
+import { BaseItemWithWeatherComponent } from './+withWeather-item.component';
 import { GeoService } from 'src/app/services/geo.service';
 import { environment } from 'src/environments/environment';
 import { getGeoJsonFromCoords } from 'src/app/utils/Map';
@@ -14,6 +14,8 @@ import { getGeoJsonFromCoords } from 'src/app/utils/Map';
   template: ` <div></div> `,
 })
 export class BaseItemWithDynamicMapComponent extends BaseItemWithWeatherComponent implements OnChanges {
+  @Output() mapMoving: EventEmitter<boolean> = new EventEmitter();
+
   zoom = 15;
   minZoom = 9;
   maxZoom = 20;
@@ -56,6 +58,7 @@ export class BaseItemWithDynamicMapComponent extends BaseItemWithWeatherComponen
    */
   onMapBusy(state: boolean): void {
     this.isMapMoving = state;
+    this.mapMoving.emit(state);
   }
 
   /**

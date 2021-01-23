@@ -4,7 +4,7 @@ import { ForecastResult } from 'src/app/graphql/queries';
 import { CurrentWeather, Forecast } from 'src/app/interfaces/graphql';
 import { WciApiService } from 'src/app/services/wciApi.service';
 
-import { BaseCardItemComponent } from './base-item.component';
+import { BaseCardItemComponent } from './+base-item.component';
 
 @Component({
   selector: 'wci-with-weather-card-item',

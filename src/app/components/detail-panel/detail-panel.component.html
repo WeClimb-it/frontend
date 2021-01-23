@@ -1,0 +1,74 @@
+<mat-drawer-container class="detail-panel-container" autosize>
+  <mat-drawer #drawer class="detail-panel" mode="push" opened="true">
+    <perfect-scrollbar
+      #scrollbar
+      [ngClass]="{ disabled: disableScrollbar }"
+      [config]="disableScrollbar ? { handlers: [] } : {}"
+    >
+      <div class="item-container">
+        <ng-container [ngSwitch]="type">
+          <ng-container *ngSwitchCase="'crag'">
+            <wci-crag-card-item
+              #item
+              [data]="data"
+              [currentLocation]="currentLocation"
+              [userLocation]="userLocation"
+              (mapMoving)="disableScrollbar = $event"
+            ></wci-crag-card-item>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'hike'">
+            <wci-hike-card-item
+              #item
+              [data]="data"
+              [currentLocation]="currentLocation"
+              [userLocation]="userLocation"
+              (mapMoving)="disableScrollbar = $event"
+            ></wci-hike-card-item>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'place'">
+            <wci-place-card-item
+              #item
+              [data]="data"
+              [currentLocation]="currentLocation"
+              [userLocation]="userLocation"
+              (mapMoving)="disableScrollbar = $event"
+            ></wci-place-card-item>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'shelter'">
+            <wci-shelter-card-item
+              #item
+              [data]="data"
+              [currentLocation]="currentLocation"
+              [userLocation]="userLocation"
+              (mapMoving)="disableScrollbar = $event"
+            ></wci-shelter-card-item>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'competition'">
+            <wci-competition-card-item
+              #item
+              [data]="data"
+              [currentLocation]="currentLocation"
+              [userLocation]="userLocation"
+              (mapMoving)="disableScrollbar = $event"
+            ></wci-competition-card-item>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'osmNode'">
+            <wci-poi-card-item
+              #item
+              [data]="data"
+              [currentLocation]="currentLocation"
+              [userLocation]="userLocation"
+              (mapMoving)="disableScrollbar = $event"
+            ></wci-poi-card-item>
+          </ng-container>
+          <ng-container *ngSwitchDefault>{{ 'ERROR' | translate }}</ng-container>
+        </ng-container>
+      </div>
+    </perfect-scrollbar>
+  </mat-drawer>
+</mat-drawer-container>

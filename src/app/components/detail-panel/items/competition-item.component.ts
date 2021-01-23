@@ -4,7 +4,7 @@ import { Competition } from 'src/app/interfaces/graphql';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { getSanitizedCompetitionProperties } from 'src/app/utils/Misc';
 
-import { BaseCardItemComponent } from './base-item.component';
+import { BaseCardItemComponent } from './+base-item.component';
 
 @Component({
   selector: 'wci-competition-card-item',
