@@ -29,7 +29,6 @@
     "@mapbox/togeojson": "^0.16.0",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
-    "apollo-angular": "^2.2.0",
     "apollo-link-retry": "^2.2.16",
     "classlist.js": "^1.1.20150312",
     "geolib": "^3.3.1",

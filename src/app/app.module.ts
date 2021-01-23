@@ -22,7 +22,6 @@ import { MapComponent } from './components/map/map.component';
 import { MediaPlayerComponent } from './components/media-player/media-player.component';
 import { SharedModule } from './components/shared.module';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { GraphQLModule } from './graphql.module';
 import { MaterialModule } from './material.module';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { PipesModule } from './pipes/pipes.module';
@@ -75,7 +74,6 @@ export function appInitializerFactory(translateService: TranslateService, inject
     NgxMapboxGLModule.withConfig({
       accessToken: environment.mapbox.token,
     }),
-    GraphQLModule,
     HttpClientModule,
     FlexLayoutModule,
     MaterialModule,

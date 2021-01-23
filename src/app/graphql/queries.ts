@@ -1,6 +1,5 @@
 import { Route } from '@angular/compiler/src/core';
-import { ApolloQueryResult } from '@apollo/client/core';
-import { gql } from 'apollo-angular';
+import { ApolloQueryResult, gql } from '@apollo/client/core';
 import { DocumentNode } from 'graphql';
 
 import {

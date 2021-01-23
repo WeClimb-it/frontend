@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FetchPolicy } from '@apollo/client/core';
-import { Apollo } from 'apollo-angular';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 
 import Queries, {
   CompetitionResult,
@@ -48,10 +47,11 @@ import {
   ShelterOnQueryArguments,
   SheltersOnQueryArguments,
 } from '../interfaces/graphql';
+import { ApolloService } from './apollo.service';
 
 @Injectable({ providedIn: 'root' })
 export class WciApiService {
-  constructor(private apollo: Apollo) {
+  constructor(private service: ApolloService) {
     this.getUserInfo = this.getUserInfo.bind(this);
     this.getNearbyCancelable = this.getNearbyCancelable.bind(this);
     this.getForecast = this.getForecast.bind(this);
@@ -78,6 +78,8 @@ export class WciApiService {
     this.getPhotos = this.getPhotos.bind(this);
     this.getOpenStreetMapNodesCancelable = this.getOpenStreetMapNodesCancelable.bind(this);
     this.getOpenStreetMapNode = this.getOpenStreetMapNode.bind(this);
+
+    this.service.init();
   }
 
   public defaultFetchPolicy: FetchPolicy = 'cache-first';
@@ -85,10 +87,12 @@ export class WciApiService {
   public noCacheFetchPolicy: FetchPolicy = 'no-cache';
 
   getUserInfo(): Observable<UserInfoResult> {
-    return this.apollo.query({
-      query: Queries.userInfo,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.userInfo,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getNearbyCancelable(
@@ -98,12 +102,14 @@ export class WciApiService {
 
     return {
       controller,
-      observable: this.apollo.query({
-        query: Queries.nearby,
-        variables: opts,
-        fetchPolicy: this.noCacheFetchPolicy,
-        context: { fetchOptions: { signal: controller.signal } },
-      }),
+      observable: from(
+        this.service.client.query({
+          query: Queries.nearby,
+          variables: opts,
+          fetchPolicy: this.noCacheFetchPolicy,
+          context: { fetchOptions: { signal: controller.signal } },
+        }),
+      ),
     };
   }
 
@@ -115,45 +121,55 @@ export class WciApiService {
     const controller = new window.AbortController();
     return {
       controller,
-      observable: this.apollo.query({
-        query: Queries.osmNodes,
-        variables: opts,
-        fetchPolicy: this.noCacheFetchPolicy,
-        context: { fetchOptions: { signal: controller.signal } },
-      }),
+      observable: from(
+        this.service.client.query({
+          query: Queries.osmNodes,
+          variables: opts,
+          fetchPolicy: this.noCacheFetchPolicy,
+          context: { fetchOptions: { signal: controller.signal } },
+        }),
+      ),
     };
   }
 
   getForecast(opts: ForecastOnQueryArguments): Observable<ForecastResult> {
-    return this.apollo.query({
-      query: Queries.forecast,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.forecast,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getLatest(opts: LatestOnQueryArguments): Observable<LatestResult> {
-    return this.apollo.query({
-      query: Queries.latest,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.latest,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getCrags(opts: CragsOnQueryArguments): Observable<CragsResult> {
-    return this.apollo.query({
-      query: Queries.crags,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.crags,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getCrag(opts: CragOnQueryArguments): Observable<CragResult> {
-    return this.apollo.query({
-      query: Queries.crag,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.crag,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getSectors(): void {
@@ -161,11 +177,13 @@ export class WciApiService {
   }
 
   getSector(opts: SectorOnQueryArguments): Observable<SectorResult> {
-    return this.apollo.query({
-      query: Queries.sector,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.sector,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getRoutes(): void {
@@ -173,130 +191,162 @@ export class WciApiService {
   }
 
   getRoute(opts: RouteOnQueryArguments): Observable<RouteResult> {
-    return this.apollo.query({
-      query: Queries.route,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.route,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getPlaces(opts: PlacesOnQueryArguments): Observable<PlacesResult> {
-    return this.apollo.query({
-      query: Queries.places,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.places,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getPlace(opts: PlaceOnQueryArguments): Observable<PlaceResult> {
-    return this.apollo.query({
-      query: Queries.place,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.place,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getEvents(opts: EventsOnQueryArguments): Observable<EventsResult> {
-    return this.apollo.query({
-      query: Queries.events,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.events,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getEvent(opts: EventOnQueryArguments): Observable<EventResult> {
-    return this.apollo.query({
-      query: Queries.event,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.event,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getSearchResults(opts: SearchOnQueryArguments): Observable<SearchResult> {
-    return this.apollo.query({
-      query: Queries.search,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.search,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getHike(opts: HikeOnQueryArguments): Observable<HikeResult> {
-    return this.apollo.query({
-      query: Queries.hike,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.hike,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getHikes(opts: HikesOnQueryArguments): Observable<HikesResult> {
-    return this.apollo.query({
-      query: Queries.hikes,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.hikes,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getShelter(opts: ShelterOnQueryArguments): Observable<ShelterResult> {
-    return this.apollo.query({
-      query: Queries.shelter,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.shelter,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getShelters(opts: SheltersOnQueryArguments): Observable<SheltersResult> {
-    return this.apollo.query({
-      query: Queries.shelters,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.shelters,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getCompetition(opts: CompetitionOnQueryArguments): Observable<CompetitionResult> {
-    return this.apollo.query({
-      query: Queries.competition,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.competition,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getCompetitions(opts: CompetitionsOnQueryArguments): Observable<CompetitionsResult> {
-    return this.apollo.query({
-      query: Queries.competitions,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.competitions,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getNews(opts: NewsOnQueryArguments): Observable<NewsResult> {
-    return this.apollo.query({
-      query: Queries.news,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.news,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getOneNews(opts: OneNewsOnQueryArguments): Observable<OneNewsResult> {
-    return this.apollo.query({
-      query: Queries.oneNews,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.oneNews,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getOpenStreetMapNode(opts: { nodeId: string }): Observable<object> {
-    return this.apollo.query({
-      query: Queries.osmNode,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.osmNode,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 
   getPhotos(opts: { query: string }): Observable<object> {
-    return this.apollo.query({
-      query: Queries.photos,
-      variables: opts,
-      fetchPolicy: this.noCacheFetchPolicy,
-    });
+    return from(
+      this.service.client.query({
+        query: Queries.photos,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
   }
 }

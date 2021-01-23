@@ -525,8 +525,8 @@ export interface Event {
   descr: string;
   coords: Coords;
   place: string;
-  startTime: string;
-  endTime: string;
+  startTime: number;
+  endTime: number;
   resourceUrl: string;
   searchScore: number;
 }
@@ -540,8 +540,8 @@ export interface Competition {
   resourceUrl: string;
   schedule: Array<string>;
   slug: string;
-  startTime: string;
-  endTime: string;
+  startTime: number;
+  endTime: number;
   title: string;
   searchScore: number;
 }
