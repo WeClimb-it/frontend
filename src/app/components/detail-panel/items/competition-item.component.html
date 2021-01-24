@@ -14,8 +14,14 @@
     <!-- -->
 
     <!-- The description + misc. info -->
-    <div *ngIf="data.info.details.text" class="description">
-      {{ data.info.details.text | capitalizeFirst }}
+    <div class="description">
+      <div class="event-dates" *ngIf="startDate || endDate">
+        <div *ngIf="startDate"><mat-icon>event_available</mat-icon> {{ startDate | amCalendar }}</div>
+        <div *ngIf="endDate"><mat-icon>event_busy</mat-icon> {{ endDate | amCalendar }}</div>
+      </div>
+      <div *ngIf="data.info.place" class="place"><mat-icon>place</mat-icon> {{ data.info.place }}</div>
+
+      <div *ngIf="data.info.details.text">{{ data.info.details.text | capitalizeFirst }}</div>
 
       <div *ngIf="data.info.details.eventWebsite">
         <a href="{{ data.info.details.eventWebsite }}" target="_blank"
@@ -46,12 +52,6 @@
   </div>
 
   <div class="extra">
-    <div class="event-dates">
-      <div *ngIf="startDate"><mat-icon>event_available</mat-icon> {{ startDate | amCalendar }}</div>
-      <div *ngIf="endDate"><mat-icon>event_busy</mat-icon> {{ endDate | amCalendar }}</div>
-    </div>
-    <div *ngIf="data.info.place" class="place"><mat-icon>place</mat-icon> {{ data.info.place }}</div>
-
     <!-- The lateral subcard -->
     <div class="sub-card">
       <!-- The static map -->
