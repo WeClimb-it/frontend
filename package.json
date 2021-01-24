@@ -38,6 +38,7 @@
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.32",
     "ng5-slider": "^1.2.6",
+    "ngx-ellipsis": "^3.1.1",
     "ngx-mapbox-gl": "^5.0.0",
     "ngx-moment": "^5.0.0",
     "ngx-perfect-scrollbar": "^10.1.0",

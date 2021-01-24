@@ -90,5 +90,7 @@
   "ENABLE_GEOLOCATION": "Attiva localizzazione",
   "USE_GEOLOCATION": "Usa la tua posizione",
   "UNKNOWN": "sconosciuto",
-  "OSM_PEAK_DESCRIPTION": "Cima con una elevazione di <strong>{{ele}} metri.</strong>"
+  "OSM_PEAK_DESCRIPTION": "Cima con una elevazione di <strong>{{ele}} metri.</strong>",
+  "ELLIPSIS_SHOW_MORE": "... altro",
+  "ELLIPSIS_SHOW_LESS": "mostra meno"
 }

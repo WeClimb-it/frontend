@@ -11,10 +11,22 @@
       </a>
     </div>
 
-    <div *ngIf="data.descr" class="description">
-      {{ data.descr | capitalizeFirst }}
+    <div class="description">
+      <div
+        *ngIf="data.descr && !expandDescription; else noEllipsis"
+        class="text preview"
+        ellipsis="{{ 'ELLIPSIS_SHOW_MORE' | translate }}"
+        [ellipsis-content]="data.descr | capitalizeFirst"
+        (ellipsis-click-more)="expandDescription = true"
+      ></div>
+      <ng-template #noEllipsis>
+        <div *ngIf="data.descr" class="text">
+          {{ data.descr | capitalizeFirst }}
+          <a (click)="expandDescription = false">{{ 'ELLIPSIS_SHOW_LESS' | translate }}</a>
+        </div>
+      </ng-template>
 
-      <div class="media">
+      <div class="media" *ngIf="data.media">
         <div class="image" *ngFor="let image of data.media">
           <img src="{{ image }}" />
         </div>

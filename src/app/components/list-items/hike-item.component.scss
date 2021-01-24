@@ -1,11 +1,5 @@
 @import 'common.scss';
 
-.extra {
-  .chip {
-    margin-right: 20%;
-  }
-}
-
 @mixin reducedWidthRules() {
   .extra {
     .chip {

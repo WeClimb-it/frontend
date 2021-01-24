@@ -4,7 +4,7 @@ export const environment = {
     url: 'https://api.weclimb.it/graphql',
   },
   rest: {
-    url: 'https://api.weclimb.it/s',
+    url: 'https://api.weclimb.it',
   },
   i18n: {
     defaultLang: 'en',

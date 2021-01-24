@@ -25,6 +25,8 @@ export class BaseCardItemComponent implements OnChanges {
   mapboxToken = environment.mapbox.token;
   staticMapSrc = '';
 
+  expandDescription = false;
+
   nearbyPois: Poi[] = [];
   // photos: Photo[] = [];
 

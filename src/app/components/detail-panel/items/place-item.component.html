@@ -4,8 +4,20 @@
     <h4>{{ data.title }}</h4>
     <!-- -->
 
-    <div *ngIf="data.descr" class="description">
-      {{ data.descr | capitalizeFirst }}
+    <div class="description">
+      <div
+        *ngIf="data.descr && !expandDescription; else noEllipsis"
+        class="text preview"
+        ellipsis="{{ 'ELLIPSIS_SHOW_MORE' | translate }}"
+        [ellipsis-content]="data.descr | capitalizeFirst"
+        (ellipsis-click-more)="expandDescription = true"
+      ></div>
+      <ng-template #noEllipsis>
+        <div *ngIf="data.descr" class="text">
+          {{ data.descr | capitalizeFirst }}
+          <a (click)="expandDescription = false">{{ 'ELLIPSIS_SHOW_LESS' | translate }}</a>
+        </div>
+      </ng-template>
 
       <!-- The FB page -->
       <div class="fb-page-container">

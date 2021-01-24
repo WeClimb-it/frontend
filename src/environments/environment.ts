@@ -8,7 +8,7 @@ export const environment = {
     url: 'http://localhost:3000/graphql',
   },
   rest: {
-    url: 'http://localhost:3000/s',
+    url: 'http://localhost:3000',
   },
   i18n: {
     defaultLang: 'en',

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TranslateModule } from '@ngx-translate/core';
+import { EllipsisModule } from 'ngx-ellipsis';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { MomentModule } from 'ngx-moment';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
@@ -49,6 +50,7 @@ const components = [
       isolate: false,
     }),
     PipesModule,
+    EllipsisModule,
   ],
   exports: [],
   declarations: [...components],
