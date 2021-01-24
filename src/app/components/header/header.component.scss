@@ -31,6 +31,7 @@ $panelsMaxWidth: 660px;
     margin: 0 auto;
     position: relative;
     z-index: $maxZIndex;
+    pointer-events: all;
 
     input {
       width: calc(100% - 106px);
@@ -87,6 +88,7 @@ $panelsMaxWidth: 660px;
     right: 0;
     margin-left: auto;
     margin-right: auto;
+    pointer-events: all;
 
     min-width: $panelsMinWidth - 20;
     max-width: $panelsMaxWidth - 20;

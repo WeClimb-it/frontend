@@ -30,6 +30,7 @@
   height: $headerHeight;
   margin-bottom: -$headerHeight;
   background-color: transparent;
+  pointer-events: none;
 }
 
 .sidenav {
@@ -109,6 +110,10 @@
   }
 }
 
+::ng-deep wci-detail {
+  width: 360px !important;
+}
+
 @media only screen and (max-width: $mobileBreakpointWidth) {
   .content {
     width: 100%;
@@ -154,5 +159,11 @@
       width: calc(100% - 10px);
       padding: 5px;
     }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  ::ng-deep wci-detail {
+    width: 100vw !important;
   }
 }
