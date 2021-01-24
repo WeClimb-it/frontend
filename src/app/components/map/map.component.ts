@@ -14,6 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { each, size } from 'lodash';
 import { MapboxGeoJSONFeature } from 'mapbox-gl';
 import { MapComponent as MapBoxComponent } from 'ngx-mapbox-gl';
+import { MarkerComponent } from 'ngx-mapbox-gl/lib/marker/marker.component';
 import { GeoLocation } from 'src/app/classes/geolocation.class';
 import { MapUpdateEvent } from 'src/app/interfaces/events/map-update.interface';
 import { GeoTrack } from 'src/app/interfaces/geotrack.interface';
@@ -69,6 +70,8 @@ export class MapComponent implements OnChanges {
 
   @Output() ready = new EventEmitter<MapUpdateEvent>();
   @Output() update = new EventEmitter<MapUpdateEvent>();
+
+  @ViewChild('userMarker') userMarker: MarkerComponent;
 
   MARKER_TYPE = {
     CRAG: 'crag-pin',
@@ -160,7 +163,12 @@ export class MapComponent implements OnChanges {
 
     if (changes.userLocation && this.userLocation) {
       this.userCoords = this.userLocation.toCoordinates();
-      this.updateUserLocationGeoJSON();
+    }
+
+    if (changes.userOrientation && this.userOrientation) {
+      if (this.userMarker) {
+        this.userMarker.markerInstance.setRotation(this.userOrientation);
+      }
     }
 
     if (changes.pois && changes.pois.currentValue) {
@@ -302,86 +310,6 @@ export class MapComponent implements OnChanges {
   /**
    *
    */
-  get userLocationSymbol(): any {
-    const symbolSize = 100;
-    const halfSymbolSize = symbolSize / 2;
-    const halfWidth = halfSymbolSize;
-    const halfHeight = halfWidth;
-
-    const orientationSymbolXOffset = halfSymbolSize;
-    const orientationSymbolYOffset = 15;
-    const orientationSymbolWidth = 10;
-    const orientationSymbolHeight = 13;
-
-    const PI2 = Math.PI * 2;
-
-    const self = this;
-
-    return {
-      width: symbolSize,
-      height: symbolSize,
-      data: new Uint8Array(symbolSize * symbolSize * 4),
-
-      // get rendering context for the map canvas when layer is added to the map
-      onAdd: function () {
-        const canvas = document.createElement('canvas');
-        canvas.width = this.width;
-        canvas.height = this.height;
-
-        this.context = canvas.getContext('2d');
-      },
-
-      render: function () {
-        const radius = halfSymbolSize * 0.3;
-        const context = this.context;
-
-        context.clearRect(0, 0, symbolSize, symbolSize);
-
-        // Matrix transformation
-        context.translate(halfWidth, halfHeight);
-        context.rotate((self.userOrientation * Math.PI) / 180);
-        context.translate(-halfWidth, -halfHeight);
-
-        // draw circle
-        context.beginPath();
-        context.arc(halfWidth, halfHeight, radius * 3, 0, PI2);
-        context.fillStyle = `rgba(${self.USER_LOCATION_COLOR_RGB}, 0.7)`;
-        context.fill();
-
-        context.beginPath();
-        context.arc(halfWidth, halfHeight, radius, 0, PI2);
-        context.fillStyle = `rgba(${self.USER_DIRECTION_COLOR_RGB}, 1)`;
-        context.fill();
-
-        if (self.userOrientation) {
-          // draw user direction
-          const sX = orientationSymbolXOffset;
-          const sY = orientationSymbolYOffset;
-          const w = orientationSymbolWidth;
-          const h = orientationSymbolHeight;
-
-          context.beginPath();
-          context.moveTo(sX, sY);
-          context.lineTo(sX - w, sY + h);
-          context.lineTo(sX + w, sY + h);
-          context.closePath();
-          context.fillStyle = `rgba(${self.USER_DIRECTION_COLOR_RGB}, 1)`;
-          context.fill();
-
-          context.setTransform(1, 0, 0, 1, 0, 0);
-        }
-
-        // update this image's data with data from the canvas
-        this.data = context.getImageData(0, 0, symbolSize, symbolSize).data;
-
-        return true;
-      },
-    };
-  }
-
-  /**
-   *
-   */
   private emitMapUpdateStatus(firstLoad = false): void {
     if (!this.mapInstance) {
       return;
@@ -493,13 +421,6 @@ export class MapComponent implements OnChanges {
    */
   private updateCenterGeoJSON(): void {
     this.centerLocationGeoJson = getGeoJsonFromCoords(this.centerCoords);
-  }
-
-  /**
-   *
-   */
-  private updateUserLocationGeoJSON(): void {
-    this.userLocationGeoJson = getGeoJsonFromCoords(this.userCoords, this.userOrientation);
   }
 
   /**

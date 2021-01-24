@@ -14,8 +14,6 @@
   <mgl-control mglScale unit="metric" position="bottom-right"></mgl-control>
   <mgl-control mglNavigation position="bottom-right"></mgl-control>
 
-  <mgl-image [id]="USER_LOCATION_SYMBOL" [data]="userLocationSymbol" [options]="{ pixelRatio: 2 }"> </mgl-image>
-
   <!-- The POIs source -->
   <mgl-geojson-source
     id="pois"
@@ -24,12 +22,6 @@
     [clusterMaxZoom]="clusterMaxZoom"
     [clusterRadius]="clusterRadius"
   ></mgl-geojson-source>
-
-  <!-- The landing point source -->
-  <mgl-geojson-source id="center-location" [data]="centerLocationGeoJson"></mgl-geojson-source>
-
-  <!-- The landing point source -->
-  <mgl-geojson-source id="user-location" [data]="userLocationGeoJson"></mgl-geojson-source>
 
   <!-- The clusters -->
   <mgl-layer
@@ -77,6 +69,8 @@
   >
   </mgl-layer>
 
+  <!-- The landing point source -->
+  <mgl-geojson-source id="center-location" [data]="centerLocationGeoJson"></mgl-geojson-source>
   <!-- The current landing point -->
   <mgl-layer
     id="center-point"
@@ -84,7 +78,9 @@
     source="center-location"
     [paint]="{
       'circle-color': 'rgba(' + CENTER_LOCATION_COLOR_RGB + ', 0.8)',
-      'circle-radius': 8
+      'circle-radius': 8,
+      'circle-pitch-alignment': 'map',
+      'circle-pitch-scale': 'map'
     }"
   >
   </mgl-layer>
@@ -94,14 +90,25 @@
     source="center-location"
     [paint]="{
       'circle-color': 'rgba(' + CENTER_LOCATION_COLOR_RGB + ', 0.5)',
-      'circle-radius': 20
+      'circle-radius': 20,
+      'circle-pitch-alignment': 'map',
+      'circle-pitch-scale': 'map'
     }"
   >
   </mgl-layer>
 
-  <!-- The user location -->
-  <mgl-layer id="user-point" type="symbol" source="user-location" [layout]="{ 'icon-image': USER_LOCATION_SYMBOL }">
-  </mgl-layer>
+  <mgl-marker
+    #userMarker
+    *ngIf="userCoords"
+    [lngLat]="[userCoords[0], userCoords[1]]"
+    [rotationAlignment]="'map'"
+    [pitchAlignment]="'map'"
+  >
+    <div class="user-location" [ngClass]="{ 'user-location-show-heading': userOrientation }">
+      <div class="user-location-dot"></div>
+      <div *ngIf="userOrientation" class="user-location-heading"></div>
+    </div>
+  </mgl-marker>
 
   <mgl-popup
     *ngIf="selectedFeatures && selectedFeatures[0]"

@@ -256,3 +256,105 @@ mgl-map {
     padding-right: 15px;
   }
 }
+
+$userDotColor: #1da1f2;
+$userDotBorderColor: #fff;
+
+.user-location-dot {
+  background-color: $userDotColor;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+}
+.user-location-dot::before {
+  background-color: $userDotColor;
+  content: '';
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  position: absolute;
+  -webkit-animation: user-location-dot-pulse 2s infinite;
+  -moz-animation: user-location-dot-pulse 2s infinite;
+  -ms-animation: user-location-dot-pulse 2s infinite;
+  animation: user-location-dot-pulse 2s infinite;
+}
+.user-location-dot::after {
+  border-radius: 50%;
+  border: 2px solid $userDotBorderColor;
+  content: '';
+  height: 19px;
+  left: -2px;
+  position: absolute;
+  top: -2px;
+  width: 19px;
+  box-sizing: border-box;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
+}
+
+.user-location-show-heading .user-location-heading {
+  width: 0;
+  height: 0;
+}
+
+.user-location-show-heading .user-location-heading::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 7.5px solid transparent;
+  border-bottom: 7.5px solid $userDotColor;
+  transform: translate(0, -28px) skewY(-20deg);
+  position: absolute;
+}
+
+.user-location-show-heading .user-location-heading::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-right: 7.5px solid transparent;
+  border-bottom: 7.5px solid $userDotColor;
+  transform: translate(7.5px, -28px) skewY(20deg);
+  position: absolute;
+}
+
+@-webkit-keyframes user-location-dot-pulse {
+  0% {
+    -webkit-transform: scale(1);
+    opacity: 1;
+  }
+  70% {
+    -webkit-transform: scale(3);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    opacity: 0;
+  }
+}
+@-ms-keyframes user-location-dot-pulse {
+  0% {
+    -ms-transform: scale(1);
+    opacity: 1;
+  }
+  70% {
+    -ms-transform: scale(3);
+    opacity: 0;
+  }
+  100% {
+    -ms-transform: scale(1);
+    opacity: 0;
+  }
+}
+@keyframes user-location-dot-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(3);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}

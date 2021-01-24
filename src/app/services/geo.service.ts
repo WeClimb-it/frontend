@@ -183,18 +183,33 @@ export class GeoService {
    *
    */
   watchDeviceHorizontalOrientation(success: (orientation: number) => void, error: () => void): void {
-    if (window.DeviceOrientationEvent) {
-      window.addEventListener(
-        'deviceorientation',
-        (event: DeviceOrientationEvent) => {
-          if (event.alpha) {
-            success(360 - event.alpha);
-          } else {
-            error();
-          }
-        },
-        true,
-      );
+    if (!window.DeviceOrientationEvent) {
+      error();
+      return;
+    }
+
+    const handler = (event: DeviceOrientationEvent) => {
+      const isUnexpectedEvent = !event.absolute && !(event as any).webkitCompassHeading;
+
+      if (isUnexpectedEvent) {
+        window.removeEventListener('deviceorientationabsolute', handler);
+        window.removeEventListener('deviceorientation', handler);
+        error();
+        return;
+      }
+
+      const alpha = (event as any).webkitCompassHeading || Math.abs(event.alpha - 360);
+      if (alpha) {
+        success(alpha);
+      } else {
+        error();
+      }
+    };
+
+    if ('ondeviceorientationabsolute' in window) {
+      window.addEventListener('deviceorientationabsolute', handler, true);
+    } else if ('deviceorientation' in window) {
+      window.addEventListener('deviceorientation', handler, true);
     } else {
       error();
     }
