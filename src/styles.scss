@@ -27,7 +27,7 @@ $frontend-theme: mat-light-theme($frontend-primary, $frontend-accent, $frontend-
 $custom-typography: mat-typography-config(
   $font-family: 'Open Sans, sans-serif',
   $headline: mat-typography-level(32px, 48px, 700),
-  $body-1: mat-typography-level(16px, 24px, 300),
+  $body-1: mat-typography-level(16px, 24px),
 );
 
 @include mat-base-typography($custom-typography);
@@ -44,7 +44,7 @@ body {
 body {
   margin: 0;
   font-family: 'Open Sans', sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -57,8 +57,10 @@ h5,
 h6 {
   margin: 0;
   padding: 0;
-  font-family: 'Archivo', sans-serif;
-  font-weight: 600;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a,
