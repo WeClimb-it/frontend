@@ -577,7 +577,7 @@ export interface News {
   title: string;
   lang: string;
   searchScore: number;
-  creationTime: string;
+  creationTime: number;
 }
 
 export interface NewsMedia {

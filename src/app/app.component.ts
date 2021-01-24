@@ -3,7 +3,6 @@ import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/rou
 import { TranslateService } from '@ngx-translate/core';
 import { debounce, isEmpty, isEqual } from 'lodash';
 import moment from 'moment-timezone';
-import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 import { GeoLocation } from './classes/geolocation.class';
@@ -11,7 +10,6 @@ import { SearchOptions } from './components/header/header.component';
 import { NearbyResult, UserInfoResult } from './graphql/queries';
 import { MapUpdateEvent } from './interfaces/events/map-update.interface';
 import { SearchResult, UserInfo } from './interfaces/graphql';
-
 import { AppStoreService } from './services/appState.service';
 import { GeoService, PlaceSuggestion } from './services/geo.service';
 import { I18nService } from './services/i18n.service';
@@ -172,6 +170,7 @@ export class AppComponent implements OnInit {
     PersistanceService.set('lang', lang);
 
     this.translate.use(lang);
+    moment.locale(lang);
 
     this.onSectionSelected('/');
   }
@@ -210,7 +209,7 @@ export class AppComponent implements OnInit {
       if (!res.loading) {
         this.userData = res.data.userInfo;
 
-        this.initI18n();
+        this.initMomentI18n();
         this.registerMovementHandlers();
 
         sub$.unsubscribe();
@@ -342,20 +341,8 @@ export class AppComponent implements OnInit {
   /**
    *
    */
-  private initI18n(): void {
-    /*
-    // NOTE: Currently we use the browser language in the app.component
-    // instead of deriving it from the BE.
-
-    const lang = this.userData.geo.isoCode.toLowerCase();
-    if (environment.i18n.availableLangs.includes(lang)) {
-      this.translate.use(lang);
-    } else {
-      this.translate.use(environment.i18n.defaultLang);
-    }
-    */
-
-    moment.locale(this.userData.geo.isoCode);
+  private initMomentI18n(): void {
+    moment.locale(I18nService.userLang);
     moment.tz.setDefault(this.userData.geo.timeZone);
   }
 
