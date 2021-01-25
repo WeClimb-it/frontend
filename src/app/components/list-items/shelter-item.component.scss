@@ -25,19 +25,3 @@
     }
   }
 }
-
-@mixin reducedWidthRules() {
-  .extra {
-    .chip {
-      margin-right: 0;
-    }
-  }
-}
-
-@media only screen and (max-width: $mobileBreakpointWidth) {
-  @include reducedWidthRules();
-}
-
-@media only screen and (min-width: $mobileBreakpointWidth) and (max-width: $smallScreenBreakpointWidth) {
-  @include reducedWidthRules();
-}

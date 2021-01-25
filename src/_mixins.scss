@@ -44,11 +44,12 @@
     }
 
     .coeff {
+      width: 280px;
+
       margin-top: 15px;
       margin-bottom: 15px;
       padding-left: 5px;
       padding-right: 5px;
-      width: 110%;
       position: relative;
 
       mat-icon {
@@ -68,7 +69,8 @@
       .progress-info {
         @include mat-elevation(5, black, 0.15);
         display: inline-block;
-        margin: 5px 30px;
+        margin-right: 100%;
+        margin: 5px;
         padding: 5px 10px;
         background: rgba(white, 1);
         color: $primary;

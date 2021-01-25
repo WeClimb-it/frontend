@@ -67,6 +67,10 @@
 
 @include item-extras();
 
+.extra {
+  width: 320px;
+}
+
 @mixin reducedWidthRules() {
   .text {
     width: 100%;
@@ -77,10 +81,6 @@
     width: 100%;
 
     .info-box {
-      width: 100%;
-    }
-
-    .coeff {
       width: 100%;
     }
   }
