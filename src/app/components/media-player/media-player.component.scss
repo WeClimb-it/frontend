@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '../../../common';
 
 h1 {
@@ -45,7 +46,7 @@ h1 {
 }
 
 .selected {
-  @include mat-elevation(4, black, 0.45);
+  @include mat.elevation(4, black, 0.45);
 
   position: relative;
   z-index: $maxZIndex;
@@ -87,7 +88,7 @@ h1 {
   }
 
   .thumbnail {
-    @include mat-elevation(2, black, 0.25);
+    @include mat.elevation(2, black, 0.25);
 
     display: inline-block;
     max-width: calc((100% / 3) - 30px);

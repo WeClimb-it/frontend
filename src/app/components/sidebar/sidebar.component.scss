@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '../../../common';
 @import '../../../colors';
 
@@ -91,7 +92,7 @@
     cursor: default;
     text-shadow: 0px 2px 10px black;
     background-repeat: no-repeat;
-    @include mat-elevation(4, black, 0.5);
+    @include mat.elevation(4, black, 0.5);
   }
 
   .list {

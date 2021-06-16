@@ -1,10 +1,11 @@
+@use '~@angular/material' as mat;
 @import 'common.scss';
 
 .media {
   margin-bottom: 15px;
 
   .image {
-    @include mat-elevation(2, black, 0.25);
+    @include mat.elevation(2, black, 0.25);
     border: 1px solid rgba(black, 0.05);
     background: white;
     border-radius: 4px;

@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import 'common.scss';
 
 h4 {
@@ -18,7 +19,7 @@ h4 {
 
 .extra {
   .media {
-    @include mat-elevation(2, black, 0.25);
+    @include mat.elevation(2, black, 0.25);
     border-radius: 6px;
     padding: 6px;
     object-fit: cover;

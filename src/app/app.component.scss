@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '../common';
 @import '../colors';
 
@@ -54,7 +55,7 @@
   .mat-raised-button.mat-primary,
   .mat-fab.mat-primary,
   .mat-mini-fab.mat-primary {
-    @include mat-elevation(3, black, 0.4);
+    @include mat.elevation(3, black, 0.4);
     margin-right: 10px;
 
     background-color: rgba(white, 1);

@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import 'palette';
 @import 'colors';
 @import 'common';
@@ -5,34 +6,34 @@
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
-@include mat-core();
+@include mat.core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$frontend-primary: mat-palette($md-wcipalette);
-$frontend-accent: mat-palette($md-wcipalette, A500, A200, A400);
+$frontend-primary: mat.define-palette($md-wcipalette);
+$frontend-accent: mat.define-palette($md-wcipalette, A500, A200, A400);
 
 // The warn palette is optional (defaults to red).
-$frontend-warn: mat-palette($mat-red);
+$frontend-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$frontend-theme: mat-light-theme($frontend-primary, $frontend-accent, $frontend-warn);
+$frontend-theme: mat.define-light-theme($frontend-primary, $frontend-accent, $frontend-warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include angular-material-theme($frontend-theme);
+@include mat.all-component-themes($frontend-theme);
 
-$custom-typography: mat-typography-config(
+$custom-typography: mat.define-typography-config(
   $font-family: 'Open Sans, sans-serif',
-  $headline: mat-typography-level(32px, 48px, 700),
-  $body-1: mat-typography-level(16px, 24px),
+  $headline: mat.define-typography-level(32px, 48px, 700),
+  $body-1: mat.define-typography-level(16px, 24px),
 );
 
-@include mat-base-typography($custom-typography);
-@include mat-checkbox-typography($custom-typography);
-@include angular-material-typography($custom-typography);
+@include mat.typography-hierarchy($custom-typography);
+@include mat.checkbox-typography($custom-typography);
+@include mat.all-component-typographies($custom-typography);
 
 html,
 body {
@@ -116,7 +117,7 @@ a:visited {
 
 // Global MD customizations --
 .custom-menu {
-  @include mat-elevation(3, black, 0.4);
+  @include mat.elevation(3, black, 0.4);
 
   margin-top: 10px;
   border-radius: 10px !important;
@@ -181,7 +182,7 @@ a:visited {
   z-index: $maxZIndex !important;
 
   .mat-dialog-container {
-    @include mat-elevation(3, black, 0.8);
+    @include mat.elevation(3, black, 0.8);
   }
 }
 
