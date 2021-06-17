@@ -9,7 +9,7 @@ import { GeoLocation } from './classes/geolocation.class';
 import { SearchOptions } from './components/header/header.component';
 import { NearbyResult, UserInfoResult } from './graphql/queries';
 import { MapUpdateEvent } from './interfaces/events/map-update.interface';
-import { SearchResult, UserInfo } from './interfaces/graphql';
+import { ListResult, SearchResult, UserInfo } from './interfaces/graphql';
 import { AppStoreService } from './services/appState.service';
 import { GeoService, PlaceSuggestion } from './services/geo.service';
 import { I18nService } from './services/i18n.service';
@@ -36,12 +36,14 @@ export class AppComponent implements OnInit {
   urlLocation: GeoLocation;
   nearbyPois: SearchResult;
   nearbyOsmPois: object;
+  nearbyGooglePlacesPois: object;
   // latestPois: SearchResult;
 
   showContent = false;
   isFloatingContent = false;
   isNearbyLoading = true;
   isOsmNearbyLoading = true;
+  isGooglePlacesNearbyLoading = true;
   // isLatestLoading = true;
 
   environment = environment;
@@ -52,6 +54,7 @@ export class AppComponent implements OnInit {
 
   private nearbyQueryController: AbortController;
   private osmQueryController: AbortController;
+  private googlePlacesQueryController: AbortController;
 
   // miles
   private osmRadiusThreshold = 137;
@@ -261,6 +264,8 @@ export class AppComponent implements OnInit {
       this.getOsmNearby();
     }
 
+    this.getGooglePlacesNearby();
+
     if (this.nearbyQueryController) {
       this.nearbyQueryController.abort();
     }
@@ -322,6 +327,42 @@ export class AppComponent implements OnInit {
         }
 
         this.isOsmNearbyLoading = false;
+        sub$.unsubscribe();
+      }
+    });
+  }
+
+  /**
+   *
+   */
+  private getGooglePlacesNearby(): void {
+    if (!this.mapData) {
+      return;
+    }
+
+    if (this.googlePlacesQueryController) {
+      this.googlePlacesQueryController.abort();
+    }
+
+    this.isGooglePlacesNearbyLoading = true;
+
+    const { observable: getGooglePlaces, controller } = this.api.getGooglePlacesCancelable({
+      lng: this.mapData.coordinates[0],
+      lat: this.mapData.coordinates[1],
+      distance: this.mapData.radius,
+    });
+
+    this.googlePlacesQueryController = controller;
+
+    const sub$ = getGooglePlaces.subscribe((res: { loading: boolean; data: Record<string, ListResult> }) => {
+      console.log(res);
+      if (!res.loading) {
+        if (!isEmpty(res.data) && !isEmpty(res.data.googlePlaces)) {
+          const { googlePlaces } = res.data;
+          this.nearbyGooglePlacesPois = googlePlaces.items;
+        }
+
+        this.isGooglePlacesNearbyLoading = false;
         sub$.unsubscribe();
       }
     });

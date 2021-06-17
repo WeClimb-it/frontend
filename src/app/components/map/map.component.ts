@@ -22,7 +22,6 @@ import { Competition, Crag, Hike, Place, Shelter } from 'src/app/interfaces/grap
 import { getGeoJsonFromCoords } from 'src/app/utils/Map';
 import { getPoiCategoryClass, getPoiCategoryTag, Poi } from 'src/app/utils/Poi';
 import { environment } from 'src/environments/environment';
-
 import { GeoJSON, GeoJSONFeature } from '../../interfaces/geo/GeoJSONFeature.interface';
 
 export enum POI_TYPE {
@@ -61,12 +60,14 @@ export class MapComponent implements OnChanges {
   @Input() userLocation: GeoLocation;
   @Input() pois: Pois;
   @Input() osmPois: GeoJSON;
+  @Input() googlePlacesPois: Entities;
 
   @Input() mapStyle = environment.mapbox.style;
   @Input() tracks: GeoTrack[];
 
   @Input() loadingWciData: boolean;
   @Input() loadingOsmData: boolean;
+  @Input() loadingGooglePlacesData: boolean;
 
   @Output() ready = new EventEmitter<MapUpdateEvent>();
   @Output() update = new EventEmitter<MapUpdateEvent>();
@@ -102,6 +103,7 @@ export class MapComponent implements OnChanges {
   SOURCES = {
     WCI: 'wci',
     OSM: 'osm',
+    GOOGLE_PLACES: 'googlePlaces',
   };
 
   USER_LOCATION_SYMBOL = 'user-location-symbol';
@@ -121,6 +123,7 @@ export class MapComponent implements OnChanges {
 
   geoJson: GeoJSON;
   osmGeoJson: GeoJSON;
+  googlePlacesGeoJson: GeoJSON;
   selectedFeatures: MapboxGeoJSONFeature | GeoJSONFeature[] = [];
   selectedCoordinates: unknown;
 
@@ -177,6 +180,10 @@ export class MapComponent implements OnChanges {
 
     if (changes.osmPois && changes.osmPois.currentValue) {
       this.hydrateOsmGeoJSON(changes.osmPois.currentValue);
+    }
+
+    if (changes.googlePlacesPois && changes.googlePlacesPois.currentValue) {
+      this.hydrateGooglePlacesGeoJSON(changes.googlePlacesPois.currentValue);
     }
 
     /*
@@ -289,7 +296,11 @@ export class MapComponent implements OnChanges {
   get mapGeoJson(): GeoJSON {
     return {
       type: 'FeatureCollection',
-      features: [...(this.geoJson ? this.geoJson.features : []), ...(this.osmGeoJson ? this.osmGeoJson.features : [])],
+      features: [
+        ...(this.geoJson ? this.geoJson.features : []),
+        ...(this.osmGeoJson ? this.osmGeoJson.features : []),
+        ...(this.googlePlacesGeoJson ? this.googlePlacesGeoJson.features : []),
+      ],
     };
   }
 
@@ -297,7 +308,7 @@ export class MapComponent implements OnChanges {
    *
    */
   get loadingData(): boolean {
-    return this.loadingOsmData || this.loadingWciData;
+    return this.loadingGooglePlacesData || this.loadingOsmData || this.loadingWciData;
   }
 
   /**
@@ -349,12 +360,23 @@ export class MapComponent implements OnChanges {
   /**
    *
    */
-  private translateToFeatureCollection(entities: Entities, type: string, namespace: string): GeoJSONFeature[] {
+  private translateToFeatureCollection(
+    entities: Entities,
+    type: string,
+    namespace: string,
+    isInternal = true,
+  ): GeoJSONFeature[] {
     const output: GeoJSONFeature[] = [];
     each(entities, (e: Entity) => {
       const feature: GeoJSONFeature = {
         type: 'Feature',
-        properties: { ...e, source: this.SOURCES.WCI, 'marker-symbol': type, internal_link: `/${namespace}/${e.slug}` },
+        properties: {
+          ...e,
+          source: this.SOURCES.WCI,
+          'marker-symbol': type,
+          internal_link: isInternal ? `/${namespace}/${e.slug}` : undefined,
+          external_link: !isInternal ? e.resourceUrl : undefined,
+        },
         geometry: {
           type: 'Point',
           coordinates: [e.coords ? e.coords.lng : 0, e.coords ? e.coords.lat : 0],
@@ -413,6 +435,18 @@ export class MapComponent implements OnChanges {
     this.osmGeoJson = {
       type: 'FeatureCollection',
       features,
+    };
+  }
+
+  /**
+   *
+   */
+  private hydrateGooglePlacesGeoJSON(pois: Entities): void {
+    this.googlePlacesGeoJson = {
+      type: 'FeatureCollection',
+      features: [
+        ...this.translateToFeatureCollection(pois, this.MARKER_TYPE.PLACE, this.ENTITY_NAMESPACE.PLACE, false),
+      ],
     };
   }
 

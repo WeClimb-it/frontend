@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FetchPolicy } from '@apollo/client/core';
 import { from, Observable } from 'rxjs';
-
 import Queries, {
   CompetitionResult,
   CompetitionsResult,
@@ -77,6 +76,7 @@ export class WciApiService {
     this.getOneNews = this.getOneNews.bind(this);
     this.getPhotos = this.getPhotos.bind(this);
     this.getOpenStreetMapNodesCancelable = this.getOpenStreetMapNodesCancelable.bind(this);
+    this.getGooglePlacesCancelable = this.getGooglePlacesCancelable.bind(this);
     this.getOpenStreetMapNode = this.getOpenStreetMapNode.bind(this);
 
     this.service.init();
@@ -95,9 +95,10 @@ export class WciApiService {
     );
   }
 
-  getNearbyCancelable(
-    opts: NearbyOnQueryArguments,
-  ): { controller: AbortController; observable: Observable<NearbyResult> } {
+  getNearbyCancelable(opts: NearbyOnQueryArguments): {
+    controller: AbortController;
+    observable: Observable<NearbyResult>;
+  } {
     const controller = new window.AbortController();
 
     return {
@@ -113,17 +114,34 @@ export class WciApiService {
     };
   }
 
-  getOpenStreetMapNodesCancelable(opts: {
-    lat: number;
-    lng: number;
-    distance: number;
-  }): { controller: AbortController; observable: Observable<object> } {
+  getOpenStreetMapNodesCancelable(opts: { lat: number; lng: number; distance: number }): {
+    controller: AbortController;
+    observable: Observable<object>;
+  } {
     const controller = new window.AbortController();
     return {
       controller,
       observable: from(
         this.service.client.query({
           query: Queries.osmNodes,
+          variables: opts,
+          fetchPolicy: this.noCacheFetchPolicy,
+          context: { fetchOptions: { signal: controller.signal } },
+        }),
+      ),
+    };
+  }
+
+  getGooglePlacesCancelable(opts: { lat: number; lng: number; distance: number }): {
+    controller: AbortController;
+    observable: Observable<object>;
+  } {
+    const controller = new window.AbortController();
+    return {
+      controller,
+      observable: from(
+        this.service.client.query({
+          query: Queries.googlePlaces,
           variables: opts,
           fetchPolicy: this.noCacheFetchPolicy,
           context: { fetchOptions: { signal: controller.signal } },

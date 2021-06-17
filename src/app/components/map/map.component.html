@@ -133,7 +133,8 @@
           [ngClass]="{
             'multi-items': false,
             'wiki-content':
-              selectedFeatures[0].properties.source === SOURCES.OSM && selectedFeatures[0].properties.wikipedia
+              selectedFeatures[0].properties.source === SOURCES.OSM && selectedFeatures[0].properties.wikipedia,
+            'no-descr': !selectedFeatures[0].properties.descr || selectedFeatures[0].properties.descr === 'null'
           }"
         >
           <div class="title" title="{{ getMapItemTitle(selectedFeatures[0]) }}">
@@ -145,14 +146,25 @@
             <ng-container *ngSwitchCase="false">
               <div
                 class="description"
-                *ngIf="selectedFeatures[0].properties.descr && selectedFeatures[0].properties.descr != 'null'"
+                *ngIf="selectedFeatures[0].properties.descr && selectedFeatures[0].properties.descr !== 'null'"
               >
                 {{ selectedFeatures[0].properties.descr }}
               </div>
               <div class="link">
-                <a routerLink="{{ selectedFeatures[0].properties.internal_link }}">{{ 'OPEN_DETAIL' | translate }}</a>
+                <a
+                  *ngIf="selectedFeatures[0].properties.internal_link"
+                  routerLink="{{ selectedFeatures[0].properties.internal_link }}"
+                  >{{ 'OPEN_DETAIL' | translate }}</a
+                >
+                <a
+                  *ngIf="selectedFeatures[0].properties.external_link"
+                  href="{{ selectedFeatures[0].properties.external_link }}"
+                  target="_blank"
+                  >{{ 'OPEN_DETAIL' | translate }}</a
+                >
               </div>
             </ng-container>
+
             <!-- Content from OSM -->
             <ng-container *ngSwitchDefault>
               <!-- External frame -->
@@ -178,6 +190,7 @@
           </ng-container>
         </div>
       </div>
+
       <!-- List of items -->
       <div *ngSwitchDefault>
         <div class="popup-content" [ngClass]="{ 'multi-items': true }">
@@ -185,7 +198,12 @@
             <div class="popup-item" *ngFor="let item of selectedFeatures">
               <div class="category {{ getPoiCategoryClass(item) }}">{{ getPoiCategoryTag(item) }}</div>
               <h4 title="{{ getMapItemTitle(item) }}">
-                <a routerLink="{{ item.properties.internal_link }}">{{ getMapItemTitle(item) }}</a>
+                <a *ngIf="item.properties.internal_link" routerLink="{{ item.properties.internal_link }}">{{
+                  getMapItemTitle(item)
+                }}</a>
+                <a *ngIf="item.properties.external_link" href="{{ item.properties.external_link }}" target="_blank">{{
+                  getMapItemTitle(item)
+                }}</a>
               </h4>
             </div>
           </perfect-scrollbar>

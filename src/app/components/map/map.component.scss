@@ -74,6 +74,10 @@ mgl-map {
       }
     }
 
+    &.no-descr {
+      height: 80px;
+    }
+
     &.multi-items {
       overflow: hidden;
 

@@ -108,8 +108,10 @@
       [userOrientation]="currentOrientation"
       [pois]="nearbyPois"
       [osmPois]="nearbyOsmPois"
-      [loadingOsmData]="isOsmNearbyLoading"
+      [googlePlacesPois]="nearbyGooglePlacesPois"
       [loadingWciData]="isNearbyLoading"
+      [loadingOsmData]="isOsmNearbyLoading"
+      [loadingGooglePlacesData]="isGooglePlacesNearbyLoading"
       (ready)="onMapReady($event)"
       (update)="onMapUpdate($event)"
     ></wci-map>

@@ -1,7 +1,6 @@
 import { Route } from '@angular/compiler/src/core';
 import { ApolloQueryResult, gql } from '@apollo/client/core';
 import { DocumentNode } from 'graphql';
-
 import {
   Competition,
   Crag,
@@ -509,6 +508,19 @@ export default class {
       query OsmNodes($lat: Float!, $lng: Float!, $distance: Float!) {
         osmNodes(lat: $lat, lng: $lng, distance: $distance)
       }
+    `;
+  }
+
+  static get googlePlaces(): DocumentNode {
+    return gql`
+      query GooglePlaces($lat: Float!, $lng: Float!, $distance: Float!) {
+        googlePlaces(lat: $lat, lng: $lng, distance: $distance) {
+          items {
+            ...Place
+          }
+        }
+      }
+      ${fragments.Place}
     `;
   }
 
