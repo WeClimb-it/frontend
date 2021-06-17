@@ -19,10 +19,10 @@
       <mat-icon color="accent" *ngIf="hasBeenDisputed">done_outline</mat-icon>
     </h4>
     <span class="categories">{{ categories.join(', ') }}</span>
-    <div *ngIf="data.info.details.text" class="description">{{ data.info.details.text | capitalizeFirst }}</div>
+    <div *ngIf="data.info?.details?.text" class="description">{{ data.info.details.text | capitalizeFirst }}</div>
   </div>
   <div class="extra">
-    <div *ngIf="data.info.place" class="place"><mat-icon>place</mat-icon> {{ data.info.place }}</div>
+    <div *ngIf="data.info?.place" class="place"><mat-icon>place</mat-icon> {{ data.info.place }}</div>
     <mat-chip-list>
       <mat-chip *ngFor="let type of types" color="primary" selected>{{ type }}</mat-chip>
       <mat-chip *ngFor="let specialty of specialties" color="primary" selected>{{ specialty }}</mat-chip>

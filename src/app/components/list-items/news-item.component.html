@@ -12,7 +12,7 @@
     <div *ngIf="data.summary" class="summary">{{ data.summary }}</div>
   </div>
   <div class="extra">
-    <div *ngIf="data.media.thumb" class="media">
+    <div *ngIf="data.media?.thumb" class="media">
       <img src="{{ data.media.thumb }}" />
     </div>
   </div>

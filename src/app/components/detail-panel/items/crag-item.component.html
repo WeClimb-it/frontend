@@ -79,11 +79,11 @@
   <div class="extra">
     <!-- The coeffs -->
     <div class="stats" *ngIf="data._stats">
-      <div *ngIf="data.qualityRank.weather !== null" class="coeff">
+      <div *ngIf="data.qualityRank?.weather !== null" class="coeff">
         <mat-icon aria-hidden="false">brightness_high</mat-icon>
         <mat-progress-bar mode="determinate" value="{{ data.qualityRank.weather * 100 }}"></mat-progress-bar>
       </div>
-      <div *ngIf="data.qualityRank.difficulty > 0" class="coeff">
+      <div *ngIf="data.qualityRank?.difficulty > 0" class="coeff">
         <mat-icon aria-hidden="false">fitness_center</mat-icon>
         <mat-progress-bar mode="determinate" value="{{ data.qualityRank.difficulty * 100 }}"></mat-progress-bar>
       </div>

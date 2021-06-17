@@ -110,8 +110,8 @@
       [osmPois]="nearbyOsmPois"
       [loadingOsmData]="isOsmNearbyLoading"
       [loadingWciData]="isNearbyLoading"
-      (ready)="onMapReadyOrUpdate($event)"
-      (update)="onMapReadyOrUpdate($event)"
+      (ready)="onMapReady($event)"
+      (update)="onMapUpdate($event)"
     ></wci-map>
   </div>
 

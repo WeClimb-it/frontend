@@ -29,7 +29,7 @@ export interface Query {
   /**
    * Returns debug information from the server
    */
-  info: Debugnfo;
+  info: DebugInfo;
   events: ListResult;
   event: Event;
   forecast: ForecastResult;
@@ -39,9 +39,10 @@ export interface Query {
   oneNews: News;
   osmNodes: any;
   osmNode: any;
-  getPhotos: any;
-  getPhotosFromWeb: any;
+  photos: any;
+  photosWeb: any;
   places: ListResult;
+  googlePlaces: any;
   place: Place;
   routes: ListResult;
   route: Route;
@@ -52,10 +53,12 @@ export interface Query {
   sector: Sector;
   shelters: ListResult;
   shelter: Shelter;
-  usernfo: UserInfo;
+  userInfo: UserInfo;
 }
 
 export interface CompetitionsOnQueryArguments {
+  distance?: number | null;
+
   /**
    * @default 10
    */
@@ -67,7 +70,6 @@ export interface CompetitionsOnQueryArguments {
   start?: number | null;
   lng: number;
   lat: number;
-  distance: number;
 }
 
 export interface UpcomingCompetitionsOnQueryArguments {
@@ -92,6 +94,8 @@ export interface CompetitionOnQueryArguments {
 }
 
 export interface CragsOnQueryArguments {
+  distance?: number | null;
+
   /**
    * @default false
    */
@@ -108,7 +112,6 @@ export interface CragsOnQueryArguments {
   start?: number | null;
   lng: number;
   lat: number;
-  distance: number;
 }
 
 export interface CragOnQueryArguments {
@@ -117,6 +120,8 @@ export interface CragOnQueryArguments {
 }
 
 export interface EventsOnQueryArguments {
+  distance?: number | null;
+
   /**
    * @default 10
    */
@@ -128,7 +133,6 @@ export interface EventsOnQueryArguments {
   start?: number | null;
   lng: number;
   lat: number;
-  distance: number;
 }
 
 export interface EventOnQueryArguments {
@@ -142,6 +146,8 @@ export interface ForecastOnQueryArguments {
 }
 
 export interface HikesOnQueryArguments {
+  distance?: number | null;
+
   /**
    * @default 10
    */
@@ -153,7 +159,6 @@ export interface HikesOnQueryArguments {
   start?: number | null;
   lng: number;
   lat: number;
-  distance: number;
 }
 
 export interface HikeOnQueryArguments {
@@ -185,18 +190,20 @@ export interface OsmNodesOnQueryArguments {
 }
 
 export interface OsmNodeOnQueryArguments {
-  noded: string;
+  nodeId: string;
 }
 
-export interface GetPhotosOnQueryArguments {
+export interface PhotosOnQueryArguments {
   query: string;
 }
 
-export interface GetPhotosFromWebOnQueryArguments {
+export interface PhotosWebOnQueryArguments {
   query: string;
 }
 
 export interface PlacesOnQueryArguments {
+  distance?: number | null;
+
   /**
    * @default 10
    */
@@ -208,7 +215,15 @@ export interface PlacesOnQueryArguments {
   start?: number | null;
   lng: number;
   lat: number;
-  distance: number;
+}
+
+export interface GooglePlacesOnQueryArguments {
+  /**
+   * @default 50
+   */
+  distance?: number | null;
+  lng: number;
+  lat: number;
 }
 
 export interface PlaceOnQueryArguments {
@@ -245,32 +260,32 @@ export interface SearchOnQueryArguments {
   start?: number | null;
 
   /**
-   * @default -1
+   * @default 1
    */
   maxDifficulty?: number | null;
 
   /**
-   * @default -1
+   * @default 0
    */
   minDifficulty?: number | null;
 
   /**
-   * @default -1
+   * @default 1
    */
   maxPosition?: number | null;
 
   /**
-   * @default -1
+   * @default 0
    */
   minPosition?: number | null;
 
   /**
-   * @default -1
+   * @default 1
    */
   maxWeather?: number | null;
 
   /**
-   * @default -1
+   * @default 0
    */
   minWeather?: number | null;
   query: string;
@@ -288,32 +303,32 @@ export interface NearbyOnQueryArguments {
   start?: number | null;
 
   /**
-   * @default -1
+   * @default 1
    */
   maxDifficulty?: number | null;
 
   /**
-   * @default -1
+   * @default 0
    */
   minDifficulty?: number | null;
 
   /**
-   * @default -1
+   * @default 1
    */
   maxPosition?: number | null;
 
   /**
-   * @default -1
+   * @default 0
    */
   minPosition?: number | null;
 
   /**
-   * @default -1
+   * @default 1
    */
   maxWeather?: number | null;
 
   /**
-   * @default -1
+   * @default 0
    */
   minWeather?: number | null;
   distance: number;
@@ -349,6 +364,8 @@ export interface SectorOnQueryArguments {
 }
 
 export interface SheltersOnQueryArguments {
+  distance?: number | null;
+
   /**
    * @default 10
    */
@@ -360,7 +377,6 @@ export interface SheltersOnQueryArguments {
   start?: number | null;
   lng: number;
   lat: number;
-  distance: number;
 }
 
 export interface ShelterOnQueryArguments {
@@ -371,29 +387,29 @@ export interface ShelterOnQueryArguments {
 export interface ListResult {
   __typename?: 'ListResult';
   items: Array<Item>;
-  pagination: Pagination;
+  pagination: Pagination | null;
 }
 
 export type Item = Crag | Place | Event | Sector | Route | Competition | News | Shelter | Hike;
 
 export interface Crag {
   __typename?: 'Crag';
-  _stats: CragStats;
+  _stats: CragStats | null;
   slug: string;
   title: string;
-  descr: string;
-  accessInfo: string;
+  descr: string | null;
+  accessInfo: string | null;
   coords: Coords;
-  altitude: number;
-  exposition: string;
-  boltingType: string;
-  rockType: string;
+  altitude: number | null;
+  exposition: string | null;
+  boltingType: string | null;
+  rockType: string | null;
   qualityRank: QualityRank;
-  period: string;
-  notes: string;
+  period: string | null;
+  notes: string | null;
   resourceUrl: string;
-  sectors: Array<Sector>;
-  searchScore: number;
+  sectors: Array<Sector | null> | null;
+  searchScore: number | null;
 }
 
 export interface CragStats {
@@ -404,21 +420,21 @@ export interface CragStats {
 
 export interface Coords {
   __typename?: 'Coords';
-  lat: number;
-  lng: number;
+  lat: number | null;
+  lng: number | null;
 }
 
 export interface QualityRank {
   __typename?: 'QualityRank';
-  score: number;
-  crowdedness: number;
-  weather: number;
-  weatherExtended: Array<WeatherExtended>;
-  position: number;
-  difficulty: number;
-  average: number;
-  max: number;
-  votes: number;
+  score: number | null;
+  crowdedness: number | null;
+  weather: number | null;
+  weatherExtended: Array<WeatherExtended> | null;
+  position: number | null;
+  difficulty: number | null;
+  average: number | null;
+  max: number | null;
+  votes: number | null;
 }
 
 export interface WeatherExtended {
@@ -431,152 +447,152 @@ export interface WeatherExtended {
 export interface Sector {
   __typename?: 'Sector';
   crag: string;
-  parent: SectorCrag;
+  parent: SectorCrag | null;
   slug: string;
   title: string;
-  coords: Coords;
-  notes: string;
-  qualityRank: QualityRank;
-  minGrade: string;
-  maxGrade: string;
+  coords: Coords | null;
+  notes: string | null;
+  qualityRank: QualityRank | null;
+  minGrade: string | null;
+  maxGrade: string | null;
   resourceUrl: string;
-  routes: Array<Route>;
-  searchScore: number;
+  routes: Array<Route | null> | null;
+  searchScore: number | null;
 }
 
 export interface SectorCrag {
   __typename?: 'SectorCrag';
-  _stats: CragStats;
+  _stats: CragStats | null;
   slug: string;
   title: string;
-  descr: string;
-  accessInfo: string;
-  Coords: Coords;
-  altitude: number;
-  exposition: string;
-  boltingType: string;
-  rockType: string;
+  descr: string | null;
+  accessInfo: string | null;
+  coords: Coords;
+  altitude: number | null;
+  exposition: string | null;
+  boltingType: string | null;
+  rockType: string | null;
   qualityRank: QualityRank;
-  period: string;
-  notes: string;
+  period: string | null;
+  notes: string | null;
   resourceUrl: string;
 }
 
 export interface Route {
   __typename?: 'Route';
   sector: string;
-  parent: RouteSector;
+  parent: RouteSector | null;
   slug: string;
-  seqNum: number;
+  seqNum: number | null;
   title: string;
-  coords: Coords;
-  grade: string;
-  pitonsNum: number;
-  length: number;
-  routeType: string;
-  gearType: string;
-  notes: string;
-  qualityRank: QualityRank;
+  coords: Coords | null;
+  grade: string | null;
+  pitonsNum: number | null;
+  length: number | null;
+  routeType: string | null;
+  gearType: string | null;
+  notes: string | null;
+  qualityRank: QualityRank | null;
   resourceUrl: string;
-  searchScore: number;
+  searchScore: number | null;
 }
 
 export interface RouteSector {
   __typename?: 'RouteSector';
   crag: string;
-  parent: SectorCrag;
+  parent: SectorCrag | null;
   slug: string;
   title: string;
   coords: Coords;
-  notes: string;
+  notes: string | null;
   qualityRank: QualityRank;
-  minGrade: string;
-  maxGrade: string;
+  minGrade: string | null;
+  maxGrade: string | null;
   resourceUrl: string;
 }
 
 export interface Place {
   __typename?: 'Place';
   _id: string;
-  sociald: string;
+  socialId: string;
   slug: string;
   title: string;
-  descr: string;
+  descr: string | null;
   coords: Coords;
-  openings: Openings;
-  notes: string;
-  engagement: number;
-  checkins: string;
+  openings: Openings | null;
+  notes: string | null;
+  engagement: number | null;
+  checkins: string | null;
   resourceUrl: string;
-  searchScore: number;
-  picture: string;
+  searchScore: number | null;
+  picture: string | null;
 }
 
 export interface Openings {
   __typename?: 'Openings';
-  l: number;
+  l: number | null;
 }
 
 export interface Event {
   __typename?: 'Event';
-  sociald: string;
+  socialId: string;
   slug: string;
   title: string;
-  descr: string;
+  descr: string | null;
   coords: Coords;
-  place: string;
-  startTime: number;
-  endTime: number;
+  place: string | null;
+  startTime: number | null;
+  endTime: number | null;
   resourceUrl: string;
-  searchScore: number;
+  searchScore: number | null;
 }
 
 export interface Competition {
   __typename?: 'Competition';
   coords: Coords;
-  info: Competitionnfo;
-  people: Array<CompetitionPerson>;
-  poster: string;
+  info: CompetitionInfo | null;
+  people: Array<CompetitionPerson | null> | null;
+  poster: string | null;
   resourceUrl: string;
-  schedule: Array<string>;
+  schedule: Array<string | null> | null;
   slug: string;
-  startTime: number;
-  endTime: number;
+  startTime: number | null;
+  endTime: number | null;
   title: string;
-  searchScore: number;
+  searchScore: number | null;
 }
 
-export interface Competitionnfo {
-  __typename?: 'Competitionnfo';
-  categories: Array<string>;
-  details: CompetitionDetails;
-  place: string;
-  specialties: Array<string>;
-  types: Array<string>;
+export interface CompetitionInfo {
+  __typename?: 'CompetitionInfo';
+  categories: Array<string | null> | null;
+  details: CompetitionDetails | null;
+  place: string | null;
+  specialties: Array<string | null> | null;
+  types: Array<string | null> | null;
 }
 
 export interface CompetitionDetails {
   __typename?: 'CompetitionDetails';
-  eventWebsite: string;
-  infoSheet: string;
-  text: string;
+  eventWebsite: string | null;
+  infoSheet: string | null;
+  text: string | null;
 }
 
 export interface CompetitionPerson {
   __typename?: 'CompetitionPerson';
-  what: string;
-  who: string;
+  what: string | null;
+  who: string | null;
 }
 
 export interface News {
   __typename?: 'News';
-  media: NewsMedia;
+  media: NewsMedia | null;
   resourceUrl: string;
   slug: string;
-  summary: string;
+  summary: string | null;
   title: string;
   lang: string;
-  searchScore: number;
+  searchScore: number | null;
   creationTime: number;
 }
 
@@ -589,23 +605,23 @@ export interface Shelter {
   __typename?: 'Shelter';
   slug: string;
   title: string;
-  descr: string;
+  descr: string | null;
   coords: Coords;
-  accessInfo: string;
-  altitude: string;
-  opening: string;
-  accomodationsFood: string;
-  accomodationsRooms: string;
-  beds: number;
-  owners: string;
-  keepers: string;
-  email: string;
-  phone: string;
-  mobile: string;
-  web: string;
-  facebook: string;
-  media: Array<string>;
-  searchScore: number;
+  accessInfo: string | null;
+  altitude: string | null;
+  opening: string | null;
+  accomodationsFood: string | null;
+  accomodationsRooms: string | null;
+  beds: number | null;
+  owners: string | null;
+  keepers: string | null;
+  email: string | null;
+  phone: string | null;
+  mobile: string | null;
+  web: string | null;
+  facebook: string | null;
+  media: Array<string | null> | null;
+  searchScore: number | null;
   resourceUrl: string;
 }
 
@@ -613,36 +629,36 @@ export interface Hike {
   __typename?: 'Hike';
   slug: string;
   title: string;
-  trailLabel: string;
-  difficulty: string;
-  exposition: string;
-  elevation: HikeElevation;
-  grade: HikeGrade;
-  length: number;
-  startingPoint: string;
-  accessInfo: string;
-  notes: string;
-  descr: string;
+  trailLabel: string | null;
+  difficulty: string | null;
+  exposition: string | null;
+  elevation: HikeElevation | null;
+  grade: HikeGrade | null;
+  length: number | null;
+  startingPoint: string | null;
+  accessInfo: string | null;
+  notes: string | null;
+  descr: string | null;
   coords: Coords;
-  tracks: Array<string>;
-  media: Array<string>;
-  searchScore: number;
+  tracks: Array<string | null> | null;
+  media: Array<string | null> | null;
+  searchScore: number | null;
   resourceUrl: string;
 }
 
 export interface HikeElevation {
   __typename?: 'HikeElevation';
-  asc: number;
-  desc: number;
-  low: number;
-  high: number;
-  ascDiffTot: number;
+  asc: number | null;
+  desc: number | null;
+  low: number | null;
+  high: number | null;
+  ascDiffTot: number | null;
 }
 
 export interface HikeGrade {
   __typename?: 'HikeGrade';
-  avg: number;
-  max: number;
+  avg: number | null;
+  max: number | null;
 }
 
 export interface Pagination {
@@ -656,8 +672,8 @@ export interface Pagination {
 /**
  * Some debug information about the server
  */
-export interface Debugnfo {
-  __typename?: 'Debugnfo';
+export interface DebugInfo {
+  __typename?: 'DebugInfo';
   startedAt: number;
   version: string;
   name: string;
@@ -668,88 +684,88 @@ export interface ForecastResult {
   __typename?: 'ForecastResult';
   now: CurrentWeather;
   forecast: Array<Forecast>;
-  message: string;
+  message: string | null;
 }
 
 export interface CurrentWeather {
   __typename?: 'CurrentWeather';
-  time: number;
-  summary: string;
-  icon: string;
-  nearestStormDistance: number;
-  nearestStormBearing: number;
-  precipntensity: number;
-  precipProbability: number;
-  temperature: number;
-  apparentTemperature: number;
-  dewPoint: number;
-  humidity: number;
-  pressure: number;
-  windSpeed: number;
-  windGust: number;
-  windBearing: number;
-  cloudCover: number;
-  uvIndex: number;
-  visibility: number;
-  ozone: number;
+  time: number | null;
+  summary: string | null;
+  icon: string | null;
+  nearestStormDistance: number | null;
+  nearestStormBearing: number | null;
+  precipIntensity: number | null;
+  precipProbability: number | null;
+  temperature: number | null;
+  apparentTemperature: number | null;
+  dewPoint: number | null;
+  humidity: number | null;
+  pressure: number | null;
+  windSpeed: number | null;
+  windGust: number | null;
+  windBearing: number | null;
+  cloudCover: number | null;
+  uvIndex: number | null;
+  visibility: number | null;
+  ozone: number | null;
 }
 
 export interface Forecast {
   __typename?: 'Forecast';
-  time: number;
-  summary: string;
-  icon: string;
-  sunriseTime: number;
-  sunsetTime: number;
-  moonPhase: number;
-  precipntensity: number;
-  precipntensityMax: number;
-  precipntensityMaxTime: number;
-  precipProbability: number;
-  precipType: string;
-  temperatureHigh: number;
-  temperatureHighTime: number;
-  temperatureLow: number;
-  temperatureLowTime: number;
-  apparentTemperatureHigh: number;
-  apparentTemperatureHighTime: number;
-  apparentTemperatureLow: number;
-  apparentTemperatureLowTime: number;
-  dewPoint: number;
-  humidity: number;
-  pressure: number;
-  windSpeed: number;
-  windGust: number;
-  windGustTime: number;
-  windBearing: number;
-  cloudCover: number;
-  uvIndex: number;
-  uvIndexTime: number;
-  visibility: number;
-  ozone: number;
-  temperatureMin: number;
-  temperatureMinTime: number;
-  temperatureMax: number;
-  temperatureMaxTime: number;
-  apparentTemperatureMin: number;
-  apparentTemperatureMinTime: number;
-  apparentTemperatureMax: number;
-  apparentTemperatureMaxTime: number;
+  time: number | null;
+  summary: string | null;
+  icon: string | null;
+  sunriseTime: number | null;
+  sunsetTime: number | null;
+  moonPhase: number | null;
+  precipIntensity: number | null;
+  precipIntensityMax: number | null;
+  precipIntensityMaxTime: number | null;
+  precipProbability: number | null;
+  precipType: string | null;
+  temperatureHigh: number | null;
+  temperatureHighTime: number | null;
+  temperatureLow: number | null;
+  temperatureLowTime: number | null;
+  apparentTemperatureHigh: number | null;
+  apparentTemperatureHighTime: number | null;
+  apparentTemperatureLow: number | null;
+  apparentTemperatureLowTime: number | null;
+  dewPoint: number | null;
+  humidity: number | null;
+  pressure: number | null;
+  windSpeed: number | null;
+  windGust: number | null;
+  windGustTime: number | null;
+  windBearing: number | null;
+  cloudCover: number | null;
+  uvIndex: number | null;
+  uvIndexTime: number | null;
+  visibility: number | null;
+  ozone: number | null;
+  temperatureMin: number | null;
+  temperatureMinTime: number | null;
+  temperatureMax: number | null;
+  temperatureMaxTime: number | null;
+  apparentTemperatureMin: number | null;
+  apparentTemperatureMinTime: number | null;
+  apparentTemperatureMax: number | null;
+  apparentTemperatureMaxTime: number | null;
 }
 
 export interface SearchResult {
   __typename?: 'SearchResult';
-  locations: Array<City>;
+  locations: Array<City | null> | null;
   crags: Array<Crag>;
   sectors: Array<Sector>;
   routes: Array<Route>;
   events: Array<Event>;
   competitions: Array<Competition>;
-  news: Array<News>;
+  news: Array<News | null> | null;
   places: Array<Place>;
   shelters: Array<Shelter>;
   hikes: Array<Hike>;
-  pagination: Pagination;
+  pagination: Pagination | null;
 }
 
 export interface City {
@@ -768,10 +784,10 @@ export interface UserGeo {
   isoCode: string;
   timeZone: string;
   city: string;
-  sociald: string;
-  socialConnection: string;
-  firstName: string;
-  lastName: string;
+  socialId: string | null;
+  socialConnection: string | null;
+  firstName: string | null;
+  lastName: string | null;
   coords: Coords;
 }
 

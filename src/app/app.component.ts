@@ -1,10 +1,10 @@
+import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { debounce, isEmpty, isEqual } from 'lodash';
 import moment from 'moment-timezone';
 import { environment } from 'src/environments/environment';
-
 import { GeoLocation } from './classes/geolocation.class';
 import { SearchOptions } from './components/header/header.component';
 import { NearbyResult, UserInfoResult } from './graphql/queries';
@@ -29,9 +29,11 @@ export class AppComponent implements OnInit {
 
   hasBrowserGeolocation = navigator && navigator.geolocation;
   hasActivatedBrowserGeolocation = false;
+  hasSharedPositionSet = false;
   currentLocation: GeoLocation = new GeoLocation(0, 0);
   currentOrientation: number | undefined;
   userLocation: GeoLocation;
+  urlLocation: GeoLocation;
   nearbyPois: SearchResult;
   nearbyOsmPois: object;
   // latestPois: SearchResult;
@@ -63,6 +65,7 @@ export class AppComponent implements OnInit {
     private geoService: GeoService,
     private router: Router,
     private route: ActivatedRoute,
+    private location: Location,
     private appStore: AppStoreService,
   ) {
     this.router.events.subscribe((event: RouterEvent) => {
@@ -86,17 +89,31 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.onMapReadyOrUpdate = debounce(this.onMapReadyOrUpdate, this.mapInteractionDebounceTime);
+    this.onMapReady = debounce(this.onMapReady, this.mapInteractionDebounceTime);
+    this.onMapUpdate = debounce(this.onMapUpdate, this.mapInteractionDebounceTime);
   }
 
   ngOnInit(): void {
-    this.bootstrap();
+    this.handleShareableMapPosition();
+    this.gatherUserInfoAndRegisterDeviceLocationHandlers();
   }
 
   /**
    *
    */
-  onMapReadyOrUpdate($event: MapUpdateEvent): void {
+  onMapReady($event: MapUpdateEvent): void {
+    this.onMapDataChanged($event);
+  }
+
+  /**
+   *
+   */
+  onMapUpdate($event: MapUpdateEvent): void {
+    this.onMapDataChanged($event);
+    this.updateShareableURL(new GeoLocation($event.coordinates[1], $event.coordinates[0]));
+  }
+
+  private onMapDataChanged($event: MapUpdateEvent): void {
     this.mapData = $event;
     this.getNearby();
   }
@@ -180,10 +197,9 @@ export class AppComponent implements OnInit {
    */
   onEnableGeolocation(): void {
     if (!this.hasActivatedBrowserGeolocation) {
-      this.registerMovementHandlers();
+      this.registerDeviceMovementAndBrowserLocationHandlers();
     } else {
       this.currentLocation = this.userLocation;
-
       this.updateUserLocationInStore();
       this.updateCurrentLocationInStore();
     }
@@ -199,8 +215,21 @@ export class AppComponent implements OnInit {
   /**
    *
    */
-  private bootstrap(): void {
-    // First, let's retrieve some information about the user
+  private handleShareableMapPosition() {
+    const urlParts = window.location.href.split('/');
+    const latLng = urlParts[urlParts.length - 1].split(',');
+    const lat = +latLng[0];
+    const lng = +latLng[1];
+
+    if (!isNaN(lat) && !isNaN(lng)) {
+      this.urlLocation = new GeoLocation(lat, lng);
+    }
+  }
+
+  /**
+   *
+   */
+  private gatherUserInfoAndRegisterDeviceLocationHandlers() {
     const sub$ = this.api.getUserInfo().subscribe((res: UserInfoResult) => {
       if (res.errors) {
         throw new Error('Something wrong happened loading the user info');
@@ -210,7 +239,7 @@ export class AppComponent implements OnInit {
         this.userData = res.data.userInfo;
 
         this.initMomentI18n();
-        this.registerMovementHandlers();
+        this.registerDeviceMovementAndBrowserLocationHandlers();
 
         sub$.unsubscribe();
       }
@@ -329,6 +358,7 @@ export class AppComponent implements OnInit {
    */
   private updateCurrentLocationInStore(): void {
     this.appStore.setProperty('currentLocation', this.currentLocation);
+    this.updateShareableURL(this.currentLocation);
   }
 
   /**
@@ -349,7 +379,7 @@ export class AppComponent implements OnInit {
   /**
    *
    */
-  private registerMovementHandlers(): void {
+  private registerDeviceMovementAndBrowserLocationHandlers(): void {
     /*
     We set the user location using the current one so the map is updated
     (note that it will trigger the "onMapUpdate" event)
@@ -359,6 +389,12 @@ export class AppComponent implements OnInit {
     coming from the back-end.
     */
     const doUpdateLocations = (location: GeoLocation, storeCurrentLocation: boolean) => {
+      // Use the position coming from the URL if not set yet and available.
+      if (!this.hasSharedPositionSet && this.urlLocation) {
+        location = this.urlLocation;
+        this.hasSharedPositionSet = true;
+      }
+
       if (storeCurrentLocation) {
         this.currentLocation = location;
         this.updateCurrentLocationInStore();
@@ -379,6 +415,7 @@ export class AppComponent implements OnInit {
         if (!this.userLocation) {
           updateCurrentLocation = true;
         } else {
+          // Update the current location (following the user) only if it's in the visible portion of the map.
           if (this.mapData) {
             const deltaLocationDistance = this.geoService.getDistanceFromCoords(this.userLocation, newLocation);
             updateCurrentLocation = deltaLocationDistance > this.mapData.radius;
@@ -409,5 +446,16 @@ export class AppComponent implements OnInit {
         // TODO: Show a message?
       },
     );
+  }
+
+  /**
+   *
+   */
+  private updateShareableURL(geo: GeoLocation): void {
+    // By design the shareable URL is supported only on the root level of the app,
+    // data.type defines the section we are in.
+    if (!this.route.root.firstChild?.snapshot.data.type) {
+      this.location.go(`/${geo.lat.toFixed(4)},${geo.lng.toFixed(4)}`);
+    }
   }
 }

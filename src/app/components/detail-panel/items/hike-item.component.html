@@ -48,12 +48,12 @@
         <mat-icon aria-hidden="false">fitness_center</mat-icon>&nbsp;{{ 'DIFFICULTY' | translate }}:&nbsp;
         <strong>{{ data.difficulty }}</strong>
       </mat-chip>
-      <mat-chip *ngIf="data.elevation.low" class="chip" color="primary" selected>
+      <mat-chip *ngIf="data.elevation?.low" class="chip" color="primary" selected>
         <mat-icon aria-hidden="false">arrow_downward</mat-icon>&nbsp;{{ 'MIN_ELEVATION' | translate }}:&nbsp;<strong
           >{{ data.elevation.low }} mt.</strong
         >
       </mat-chip>
-      <mat-chip *ngIf="data.elevation.high" class="chip" color="primary" selected>
+      <mat-chip *ngIf="data.elevation?.high" class="chip" color="primary" selected>
         <mat-icon aria-hidden="false">arrow_upward</mat-icon>&nbsp;{{ 'MAX_ELEVATION' | translate }}:&nbsp;<strong
           >{{ data.elevation.high }} mt.</strong
         >
@@ -69,7 +69,7 @@
     <div
       class="sub-card"
       [class]="{
-        top: !data.difficulty && !data.elevation.low && !data.elevation.high && !data.length
+        top: !data.difficulty && !data.elevation?.low && !data.elevation?.high && !data.length
       }"
     >
       <!-- The dynamic map -->
