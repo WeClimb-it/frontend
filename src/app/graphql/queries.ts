@@ -97,7 +97,7 @@ export default class {
               lng
             }
             slug
-            name
+            title
             descr
           }
           competitions {
@@ -193,7 +193,7 @@ export default class {
           }
           shelters {
             slug
-            name
+            title
             descr
             coords {
               lat

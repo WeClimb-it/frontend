@@ -55,20 +55,6 @@
   >
   </mgl-layer>
 
-  <!-- The markers that do not fit any cluster -->
-  <mgl-layer
-    id="unclustered-pois"
-    type="symbol"
-    source="pois"
-    [filter]="['!has', 'point_count']"
-    [layout]="{
-      'icon-image': '{marker-symbol}',
-      'icon-offset': [0, 20]
-    }"
-    (layerClick)="onMarkerClick($event)"
-  >
-  </mgl-layer>
-
   <!-- The landing point source -->
   <mgl-geojson-source id="center-location" [data]="centerLocationGeoJson"></mgl-geojson-source>
   <!-- The current landing point -->
@@ -97,6 +83,20 @@
   >
   </mgl-layer>
 
+  <!-- The markers that do not fit any cluster -->
+  <mgl-layer
+    id="unclustered-pois"
+    type="symbol"
+    source="pois"
+    [filter]="['!has', 'point_count']"
+    [layout]="{
+      'icon-image': '{marker-symbol}',
+      'icon-offset': [0, -22]
+    }"
+    (layerClick)="onMarkerClick($event)"
+  >
+  </mgl-layer>
+
   <mgl-marker
     #userMarker
     *ngIf="userCoords"
@@ -110,6 +110,7 @@
     </div>
   </mgl-marker>
 
+  <!-- The selection popup -->
   <mgl-popup
     *ngIf="selectedFeatures && selectedFeatures[0]"
     [className]="

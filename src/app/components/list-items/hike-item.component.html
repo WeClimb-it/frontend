@@ -29,7 +29,7 @@
           >{{ data.elevation.high }} mt.</strong
         ></mat-chip
       >
-      <mat-chip *ngIf="data.tracks.length > 0" color="primary" selected
+      <mat-chip *ngIf="data.tracks?.length > 0" color="primary" selected
         ><mat-icon aria-hidden="false">directions</mat-icon>&nbsp; {{ 'HAS_GPS_TRACK' | translate }}</mat-chip
       >
     </mat-chip-list>

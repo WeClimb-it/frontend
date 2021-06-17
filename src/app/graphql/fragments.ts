@@ -734,7 +734,7 @@ export const NewsMedia = `fragment NewsMedia on NewsMedia {
 
 export const Shelter = `fragment Shelter on Shelter {
   slug
-  name
+  title
   descr
   coords {
     lat
@@ -1381,7 +1381,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
   }
   shelters {
     slug
-    name
+    title
     descr
     coords {
       lat

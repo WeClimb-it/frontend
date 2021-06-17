@@ -588,7 +588,7 @@ export interface NewsMedia {
 export interface Shelter {
   __typename?: 'Shelter';
   slug: string;
-  name: string;
+  title: string;
   descr: string;
   coords: Coords;
   accessInfo: string;

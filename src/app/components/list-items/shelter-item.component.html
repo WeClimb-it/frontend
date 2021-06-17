@@ -10,7 +10,7 @@
     </mat-chip-list>
   </div>
   <div class="text">
-    <h4 (click)="goToDetailUrl(data.slug)">{{ data.name }}</h4>
+    <h4 (click)="goToDetailUrl(data.slug)">{{ data.title }}</h4>
     <div class="description">{{ data.descr | capitalizeFirst }}</div>
     <div class="media">
       <div class="image" *ngFor="let image of data.media.slice(0, 3)" (click)="openMediaDialog(data)">
