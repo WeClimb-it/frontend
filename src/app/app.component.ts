@@ -355,7 +355,6 @@ export class AppComponent implements OnInit {
     this.googlePlacesQueryController = controller;
 
     const sub$ = getGooglePlaces.subscribe((res: { loading: boolean; data: Record<string, ListResult> }) => {
-      console.log(res);
       if (!res.loading) {
         if (!isEmpty(res.data) && !isEmpty(res.data.googlePlaces)) {
           const { googlePlaces } = res.data;
