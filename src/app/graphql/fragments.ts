@@ -11,6 +11,7 @@ export const ListResult = `fragment ListResult on ListResult {
 `;
 
 export const Crag = `fragment Crag on Crag {
+  type
   _stats {
     routesCount
     sectorsCount
@@ -248,6 +249,7 @@ export const WeatherExtended = `fragment WeatherExtended on WeatherExtended {
 `;
 
 export const Sector = `fragment Sector on Sector {
+  type
   crag
   parent {
     _stats {
@@ -450,6 +452,7 @@ export const SectorCrag = `fragment SectorCrag on SectorCrag {
 `;
 
 export const Route = `fragment Route on Route {
+  type
   sector
   parent {
     crag
@@ -615,6 +618,7 @@ export const RouteSector = `fragment RouteSector on RouteSector {
 `;
 
 export const Place = `fragment Place on Place {
+  type
   _id
   socialId
   slug
@@ -640,6 +644,7 @@ export const Openings = `fragment Openings on Openings {
 `;
 
 export const Event = `fragment Event on Event {
+  type
   socialId
   slug
   title
@@ -657,6 +662,7 @@ export const Event = `fragment Event on Event {
 `;
 
 export const Competition = `fragment Competition on Competition {
+  type
   coords {
     lat
     lng
@@ -714,6 +720,7 @@ export const CompetitionPerson = `fragment CompetitionPerson on CompetitionPerso
 `;
 
 export const News = `fragment News on News {
+  type
   media {
     thumb
   }
@@ -733,6 +740,7 @@ export const NewsMedia = `fragment NewsMedia on NewsMedia {
 `;
 
 export const Shelter = `fragment Shelter on Shelter {
+  type
   slug
   title
   descr
@@ -760,6 +768,7 @@ export const Shelter = `fragment Shelter on Shelter {
 `;
 
 export const Hike = `fragment Hike on Hike {
+  type
   slug
   title
   trailLabel
@@ -848,6 +857,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
     }
   }
   crags {
+    type
     _stats {
       routesCount
       sectorsCount
@@ -869,10 +879,10 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       crowdedness
       weather
       weatherExtended {
-    coeff
-    time
-    value
-  }
+        coeff
+        time
+        value
+      }
       position
       difficulty
       average
@@ -883,71 +893,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
     notes
     resourceUrl
     sectors {
-    crag
-    parent {
-      _stats {
-        routesCount
-        sectorsCount
-      }
-      slug
-      title
-      descr
-      accessInfo
-      coords {
-        lat
-        lng
-      }
-      altitude
-      exposition
-      boltingType
-      rockType
-      qualityRank {
-        score
-        crowdedness
-        weather
-        weatherExtended {
-    coeff
-    time
-    value
-  }
-        position
-        difficulty
-        average
-        max
-        votes
-      }
-      period
-      notes
-      resourceUrl
-    }
-    slug
-    title
-    coords {
-      lat
-      lng
-    }
-    notes
-    qualityRank {
-      score
-      crowdedness
-      weather
-      weatherExtended {
-    coeff
-    time
-    value
-  }
-      position
-      difficulty
-      average
-      max
-      votes
-    }
-    minGrade
-    maxGrade
-    resourceUrl
-    routes {
-    sector
-    parent {
+      type
       crag
       parent {
         _stats {
@@ -971,10 +917,10 @@ export const SearchResult = `fragment SearchResult on SearchResult {
           crowdedness
           weather
           weatherExtended {
-    coeff
-    time
-    value
-  }
+            coeff
+            time
+            value
+          }
           position
           difficulty
           average
@@ -997,10 +943,10 @@ export const SearchResult = `fragment SearchResult on SearchResult {
         crowdedness
         weather
         weatherExtended {
-    coeff
-    time
-    value
-  }
+          coeff
+          time
+          value
+        }
         position
         difficulty
         average
@@ -1010,43 +956,110 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       minGrade
       maxGrade
       resourceUrl
+      routes {
+        type
+        sector
+        parent {
+          crag
+          parent {
+            _stats {
+              routesCount
+              sectorsCount
+            }
+            slug
+            title
+            descr
+            accessInfo
+            coords {
+              lat
+              lng
+            }
+            altitude
+            exposition
+            boltingType
+            rockType
+            qualityRank {
+              score
+              crowdedness
+              weather
+              weatherExtended {
+                coeff
+                time
+                value
+              }
+              position
+              difficulty
+              average
+              max
+              votes
+            }
+            period
+            notes
+            resourceUrl
+          }
+          slug
+          title
+          coords {
+            lat
+            lng
+          }
+          notes
+          qualityRank {
+            score
+            crowdedness
+            weather
+            weatherExtended {
+              coeff
+              time
+              value
+            }
+            position
+            difficulty
+            average
+            max
+            votes
+          }
+          minGrade
+          maxGrade
+          resourceUrl
+        }
+        slug
+        seqNum
+        title
+        coords {
+          lat
+          lng
+        }
+        grade
+        pitonsNum
+        length
+        routeType
+        gearType
+        notes
+        qualityRank {
+          score
+          crowdedness
+          weather
+          weatherExtended {
+            coeff
+            time
+            value
+          }
+          position
+          difficulty
+          average
+          max
+          votes
+        }
+        resourceUrl
+        searchScore
+      }
+      searchScore
     }
-    slug
-    seqNum
-    title
-    coords {
-      lat
-      lng
-    }
-    grade
-    pitonsNum
-    length
-    routeType
-    gearType
-    notes
-    qualityRank {
-      score
-      crowdedness
-      weather
-      weatherExtended {
-    coeff
-    time
-    value
-  }
-      position
-      difficulty
-      average
-      max
-      votes
-    }
-    resourceUrl
-    searchScore
-  }
-    searchScore
-  }
     searchScore
   }
   sectors {
+    type
     crag
     parent {
       _stats {
@@ -1070,10 +1083,10 @@ export const SearchResult = `fragment SearchResult on SearchResult {
         crowdedness
         weather
         weatherExtended {
-    coeff
-    time
-    value
-  }
+          coeff
+          time
+          value
+        }
         position
         difficulty
         average
@@ -1096,10 +1109,10 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       crowdedness
       weather
       weatherExtended {
-    coeff
-    time
-    value
-  }
+        coeff
+        time
+        value
+      }
       position
       difficulty
       average
@@ -1110,105 +1123,107 @@ export const SearchResult = `fragment SearchResult on SearchResult {
     maxGrade
     resourceUrl
     routes {
-    sector
-    parent {
-      crag
+      type
+      sector
       parent {
-        _stats {
-          routesCount
-          sectorsCount
+        crag
+        parent {
+          _stats {
+            routesCount
+            sectorsCount
+          }
+          slug
+          title
+          descr
+          accessInfo
+          coords {
+            lat
+            lng
+          }
+          altitude
+          exposition
+          boltingType
+          rockType
+          qualityRank {
+            score
+            crowdedness
+            weather
+            weatherExtended {
+              coeff
+              time
+              value
+            }
+            position
+            difficulty
+            average
+            max
+            votes
+          }
+          period
+          notes
+          resourceUrl
         }
         slug
         title
-        descr
-        accessInfo
         coords {
           lat
           lng
         }
-        altitude
-        exposition
-        boltingType
-        rockType
+        notes
         qualityRank {
           score
           crowdedness
           weather
           weatherExtended {
-    coeff
-    time
-    value
-  }
+            coeff
+            time
+            value
+          }
           position
           difficulty
           average
           max
           votes
         }
-        period
-        notes
+        minGrade
+        maxGrade
         resourceUrl
       }
       slug
+      seqNum
       title
       coords {
         lat
         lng
       }
+      grade
+      pitonsNum
+      length
+      routeType
+      gearType
       notes
       qualityRank {
         score
         crowdedness
         weather
         weatherExtended {
-    coeff
-    time
-    value
-  }
+          coeff
+          time
+          value
+        }
         position
         difficulty
         average
         max
         votes
       }
-      minGrade
-      maxGrade
       resourceUrl
+      searchScore
     }
-    slug
-    seqNum
-    title
-    coords {
-      lat
-      lng
-    }
-    grade
-    pitonsNum
-    length
-    routeType
-    gearType
-    notes
-    qualityRank {
-      score
-      crowdedness
-      weather
-      weatherExtended {
-    coeff
-    time
-    value
-  }
-      position
-      difficulty
-      average
-      max
-      votes
-    }
-    resourceUrl
-    searchScore
-  }
     searchScore
   }
   routes {
+    type
     sector
     parent {
       crag
@@ -1234,10 +1249,10 @@ export const SearchResult = `fragment SearchResult on SearchResult {
           crowdedness
           weather
           weatherExtended {
-    coeff
-    time
-    value
-  }
+            coeff
+            time
+            value
+          }
           position
           difficulty
           average
@@ -1260,10 +1275,10 @@ export const SearchResult = `fragment SearchResult on SearchResult {
         crowdedness
         weather
         weatherExtended {
-    coeff
-    time
-    value
-  }
+          coeff
+          time
+          value
+        }
         position
         difficulty
         average
@@ -1292,10 +1307,10 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       crowdedness
       weather
       weatherExtended {
-    coeff
-    time
-    value
-  }
+        coeff
+        time
+        value
+      }
       position
       difficulty
       average
@@ -1306,6 +1321,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
     searchScore
   }
   events {
+    type
     socialId
     slug
     title
@@ -1321,6 +1337,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
     searchScore
   }
   competitions {
+    type
     coords {
       lat
       lng
@@ -1337,9 +1354,9 @@ export const SearchResult = `fragment SearchResult on SearchResult {
       types
     }
     people {
-    what
-    who
-  }
+      what
+      who
+    }
     poster
     resourceUrl
     schedule
@@ -1350,6 +1367,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
     searchScore
   }
   news {
+    type
     media {
       thumb
     }
@@ -1362,6 +1380,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
     creationTime
   }
   places {
+    type
     _id
     socialId
     slug
@@ -1380,6 +1399,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
     picture
   }
   shelters {
+    type
     slug
     title
     descr
@@ -1405,6 +1425,7 @@ export const SearchResult = `fragment SearchResult on SearchResult {
     resourceUrl
   }
   hikes {
+    type
     slug
     title
     trailLabel
