@@ -134,7 +134,10 @@
             'multi-items': false,
             'wiki-content':
               selectedFeatures[0].properties.source === SOURCES.OSM && selectedFeatures[0].properties.wikipedia,
-            'no-descr': !selectedFeatures[0].properties.descr || selectedFeatures[0].properties.descr === 'null'
+            'no-descr':
+              (!(selectedFeatures[0].properties.source === SOURCES.OSM && selectedFeatures[0].properties.wikipedia) &&
+                !selectedFeatures[0].properties.descr) ||
+              selectedFeatures[0].properties.descr === 'null'
           }"
         >
           <div class="title" title="{{ getMapItemTitle(selectedFeatures[0]) }}">
