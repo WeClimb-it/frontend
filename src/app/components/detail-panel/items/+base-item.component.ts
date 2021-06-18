@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'wci-base-card-item',
   template: '<div></div>',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BaseCardItemComponent implements OnChanges {
   @Input() data: Poi;

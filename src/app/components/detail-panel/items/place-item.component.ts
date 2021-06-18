@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, OnChanges, SimpleChanges } from '@angular/core';
+import { AfterViewChecked, ChangeDetectionStrategy, Component, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { Place } from 'src/app/interfaces/graphql';
 import { WciApiService } from 'src/app/services/wciApi.service';
@@ -12,6 +12,7 @@ const FB = window['FB'] || {};
   selector: 'wci-place-card-item',
   templateUrl: 'place-item.component.html',
   styleUrls: ['place-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PlaceCardItemComponent extends BaseCardItemComponent implements AfterViewChecked, OnChanges {
   data: Place;

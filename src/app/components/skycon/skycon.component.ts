@@ -1,12 +1,11 @@
 import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
-  OnInit,
+  ElementRef,
   Input,
   OnDestroy,
   ViewChild,
-  ElementRef,
-  AfterViewInit,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 
 // tslint:disable-next-line: no-string-literal
@@ -36,6 +35,7 @@ export class SkyconComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.skycons.pause();
     this.skycons.remove(this.id);
   }
 }

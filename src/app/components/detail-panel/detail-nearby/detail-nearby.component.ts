@@ -7,7 +7,7 @@ import { getPoiCategoryClass, getPoiCategoryTag, Poi } from 'src/app/utils/Poi';
   selector: 'wci-detail-nearby',
   templateUrl: './detail-nearby.component.html',
   styleUrls: ['./detail-nearby.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetailNearbyComponent {
   @Input() items: Poi[];

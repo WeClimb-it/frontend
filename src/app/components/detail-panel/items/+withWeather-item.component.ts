@@ -1,4 +1,4 @@
-import { Component, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { ForecastResult } from 'src/app/graphql/queries';
 import { CurrentWeather, Forecast } from 'src/app/interfaces/graphql';
@@ -9,6 +9,7 @@ import { BaseCardItemComponent } from './+base-item.component';
 @Component({
   selector: 'wci-with-weather-card-item',
   template: ` <div></div> `,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BaseItemWithWeatherComponent extends BaseCardItemComponent implements OnChanges {
   hasForecast = false;

@@ -1,4 +1,4 @@
-import { Component, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { Competition } from 'src/app/interfaces/graphql';
 import { WciApiService } from 'src/app/services/wciApi.service';
@@ -10,6 +10,7 @@ import { BaseCardItemComponent } from './+base-item.component';
   selector: 'wci-competition-card-item',
   templateUrl: 'competition-item.component.html',
   styleUrls: ['competition-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class CompetitionCardItemComponent extends BaseCardItemComponent implements OnChanges {
   data: Competition;
