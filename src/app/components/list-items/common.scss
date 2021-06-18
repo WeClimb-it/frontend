@@ -53,6 +53,7 @@
   .description {
     display: inline-block;
     margin-top: 10px;
+    margin-bottom: 10px;
     font-size: 16px;
 
     @include multilineTruncate(5);

@@ -19,8 +19,17 @@
   }
 }
 
+.main.has-side-content {
+  .header-container {
+    width: calc(100% - #{$sidebarWidth} - #{$contentSidebarWidth} - 20px);
+    left: $contentSidebarWidth;
+  }
+}
+
 .header-container {
   padding: 0 10px;
+  width: calc(100% - #{$sidebarWidth} - 20px);
+  position: absolute;
 }
 
 .header {
@@ -112,10 +121,20 @@
 }
 
 ::ng-deep wci-detail {
-  width: 360px !important;
+  width: $contentSidebarWidth !important;
 }
 
 @media only screen and (max-width: $mobileBreakpointWidth) {
+  .header-container {
+    width: calc(100% - 20px) !important;
+  }
+
+  .main.has-side-content {
+    .header-container {
+      display: none;
+    }
+  }
+
   .content {
     width: 100%;
 

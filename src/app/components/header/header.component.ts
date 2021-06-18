@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -61,7 +62,7 @@ export class HeaderComponent {
 
   suggestionsKeyboardSelectionIndex = -1;
 
-  constructor(private geoService: GeoService, private elRef: ElementRef) {}
+  constructor(private geoService: GeoService, private elRef: ElementRef, private cdr: ChangeDetectorRef) {}
 
   @HostListener('document:click', ['$event'])
   clickOutside(event) {
@@ -78,9 +79,11 @@ export class HeaderComponent {
    */
   onQueryChanged(query: string): void {
     this.queryChanged.emit(query);
-    this.geoService
-      .getPlaces(query, MIN_PLACES_QUERY_LEN, MAX_PLACES_RESULTS)
-      .then((res: PlaceSuggestion[]) => ((this.showSuggestions = true), (this.suggestedPlaces = res)));
+    this.geoService.getPlaces(query, MIN_PLACES_QUERY_LEN, MAX_PLACES_RESULTS).then((res: PlaceSuggestion[]) => {
+      this.showSuggestions = true;
+      this.suggestedPlaces = res;
+      this.cdr.markForCheck();
+    });
   }
 
   /**
@@ -90,8 +93,10 @@ export class HeaderComponent {
     if ((!query && !this.query) || this.query == null) {
       return;
     }
+
     this.closePanels();
     this.suggestedPlaces = [];
+
     this.search.emit({
       query: query || this.query,
       minDifficulty: this.minDifficultyCoeff,

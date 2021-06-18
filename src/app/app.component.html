@@ -1,4 +1,8 @@
-<div class="main" [ngClass]="{ 'has-content': showContent && !isFloatingContent }" fxLayout="row">
+<div
+  class="main"
+  [ngClass]="{ 'has-content': showContent && !isFloatingContent, 'has-side-content': showContent && isFloatingContent }"
+  fxLayout="row"
+>
   <div class="actions">
     <button *ngIf="showContent && isFloatingContent" color="primary" mat-mini-fab (click)="closeSection()">
       <mat-icon>close</mat-icon>
@@ -88,18 +92,19 @@
     </mat-menu>
   </div>
 
+  <!-- The header -->
+  <div class="header-container">
+    <wci-header
+      class="header"
+      (search)="onSearch($event)"
+      (queryChanged)="onSearchQueryChanged($event)"
+      (suggestionSelected)="onSuggestionSelected($event)"
+      (optionsUpdated)="onOptionsUpdated($event)"
+    ></wci-header>
+  </div>
+
   <!-- The map -->
   <div class="map">
-    <div class="header-container">
-      <wci-header
-        class="header"
-        (search)="onSearch($event)"
-        (queryChanged)="onSearchQueryChanged($event)"
-        (suggestionSelected)="onSuggestionSelected($event)"
-        (optionsUpdated)="onOptionsUpdated($event)"
-      ></wci-header>
-    </div>
-
     <wci-map
       *ngIf="currentLocation && userLocation"
       [zoom]="zoom"
