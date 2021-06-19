@@ -97,6 +97,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.registerAnalytics();
     this.handleShareableMapPosition();
     this.gatherUserInfoAndRegisterDeviceLocationHandlers();
   }
@@ -486,6 +487,24 @@ export class AppComponent implements OnInit {
         // TODO: Show a message?
       },
     );
+  }
+
+  /**
+   *
+   *
+   */
+  private registerAnalytics(): void {
+    if (environment.production) {
+      document.write(`
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', '${new Date()}');
+  gtag('config', '${environment.googleAnalyticsID}');
+</script>`);
+    }
   }
 
   /**

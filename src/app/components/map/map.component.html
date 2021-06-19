@@ -1,6 +1,6 @@
 <mgl-map
   #map
-  [style]="mapStyle"
+  [style]="currentMapStyle"
   [zoom]="[zoom]"
   [center]="centerCoords"
   [minZoom]="minZoom"
@@ -224,4 +224,12 @@
   <span class="text">
     {{ 'LOADING_MAP' | translate }}
   </span>
+</div>
+
+<!-- The style selectors -->
+<div class="style-selectors">
+  <ng-container [ngSwitch]="currentMapStyle">
+    <div *ngSwitchCase="mapTerrainStyle" (click)="onMapStyleChange(mapStyle)"><div class="vector image"></div></div>
+    <div *ngSwitchDefault (click)="onMapStyleChange(mapTerrainStyle)"><div class="satellite image"></div></div>
+  </ng-container>
 </div>

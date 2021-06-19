@@ -63,6 +63,7 @@ export class MapComponent implements OnChanges {
   @Input() googlePlacesPois: Entities;
 
   @Input() mapStyle = environment.mapbox.style;
+  @Input() mapTerrainStyle = environment.mapbox.styleTerrain;
   @Input() tracks: GeoTrack[];
 
   @Input() loadingWciData: boolean;
@@ -73,6 +74,8 @@ export class MapComponent implements OnChanges {
   @Output() update = new EventEmitter<MapUpdateEvent>();
 
   @ViewChild('userMarker') userMarker: MarkerComponent;
+
+  currentMapStyle = this.mapStyle;
 
   MARKER_TYPE = {
     CRAG: 'crag-pin',
@@ -247,6 +250,13 @@ export class MapComponent implements OnChanges {
         });
       }
     }
+  }
+
+  /**
+   *
+   */
+  onMapStyleChange(style: string): void {
+    this.currentMapStyle = style;
   }
 
   /**

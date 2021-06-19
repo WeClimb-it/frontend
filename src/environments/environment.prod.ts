@@ -16,4 +16,5 @@ export const environment = {
     token: 'pk.eyJ1Ijoid2VjbGltYml0IiwiYSI6ImNrOGtlZ2lvdzAwdW8zZ25vbjUxbHIycnAifQ.lwM-V6-SoRqiTWLWMEWDzw',
     style: 'mapbox://styles/weclimbit/ck76qiur612ur1imof17kauyo',
   },
+  googleAnalyticsID: 'UA-40003077-1',
 };

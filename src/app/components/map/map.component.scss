@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '../../../colors';
 @import '../../../common';
 @import '../../../mixins';
@@ -234,51 +235,69 @@ mgl-map {
   }
 }
 
-.map-loader {
-  position: relative;
-  display: inline-block;
-  bottom: 70px;
-  left: 50%;
-  transform: translateX(-50%);
+$mapStyleSelectorSize: 80px;
+$mapStyleSelectorPadding: 5px;
+
+.style-selectors {
+  position: absolute;
   z-index: $maxZIndex - 1;
+  bottom: 20px;
+  left: $mapStyleSelectorPadding;
+  height: $mapStyleSelectorSize;
 
-  height: 40px;
-  border-radius: 40px;
-
-  background: rgba(black, 0.95);
-
-  .spinner {
+  > div {
+    position: relative;
     display: inline-block;
-    padding-left: 5px;
-    margin-right: 5px;
-    vertical-align: middle;
-  }
+    margin-right: $mapStyleSelectorPadding;
+    width: $mapStyleSelectorSize;
+    height: $mapStyleSelectorSize;
+    padding: $mapStyleSelectorPadding;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
 
-  .text {
-    color: rgba(white, 0.8);
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 13px;
-    text-align: center;
-    line-height: 38px;
-    padding-right: 15px;
+    @include mat.elevation-transition();
+    @include mat.elevation(3, black, 0.4);
+
+    &:hover {
+      @include mat.elevation(2, black, 1);
+    }
+
+    div.image {
+      position: absolute;
+      top: $mapStyleSelectorPadding / 2;
+      left: $mapStyleSelectorPadding / 2;
+      width: $mapStyleSelectorSize + $mapStyleSelectorPadding;
+      height: $mapStyleSelectorSize + $mapStyleSelectorPadding;
+      background-size: contain;
+      border-radius: 3px;
+
+      &.satellite {
+        background-image: url(/assets/images/map-terrain.png);
+      }
+      &.vector {
+        background-image: url(/assets/images/map-vector.png);
+      }
+    }
   }
 }
 
 $userDotColor: #1da1f2;
 $userDotBorderColor: #fff;
+$userDotSize: 15px;
+$userDotSize2: $userDotSize + 4px;
 
 .user-location-dot {
   background-color: $userDotColor;
-  width: 15px;
-  height: 15px;
+  width: $userDotSize;
+  height: $userDotSize;
   border-radius: 50%;
 }
 .user-location-dot::before {
   background-color: $userDotColor;
   content: '';
-  width: 15px;
-  height: 15px;
+  width: $userDotSize;
+  height: $userDotSize;
   border-radius: 50%;
   position: absolute;
   -webkit-animation: user-location-dot-pulse 2s infinite;
@@ -290,11 +309,11 @@ $userDotBorderColor: #fff;
   border-radius: 50%;
   border: 2px solid $userDotBorderColor;
   content: '';
-  height: 19px;
-  left: -2px;
+  height: $userDotSize2;
+  width: $userDotSize2;
   position: absolute;
+  left: -2px;
   top: -2px;
-  width: 19px;
   box-sizing: border-box;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
 }
