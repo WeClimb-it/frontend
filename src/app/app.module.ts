@@ -7,14 +7,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { FacebookLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import {
-  PERFECT_SCROLLBAR_CONFIG,
   PerfectScrollbarConfigInterface,
   PerfectScrollbarModule,
+  PERFECT_SCROLLBAR_CONFIG,
 } from 'ngx-perfect-scrollbar';
 import { environment } from 'src/environments/environment';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -22,6 +22,7 @@ import { MapComponent } from './components/map/map.component';
 import { MediaPlayerComponent } from './components/media-player/media-player.component';
 import { SharedModule } from './components/shared.module';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { UserLoginComponent } from './components/userAuth/login/login.component';
 import { MaterialModule } from './material.module';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { PipesModule } from './pipes/pipes.module';
@@ -38,6 +39,7 @@ const appComponents = [
   SidebarComponent,
   NotFoundComponent,
   MediaPlayerComponent,
+  UserLoginComponent,
 ];
 
 export function createTranslateLoader(http: HttpClient) {
@@ -81,6 +83,7 @@ export function appInitializerFactory(translateService: TranslateService, inject
     PerfectScrollbarModule,
     PipesModule,
     SharedModule,
+    SocialLoginModule,
   ],
   providers: [
     {
@@ -92,6 +95,27 @@ export function appInitializerFactory(translateService: TranslateService, inject
       useFactory: appInitializerFactory,
       deps: [TranslateService, Injector],
       multi: true,
+    },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: true,
+        providers: [
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider(environment.facebookAppId, {
+              scope: environment.facebookScopes,
+              return_scopes: false,
+              enable_profile_selector: false,
+              version: 'v4.0',
+              locale: 'en_US',
+              fields: 'name,email,picture,first_name,last_name',
+              cookie: true,
+              status: true,
+            }),
+          },
+        ],
+      } as SocialAuthServiceConfig,
     },
   ],
   bootstrap: [AppComponent],

@@ -1,6 +1,9 @@
 <div
   class="main"
-  [ngClass]="{ 'has-content': showContent && !isFloatingContent, 'has-side-content': showContent && isFloatingContent }"
+  [ngClass]="{
+    'has-content': showContent && !isFloatingContent,
+    'has-side-content': showContent && isFloatingContent
+  }"
   fxLayout="row"
 >
   <div class="actions">
@@ -14,14 +17,13 @@
       <mat-icon>language</mat-icon>
     </button>
 
-    <button
-      *ngIf="userLocation"
-      class="position-selector"
-      color="primary"
-      mat-mini-fab
-      [matMenuTriggerFor]="positionMenu"
-    >
-      <mat-icon>place</mat-icon>
+    <button class="user-preferences" color="primary" mat-mini-fab [matMenuTriggerFor]="userPreferencesMenu">
+      <div
+        *ngIf="userProfilePictureUrl"
+        class="picture"
+        [style]="'background-image: url(' + userProfilePictureUrl + ');'"
+      ></div>
+      <ng-container *ngIf="!userProfilePictureUrl"><mat-icon>manage_accounts</mat-icon></ng-container>
     </button>
 
     <!-- The menu panel -->
@@ -75,20 +77,43 @@
       </button>
     </mat-menu>
 
-    <!-- The user position panel -->
-    <mat-menu #positionMenu="matMenu" class="position-menu custom-menu">
-      <ng-container *ngIf="userLocation">
-        <span *ngIf="userLocation.city" class="message">{{
-          'USER_LOCATION_MESSAGE' | translate: { city: userLocation.city }
-        }}</span>
-        <span *ngIf="!userLocation.city" class="message">{{ 'USER_LOCATION_MESSAGE_NO_CITY' | translate }}</span>
-        <div>
-          <button mat-flat-button color="primary" (click)="onEnableGeolocation()">
-            <ng-container *ngIf="!hasActivatedBrowserGeolocation">{{ 'ENABLE_GEOLOCATION' | translate }}</ng-container>
-            <ng-container *ngIf="hasActivatedBrowserGeolocation">{{ 'USE_GEOLOCATION' | translate }}</ng-container>
-          </button>
+    <!-- The user preferences panel -->
+    <mat-menu #userPreferencesMenu="matMenu" class="user-preferences-menu custom-menu">
+      <div>
+        <wci-user-login (userLoggedIn)="onUserLoggedIn($event)" (userLoggedOut)="onUserLoggedOut()"></wci-user-login>
+      </div>
+
+      <div class="preferences-container">
+        <h5><mat-icon>near_me</mat-icon> {{ 'USER_MAP_PREFERENCES' | translate }}</h5>
+        <div class="preferences-list" *ngIf="userLocation">
+          <div class="preferences-list-item">
+            <h6><mat-icon>my_location</mat-icon> {{ 'LOCATION_ACCURACY' | translate }}</h6>
+            <a (click)="onEnableGeolocation()">
+              <ng-container [ngSwitch]="hasActivatedBrowserGeolocation">
+                <ng-container *ngSwitchCase="false">{{ 'ENABLE_GEOLOCATION' | translate }}</ng-container>
+                <ng-container *ngSwitchDefault>{{ 'USE_GEOLOCATION' | translate }}</ng-container>
+              </ng-container>
+            </a>
+          </div>
         </div>
-      </ng-container>
+      </div>
+      <div class="preferences-container">
+        <h5><mat-icon>straighten</mat-icon> {{ 'UNIT_MEASURES_PREFERENCES' | translate }}</h5>
+        <div class="preferences-list">
+          <div class="preferences-list-item">
+            <mat-slide-toggle
+              color="primary"
+              [(ngModel)]="useMetricSystem"
+              (click)="$event.stopImmediatePropagation()"
+              (toggleChange)="onUnitMeasureChanged()"
+              ><span [ngClass]="{ bold: !useMetricSystem }">{{ 'IMPERIAL_UNIT_MEASURE' | translate }}</span> /
+              <span [ngClass]="{ bold: useMetricSystem }">{{
+                'METRIC_UNIT_MEASURE' | translate
+              }}</span></mat-slide-toggle
+            >
+          </div>
+        </div>
+      </div>
     </mat-menu>
   </div>
 
@@ -106,6 +131,7 @@
   <!-- The map -->
   <div class="map">
     <wci-map
+      #mapInstance
       *ngIf="currentLocation && userLocation"
       [zoom]="zoom"
       [centerLocation]="currentLocation"
@@ -128,6 +154,7 @@
       [loading]="isNearbyLoading"
       [currentLocation]="currentLocation"
       [pois]="nearbyPois"
+      [useMetricSystem]="useMetricSystem"
       [externalPlaces]="nearbyGooglePlacesPois"
       (sectionSelected)="onSectionSelected($event)"
       (poiSelected)="onPoiSelected($event)"

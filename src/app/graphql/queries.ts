@@ -16,7 +16,6 @@ import {
 import { Photo } from '../interfaces/photo.interface';
 import * as fragments from './fragments';
 
-export type UserInfoResult = ApolloQueryResult<{ userInfo: UserInfo }>;
 export type LatestResult = ApolloQueryResult<{ latest: SearchResultType }>;
 export type NearbyResult = ApolloQueryResult<{ nearby: SearchResultType }>;
 export type CragsResult = ApolloQueryResult<{ crags: Crag[] }>;
@@ -40,6 +39,8 @@ export type HikeResult = ApolloQueryResult<{ hike: Hike }>;
 export type SearchResult = ApolloQueryResult<{ search: SearchResultType }>;
 export type ForecastResult = ApolloQueryResult<{ forecast: ForecastResultType }>;
 export type PhotosResult = ApolloQueryResult<{ photos: Photo[] }>;
+export type UserInfoResult = ApolloQueryResult<{ userInfo: UserInfo }>;
+export type WaveUserResult = ApolloQueryResult<{ waveUser: UserInfo }>;
 
 export default class {
   static get userInfo(): DocumentNode {
@@ -537,6 +538,17 @@ export default class {
       query Photos($query: String!) {
         photos(query: $query)
       }
+    `;
+  }
+
+  static get waveUser(): DocumentNode {
+    return gql`
+      query WaveUser($user: UserInfoInput!) {
+        waveUser(user: $user) {
+          ...UserInfo
+        }
+      }
+      ${fragments.UserInfo}
     `;
   }
 }

@@ -19,6 +19,7 @@ export class BaseCardItemComponent implements OnChanges {
   @Input() data: Poi;
   @Input() currentLocation: GeoLocation;
   @Input() userLocation: GeoLocation;
+  @Input() useMetricSystem = true;
 
   @ViewChild('sideScrollbar') scrollbar: PerfectScrollbarComponent;
 

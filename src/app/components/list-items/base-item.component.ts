@@ -14,6 +14,7 @@ import { Poi } from 'src/app/utils/Poi';
 export class BaseListItemComponent {
   @Input() currentLocation: GeoLocation;
   @Input() userLocation: GeoLocation;
+  @Input() useMetricSystem = false;
   @Input() showCategory: boolean;
 
   // Used to construct the url of the detail page

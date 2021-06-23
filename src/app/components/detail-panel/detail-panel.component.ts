@@ -15,6 +15,7 @@ export class DetailPanelComponent {
   @Input() data: Poi;
   @Input() currentLocation: GeoLocation;
   @Input() userLocation: GeoLocation;
+  @Input() useMetricSystem = false;
   @Input() loading: boolean;
   @Input() errored: boolean;
 

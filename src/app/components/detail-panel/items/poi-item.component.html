@@ -63,19 +63,19 @@
         <div>
           <mat-icon>directions</mat-icon
           ><span class="direction-label"
-            ><span [innerHTML]="data.coords | distance: userLocation:false:false:false"></span
+            ><span [innerHTML]="data.coords | distance: useMetricSystem:userLocation:false:false:false"></span
           ></span>
         </div>
         <div>
           <mat-icon>directions_walk</mat-icon
           ><span class="direction-label"
-            ><span [innerHTML]="data.coords | distance: userLocation:true:false:false"></span
+            ><span [innerHTML]="data.coords | distance: useMetricSystem:userLocation:true:false:false"></span
           ></span>
         </div>
         <div>
           <mat-icon>directions_car</mat-icon
           ><span class="direction-label"
-            ><span [innerHTML]="data.coords | distance: userLocation:false:true:false"></span
+            ><span [innerHTML]="data.coords | distance: useMetricSystem:userLocation:false:true:false"></span
           ></span>
         </div>
       </div>
@@ -87,7 +87,14 @@
           <div class="when">{{ 'NOW' | translate }}</div>
           <wci-skycon [width]="60" [height]="60" [icon]="currentWeather.icon"></wci-skycon>
           <div class="figures">
-            <div>{{ currentWeather.temperature | number: '1.0-0' }} °C</div>
+            <div [ngSwitch]="useMetricSystem">
+              <div *ngSwitchCase="true">
+                <div>{{ currentWeather.temperature | number: '1.0-0' }} °C</div>
+              </div>
+              <div *ngSwitchDefault>
+                <div>{{ currentWeather.temperature | metric: 'cels_to_fahr' | number: '1.0-0' }} °F</div>
+              </div>
+            </div>
             <div fxLayout>
               <div class="figure">
                 <i class="wi wi-raindrop"></i> {{ currentWeather.humidity | metric: 'coeff-to-percentage' }}%
@@ -100,7 +107,14 @@
               <div class="figure"><i class="wi wi-horizon-alt"></i> {{ currentWeather.uvIndex }} UVi</div>
               <div class="figure">
                 <i class="wi wi-strong-wind"></i>
-                {{ currentWeather.windSpeed | metric: 'meters_second-to-kilometers_hour' }} km/h
+                <ng-container [ngSwitch]="useMetricSystem">
+                  <ng-container *ngSwitchCase="true"
+                    >{{ currentWeather.windSpeed | metric: 'meters_second-to-kilometers_hour' }} km/h</ng-container
+                  >
+                  <ng-container *ngSwitchDefault
+                    >{{ currentWeather.windSpeed | metric: 'meters_second-to-miles_hour' }} mi/h</ng-container
+                  >
+                </ng-container>
               </div>
             </div>
           </div>
@@ -109,7 +123,14 @@
           <div class="when">{{ 'TOMORROW' | translate }}</div>
           <wci-skycon [width]="60" [height]="60" [icon]="tomorrowForecast.icon"></wci-skycon>
           <div class="figures">
-            <div>{{ tomorrowForecast.temperatureMax | number: '1.0-0' }} °C</div>
+            <div [ngSwitch]="useMetricSystem">
+              <div *ngSwitchCase="true">
+                <div>{{ tomorrowForecast.temperatureMax | number: '1.0-0' }} °C</div>
+              </div>
+              <div *ngSwitchDefault>
+                <div>{{ tomorrowForecast.temperatureMax | metric: 'cels_to_fahr' | number: '1.0-0' }} °F</div>
+              </div>
+            </div>
             <div fxLayout>
               <div class="figure">
                 <i class="wi wi-raindrop"></i> {{ tomorrowForecast.humidity | metric: 'coeff-to-percentage' }}%
@@ -123,7 +144,14 @@
               <div class="figure"><i class="wi wi-horizon-alt"></i> {{ tomorrowForecast.uvIndex }} UVi</div>
               <div class="figure">
                 <i class="wi wi-strong-wind"></i>
-                {{ tomorrowForecast.windSpeed | metric: 'meters_second-to-kilometers_hour' }} km/h
+                <ng-container [ngSwitch]="useMetricSystem">
+                  <ng-container *ngSwitchCase="true"
+                    >{{ tomorrowForecast.windSpeed | metric: 'meters_second-to-kilometers_hour' }} km/h</ng-container
+                  >
+                  <ng-container *ngSwitchDefault
+                    >{{ tomorrowForecast.windSpeed | metric: 'meters_second-to-miles_hour' }} mi/h</ng-container
+                  >
+                </ng-container>
               </div>
             </div>
           </div>
@@ -133,7 +161,12 @@
 
       <!-- The nearby items -->
       <ng-container *ngIf="nearbyPois.length > 0">
-        <wci-detail-nearby [items]="nearbyPois" [distanceCoords]="data.coords" (poiSelected)="goToDetailUrl($event)">
+        <wci-detail-nearby
+          [items]="nearbyPois"
+          [useMetricSystem]="useMetricSystem"
+          [distanceCoords]="data.coords"
+          (poiSelected)="goToDetailUrl($event)"
+        >
         </wci-detail-nearby>
       </ng-container>
       <!-- -->

@@ -1,15 +1,17 @@
 import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { SocialUser } from 'angularx-social-login';
 import { debounce, isEmpty, isEqual } from 'lodash';
 import moment from 'moment-timezone';
 import { environment } from 'src/environments/environment';
 import { GeoLocation } from './classes/geolocation.class';
 import { SearchOptions } from './components/header/header.component';
+import { MapComponent } from './components/map/map.component';
 import { NearbyResult, UserInfoResult } from './graphql/queries';
 import { MapUpdateEvent } from './interfaces/events/map-update.interface';
-import { ListResult, SearchResult, UserInfo } from './interfaces/graphql';
+import { ListResult, SearchResult, UserInfo, UserInfoInput } from './interfaces/graphql';
 import { AppStoreService } from './services/appState.service';
 import { GeoService, PlaceSuggestion } from './services/geo.service';
 import { I18nService } from './services/i18n.service';
@@ -24,6 +26,8 @@ import { Poi } from './utils/Poi';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AppComponent implements OnInit {
+  @ViewChild('mapInstance') mapInstance: MapComponent;
+
   zoom = 11;
   year = new Date().getFullYear();
 
@@ -32,6 +36,7 @@ export class AppComponent implements OnInit {
   hasSharedPositionSet = false;
   currentLocation: GeoLocation = new GeoLocation(0, 0);
   currentOrientation: number | undefined;
+  useMetricSystem = true;
   userLocation: GeoLocation;
   urlLocation: GeoLocation;
   nearbyPois: SearchResult;
@@ -47,6 +52,9 @@ export class AppComponent implements OnInit {
   // isLatestLoading = true;
 
   environment = environment;
+
+  user: UserInfo;
+  userProfilePictureUrl: string;
 
   private mapData: MapUpdateEvent;
   private userData: UserInfo;
@@ -90,6 +98,18 @@ export class AppComponent implements OnInit {
       if (location && !isEqual(location, this.userLocation)) {
         this.userLocation = location;
       }
+    });
+
+    this.appStore.watchProperty('wciUser').subscribe((user: UserInfo) => {
+      this.user = user;
+    });
+
+    this.appStore.watchProperty('socialUserPicture').subscribe((url: string) => {
+      this.userProfilePictureUrl = url;
+    });
+
+    this.appStore.watchProperty('useMetricSystem').subscribe((flag: boolean) => {
+      this.useMetricSystem = flag;
     });
 
     this.onMapReady = debounce(this.onMapReady, this.mapInteractionDebounceTime);
@@ -203,10 +223,57 @@ export class AppComponent implements OnInit {
     if (!this.hasActivatedBrowserGeolocation) {
       this.registerDeviceMovementAndBrowserLocationHandlers();
     } else {
-      this.currentLocation = this.userLocation;
-      this.updateUserLocationInStore();
-      this.updateCurrentLocationInStore();
+      if (isEqual(this.currentLocation, this.userLocation)) {
+        if (this.mapInstance && this.userLocation.lat && this.userLocation.lng) {
+          this.mapInstance.flyTo(this.userLocation.lat, this.userLocation.lng);
+        }
+      } else {
+        this.currentLocation = this.userLocation;
+        this.updateUserLocationInStore();
+        this.updateCurrentLocationInStore();
+      }
     }
+  }
+
+  /**
+   *
+   */
+  onUserLoggedIn(user: SocialUser): void {
+    this.appStore.setProperty('socialUserId', user.id);
+    this.appStore.setProperty('socialUserToken', user.authToken);
+    this.appStore.setProperty('socialUserPicture', user.photoUrl);
+
+    const userInfoInput: UserInfoInput = {
+      socialId: user.id,
+      socialConnection: 'FB',
+      firstName: user.firstName,
+      lastName: user.lastName,
+    };
+
+    this.api
+      .waveUser({
+        user: userInfoInput,
+      })
+      .subscribe((res) => {
+        this.appStore.setProperty('wciUser', res.data.waveUser);
+      });
+  }
+
+  /**
+   *
+   */
+  onUserLoggedOut(): void {
+    this.appStore.unsetProperty('socialUserId');
+    this.appStore.unsetProperty('socialUserToken');
+    this.appStore.unsetProperty('socialUserPicture');
+    this.appStore.unsetProperty('wciUser');
+  }
+
+  /**
+   *
+   */
+  onUnitMeasureChanged(): void {
+    this.appStore.setProperty('useMetricSystem', !this.useMetricSystem, true);
   }
 
   /**
@@ -414,7 +481,7 @@ export class AppComponent implements OnInit {
    */
   private initMomentI18n(): void {
     moment.locale(I18nService.userLang);
-    moment.tz.setDefault(this.userData.geo.timeZone);
+    moment.tz.setDefault(this.userData.userGeo.timeZone);
   }
 
   /**
@@ -468,10 +535,10 @@ export class AppComponent implements OnInit {
       () => {
         // error (fallback using coords from the BE)
         const location = new GeoLocation(
-          this.userData.geo.coords.lat,
-          this.userData.geo.coords.lng,
+          this.userData.userGeo.coords.lat,
+          this.userData.userGeo.coords.lng,
           undefined,
-          this.userData.geo.city,
+          this.userData.userGeo.city,
         );
 
         doUpdateLocations(location, true);

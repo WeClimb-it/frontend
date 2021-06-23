@@ -21,6 +21,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   currentLocation: GeoLocation;
   userLocation: GeoLocation;
   data: Poi;
+  useMetricSystem = true;
 
   isLoading = true;
   isErrored = false;
@@ -47,6 +48,10 @@ export class DetailComponent implements OnInit, OnDestroy {
           this.userLocation = location;
         }
       });
+
+    this.appStore.watchProperty('useMetricSystem').subscribe((flag: boolean) => {
+      this.useMetricSystem = flag;
+    });
   }
 
   ngOnInit(): void {

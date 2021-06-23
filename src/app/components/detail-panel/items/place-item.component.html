@@ -52,19 +52,19 @@
         <div>
           <mat-icon>directions</mat-icon
           ><span class="direction-label"
-            ><span [innerHTML]="data.coords | distance: userLocation:false:false:false"></span
+            ><span [innerHTML]="data.coords | distance: useMetricSystem:userLocation:false:false:false"></span
           ></span>
         </div>
         <div>
           <mat-icon>directions_walk</mat-icon
           ><span class="direction-label"
-            ><span [innerHTML]="data.coords | distance: userLocation:true:false:false"></span
+            ><span [innerHTML]="data.coords | distance: useMetricSystem:userLocation:true:false:false"></span
           ></span>
         </div>
         <div>
           <mat-icon>directions_car</mat-icon
           ><span class="direction-label"
-            ><span [innerHTML]="data.coords | distance: userLocation:false:true:false"></span
+            ><span [innerHTML]="data.coords | distance: useMetricSystem:userLocation:false:true:false"></span
           ></span>
         </div>
       </div>
@@ -74,6 +74,7 @@
       <ng-container *ngIf="nearbyPois.length > 0">
         <wci-detail-nearby
           [items]="nearbyPois"
+          [useMetricSystem]="useMetricSystem"
           [distanceCoords]="data.coords"
           (poiSelected)="goToDetailUrl($event)"
         ></wci-detail-nearby>

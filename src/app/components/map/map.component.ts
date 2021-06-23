@@ -218,6 +218,13 @@ export class MapComponent implements OnChanges {
   /**
    *
    */
+  flyTo(lat: number, lng: number): void {
+    this.mapInstance.flyTo({ center: [lng, lat] });
+  }
+
+  /**
+   *
+   */
   onMarkerClick($event: any): void {
     const features = this.mapInstance.queryRenderedFeatures($event.point, {
       layers: ['unclustered-pois'],

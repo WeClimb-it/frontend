@@ -14,6 +14,7 @@ export class DistancePipe implements PipeTransform {
 
   transform(
     source: GeoLocation | Coords,
+    useMetricSystem: boolean,
     destination: GeoLocation | Coords,
     byWalk: boolean = false,
     byCar: boolean = false,
@@ -49,9 +50,10 @@ export class DistancePipe implements PipeTransform {
 
     destinationStr = destination.toString();
 
-    const metricDistance = this.geo.getDistanceFromCoords(source as GeoLocation, destination as GeoLocation);
+    let metricDistance = this.geo.getDistanceFromCoords(source as GeoLocation, destination as GeoLocation);
+
     let distance = '';
-    let unit = 'kms';
+    let unit = useMetricSystem ? 'kms' : 'mi';
 
     if (byWalk) {
       const oDistance = this.geo.getDistanceInTime(metricDistance, JourneyMode.WALK);
@@ -62,6 +64,10 @@ export class DistancePipe implements PipeTransform {
       distance = oDistance.value;
       unit = oDistance.unit;
     } else {
+      if (!useMetricSystem) {
+        metricDistance = +(metricDistance * 0.62137).toFixed(2);
+      }
+
       distance = metricDistance > 500 ? Math.floor(metricDistance).toString() : metricDistance.toString();
     }
 

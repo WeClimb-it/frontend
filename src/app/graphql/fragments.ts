@@ -825,7 +825,7 @@ export const Pagination = `fragment Pagination on Pagination {
 `;
 
 export const UserInfo = `fragment UserInfo on UserInfo {
-  geo {
+  userGeo {
     isoCode
     timeZone
     city
@@ -834,6 +834,10 @@ export const UserInfo = `fragment UserInfo on UserInfo {
       lng
     }
   }
+  socialId
+  socialConnection
+  firstName
+  lastName
 }
 `;
 

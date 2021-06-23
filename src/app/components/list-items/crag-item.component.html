@@ -14,7 +14,7 @@
         >star</mat-icon
       >
       <mat-chip class="no-mouse" color="accent" selected>
-        <span [innerHTML]="data.coords | distance: userLocation"></span>
+        <span [innerHTML]="data.coords | distance: useMetricSystem:userLocation"></span>
       </mat-chip>
       <mat-chip *ngIf="showCategory" class="no-mouse category" selected>
         <span>{{ 'CRAG' | translate | uppercase }}</span>
@@ -41,7 +41,15 @@
         <mat-icon aria-hidden="false">brightness_high</mat-icon
         ><mat-progress-bar mode="determinate" value="{{ data.qualityRank.weather * 100 }}"></mat-progress-bar>
         <div class="progress-info">
-          {{ data.qualityRank.weatherExtended[currentMonth].value }} °C {{ 'IN_MONTH' | translate }}
+          <div [ngSwitch]="useMetricSystem">
+            <div *ngSwitchCase="true">
+              {{ data.qualityRank.weatherExtended[currentMonth].value }} °C {{ 'IN_MONTH' | translate }}
+            </div>
+            <div *ngSwitchDefault>
+              {{ data.qualityRank.weatherExtended[currentMonth].value | metric: 'cels_to_fahr' }} °F
+              {{ 'IN_MONTH' | translate }}
+            </div>
+          </div>
           <div class="capitalize">{{ currentMonthHuman }}</div>
         </div>
       </div>
@@ -52,7 +60,12 @@
       <div *ngIf="data.altitude > 0" class="coeff">
         <mat-icon aria-hidden="false">terrain</mat-icon
         ><mat-progress-bar mode="determinate" value="{{ data.qualityRank.position * 100 }}"></mat-progress-bar>
-        <div class="progress-info">{{ data.altitude }} {{ 'METERS_ABB' | translate }}</div>
+        <div class="progress-info">
+          <ng-container [ngSwitch]="useMetricSystem">
+            <ng-container *ngSwitchCase="true">{{ data.altitude }} mt.</ng-container>
+            <ng-container *ngSwitchDefault>{{ data.altitude | metric: 'meters_to_feet' }} ft.</ng-container>
+          </ng-container>
+        </div>
       </div>
     </div>
   </div>

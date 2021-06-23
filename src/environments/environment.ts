@@ -19,7 +19,11 @@ export const environment = {
     // Don't worry, referrers are white-listed ;-)
     token: 'pk.eyJ1Ijoid2VjbGltYml0IiwiYSI6ImNrNzlha3B0YzA4aWgzbXJ6dDQ1ZXF4dWEifQ.NX6j-UOi0l9Ut3o-77FA4w',
     style: 'mapbox://styles/weclimbit/ck76qiur612ur1imof17kauyo',
+    styleTerrain: 'mapbox://styles/weclimbit/ckq3k5yvg0i2e18nqrqpwu7rn',
   },
+  facebookAppId: '253345021488136',
+  facebookScopes: 'email,public_profile', // comma separated
+  googleAnalyticsID: 'UA-40003077-1',
 };
 
 /*

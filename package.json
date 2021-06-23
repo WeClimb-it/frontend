@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:local": "ng serve --host local.weclimb.it --ssl --ssl-key ./certs/local.weclimb.it.key --ssl-cert ./certs/local.weclimb.it.crt",
     "build": "ng build",
     "build:prod": "ng build --prod",
     "test": "ng test",
@@ -29,6 +30,7 @@
     "@mapbox/togeojson": "^0.16.0",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
+    "angularx-social-login": "^3.5.7",
     "apollo-link-retry": "^2.2.16",
     "classlist.js": "^1.1.20150312",
     "geolib": "^3.3.1",

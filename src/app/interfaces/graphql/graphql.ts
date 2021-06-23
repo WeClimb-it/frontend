@@ -42,7 +42,7 @@ export interface Query {
   photos: any;
   photosWeb: any;
   places: ListResult;
-  googlePlaces: any;
+  googlePlaces: ListResult;
   place: Place;
   routes: ListResult;
   route: Route;
@@ -54,6 +54,7 @@ export interface Query {
   shelters: ListResult;
   shelter: Shelter;
   userInfo: UserInfo;
+  waveUser: UserInfo;
 }
 
 export interface CompetitionsOnQueryArguments {
@@ -384,6 +385,10 @@ export interface ShelterOnQueryArguments {
   id?: string | null;
 }
 
+export interface WaveUserOnQueryArguments {
+  user: UserInfoInput;
+}
+
 export interface ListResult {
   __typename?: 'ListResult';
   items: Array<Item>;
@@ -410,6 +415,7 @@ export interface Crag {
   resourceUrl: string;
   sectors: Array<Sector | null> | null;
   searchScore: number | null;
+  type: string | null;
 }
 
 export interface CragStats {
@@ -458,24 +464,25 @@ export interface Sector {
   resourceUrl: string;
   routes: Array<Route | null> | null;
   searchScore: number | null;
+  type: string | null;
 }
 
 export interface SectorCrag {
   __typename?: 'SectorCrag';
   _stats: CragStats | null;
-  slug: string;
-  title: string;
+  slug: string | null;
+  title: string | null;
   descr: string | null;
   accessInfo: string | null;
-  coords: Coords;
+  coords: Coords | null;
   altitude: number | null;
   exposition: string | null;
   boltingType: string | null;
   rockType: string | null;
-  qualityRank: QualityRank;
+  qualityRank: QualityRank | null;
   period: string | null;
   notes: string | null;
-  resourceUrl: string;
+  resourceUrl: string | null;
 }
 
 export interface Route {
@@ -495,20 +502,21 @@ export interface Route {
   qualityRank: QualityRank | null;
   resourceUrl: string;
   searchScore: number | null;
+  type: string | null;
 }
 
 export interface RouteSector {
   __typename?: 'RouteSector';
-  crag: string;
+  crag: string | null;
   parent: SectorCrag | null;
-  slug: string;
-  title: string;
-  coords: Coords;
+  slug: string | null;
+  title: string | null;
+  coords: Coords | null;
   notes: string | null;
-  qualityRank: QualityRank;
+  qualityRank: QualityRank | null;
   minGrade: string | null;
   maxGrade: string | null;
-  resourceUrl: string;
+  resourceUrl: string | null;
 }
 
 export interface Place {
@@ -526,6 +534,7 @@ export interface Place {
   resourceUrl: string;
   searchScore: number | null;
   picture: string | null;
+  type: string | null;
 }
 
 export interface Openings {
@@ -545,6 +554,7 @@ export interface Event {
   endTime: number | null;
   resourceUrl: string;
   searchScore: number | null;
+  type: string | null;
 }
 
 export interface Competition {
@@ -560,6 +570,7 @@ export interface Competition {
   endTime: number | null;
   title: string;
   searchScore: number | null;
+  type: string | null;
 }
 
 export interface CompetitionInfo {
@@ -594,6 +605,7 @@ export interface News {
   lang: string;
   searchScore: number | null;
   creationTime: number;
+  type: string | null;
 }
 
 export interface NewsMedia {
@@ -623,6 +635,7 @@ export interface Shelter {
   media: Array<string | null> | null;
   searchScore: number | null;
   resourceUrl: string;
+  type: string | null;
 }
 
 export interface Hike {
@@ -644,6 +657,7 @@ export interface Hike {
   media: Array<string | null> | null;
   searchScore: number | null;
   resourceUrl: string;
+  type: string | null;
 }
 
 export interface HikeElevation {
@@ -776,7 +790,11 @@ export interface City {
 
 export interface UserInfo {
   __typename?: 'UserInfo';
-  geo: UserGeo;
+  userGeo: UserGeo;
+  socialId: string | null;
+  socialConnection: string | null;
+  firstName: string | null;
+  lastName: string | null;
 }
 
 export interface UserGeo {
@@ -784,11 +802,14 @@ export interface UserGeo {
   isoCode: string;
   timeZone: string;
   city: string;
-  socialId: string | null;
-  socialConnection: string | null;
-  firstName: string | null;
-  lastName: string | null;
   coords: Coords;
+}
+
+export interface UserInfoInput {
+  socialId?: string | null;
+  socialConnection?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
 }
 
 export interface Subscription {

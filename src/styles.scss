@@ -145,7 +145,59 @@ a:visited {
     font-size: 12px;
   }
 
-  &.position-menu {
+  &.user-preferences-menu {
+    h5 {
+      .mat-icon {
+        width: 18px;
+        height: 18px;
+        font-size: 18px;
+        line-height: 18px;
+        vertical-align: middle;
+      }
+
+      font-size: 15px;
+      letter-spacing: -0.5px;
+      color: rgba(black, 0.7);
+    }
+
+    h6 {
+      .mat-icon {
+        width: 15px;
+        height: 15px;
+        font-size: 15px;
+        line-height: 15px;
+        vertical-align: middle;
+      }
+
+      font-size: 15px;
+      letter-spacing: -0.5px;
+      color: rgba(black, 0.5);
+    }
+
+    .preferences-list {
+      margin-top: 5px;
+
+      .preferences-list-item {
+        .bold {
+          font-weight: bold;
+        }
+
+        a {
+          cursor: pointer;
+          font-size: 13px;
+          color: $primary;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        .mat-slide-toggle {
+          transform: scale(0.8) translateX(-20px);
+        }
+      }
+    }
+
     .message {
       display: inline-block;
       margin: 5px;

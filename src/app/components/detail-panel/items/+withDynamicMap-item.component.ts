@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import togeojson from '@mapbox/togeojson';
 import { GeoJSONFeature } from 'src/app/interfaces/geo/GeoJSONFeature.interface';

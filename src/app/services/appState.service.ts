@@ -1,8 +1,8 @@
 // TODO: Instead of using hard-coded string as keys, provide a enum or something
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { PersistanceService } from './persistanceService';
 
 @Injectable({ providedIn: 'root' })
 export class AppStoreService {
@@ -19,20 +19,38 @@ export class AppStoreService {
    *
    */
   watchProperty(key: string, defaultValue?: unknown): Observable<unknown> {
+    const persistedValue = PersistanceService.get(key);
+
     if (!this.state[key]) {
-      this.state[key] = new BehaviorSubject<unknown>(defaultValue || null);
+      this.state[key] = new BehaviorSubject<unknown>(defaultValue || persistedValue);
     }
+
     return this.state[key].asObservable();
   }
 
   /**
    *
    */
-  setProperty(key: string, value: unknown): void {
+  setProperty(key: string, value: unknown, persist = false): void {
     if (this.state[key]) {
       this.state[key].next(value);
     } else {
       this.state[key] = new BehaviorSubject<unknown>(value);
+    }
+
+    if (persist) {
+      PersistanceService.set(key, String(value));
+    }
+  }
+
+  /**
+   *
+   */
+  unsetProperty(key: string): void {
+    if (this.state[key]) {
+      this.state[key].next(undefined);
+      delete this.state[key];
+      PersistanceService.unset(key);
     }
   }
 }

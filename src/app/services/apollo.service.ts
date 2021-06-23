@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client/core';
 import { environment } from 'src/environments/environment';
 import { getEntityCacheId } from '../utils/Poi';
+import { AppStoreService } from './appState.service';
 import { I18nService } from './i18n.service';
 
 @Injectable({ providedIn: 'root' })
@@ -11,7 +11,7 @@ export class ApolloService {
 
   private userSessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-  constructor() {}
+  constructor(private appStore: AppStoreService) {}
 
   init(): void {
     const cache = new InMemoryCache({
@@ -52,6 +52,27 @@ export class ApolloService {
       return forward(operation);
     });
 
+    const userLoginMiddleware = new ApolloLink((operation, forward) => {
+      if (typeof forward === 'undefined') {
+        throw new Error('forward is undefined');
+      }
+
+      const userId = this.appStore.getProperty('socialUserId');
+      const userToken = this.appStore.getProperty('socialUserToken');
+
+      if (userId && userToken) {
+        operation.setContext(({ headers = {} }) => ({
+          headers: {
+            ...headers,
+            'x-usid': userId,
+            'x-utkn': userToken,
+          },
+        }));
+      }
+
+      return forward(operation);
+    });
+
     this.client = new ApolloClient({
       cache,
       ssrMode: false,
@@ -60,6 +81,7 @@ export class ApolloService {
         // new RetryLink() as any,
         userSessionIdMiddleware,
         userLangMiddleware,
+        userLoginMiddleware,
         new HttpLink({ uri: environment.graphql.url }),
       ]),
     });

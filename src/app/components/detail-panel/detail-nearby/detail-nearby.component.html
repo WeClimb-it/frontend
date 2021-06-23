@@ -5,6 +5,9 @@
     <h4 (click)="onEntitySelected(item)">
       {{ item['title'] || item['name'] }}
     </h4>
-    <div *ngIf="item.coords" [innerHTML]="item.coords | distance: distanceCoords:false:false:false"></div>
+    <div
+      *ngIf="item.coords"
+      [innerHTML]="item.coords | distance: useMetricSystem:distanceCoords:false:false:false"
+    ></div>
   </div>
 </div>

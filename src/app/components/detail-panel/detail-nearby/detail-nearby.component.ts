@@ -11,6 +11,7 @@ import { getPoiCategoryClass, getPoiCategoryTag, Poi } from 'src/app/utils/Poi';
 })
 export class DetailNearbyComponent {
   @Input() items: Poi[];
+  @Input() useMetricSystem = false;
   @Input() distanceCoords: Coords;
   @Output() poiSelected: EventEmitter<Poi> = new EventEmitter<Poi>();
 

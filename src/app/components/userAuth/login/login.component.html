@@ -1,0 +1,8 @@
+<div class="login" [ngSwitch]="loggedIn">
+  <div *ngSwitchCase="true">
+    <button mat-flat-button color="primary" (click)="signOut()">Sign out</button>
+  </div>
+  <div *ngSwitchDefault>
+    <button mat-flat-button color="primary" (click)="signInWithFB()">Sign in with Facebook</button>
+  </div>
+</div>

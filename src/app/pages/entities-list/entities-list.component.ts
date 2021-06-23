@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { GeoLocation } from 'src/app/classes/geolocation.class';
 import { SearchOptions } from 'src/app/components/header/header.component';
 import {
@@ -64,8 +63,7 @@ export class EntitiesListComponent implements OnInit, OnDestroy {
   typeOfItem = typeOfItem;
   titlePlaceholder = '';
 
-  private appStoreSub$: Subscription;
-  private routeSub$: Subscription;
+  useMetricSystem = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -78,7 +76,7 @@ export class EntitiesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.routeSub$ = this.route.params.subscribe((params: Params) => {
+    this.route.params.subscribe((params: Params) => {
       // Load data on query change
       if (params.query && !this.firstLoad) {
         this.doLoad();
@@ -98,28 +96,25 @@ export class EntitiesListComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.appStoreSub$ = this.appStore.watchProperty('currentLocation').subscribe((location: GeoLocation) => {
+    this.appStore.watchProperty('currentLocation').subscribe((location: GeoLocation) => {
       if (location) {
         this.currentLocation = location;
         this.doLoad();
       }
     });
 
-    this.appStoreSub$ = this.appStore.watchProperty('currentUserLocation').subscribe((location: GeoLocation) => {
+    this.appStore.watchProperty('currentUserLocation').subscribe((location: GeoLocation) => {
       if (location) {
         this.userLocation = location;
       }
     });
+
+    this.appStore.watchProperty('useMetricSystem').subscribe((flag: boolean) => {
+      this.useMetricSystem = flag;
+    });
   }
 
-  ngOnDestroy(): void {
-    if (this.appStoreSub$) {
-      this.appStoreSub$.unsubscribe();
-    }
-    if (this.routeSub$) {
-      this.routeSub$.unsubscribe();
-    }
-  }
+  ngOnDestroy(): void {}
 
   /**
    *

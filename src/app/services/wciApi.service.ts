@@ -23,6 +23,7 @@ import Queries, {
   ShelterResult,
   SheltersResult,
   UserInfoResult,
+  WaveUserResult,
 } from '../graphql/queries';
 import {
   CompetitionOnQueryArguments,
@@ -45,6 +46,7 @@ import {
   SectorOnQueryArguments,
   ShelterOnQueryArguments,
   SheltersOnQueryArguments,
+  WaveUserOnQueryArguments,
 } from '../interfaces/graphql';
 import { ApolloService } from './apollo.service';
 
@@ -362,6 +364,16 @@ export class WciApiService {
     return from(
       this.service.client.query({
         query: Queries.photos,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
+  }
+
+  waveUser(opts: WaveUserOnQueryArguments): Observable<WaveUserResult> {
+    return from(
+      this.service.client.query({
+        query: Queries.waveUser,
         variables: opts,
         fetchPolicy: this.noCacheFetchPolicy,
       }),

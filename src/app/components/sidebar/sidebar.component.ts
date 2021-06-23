@@ -24,6 +24,7 @@ export class SidebarComponent {
   @Input() pois: EntitiesPayload;
   @Input() externalPlaces: Place[] = [];
   @Input() loading: boolean;
+  @Input() useMetricSystem = false;
 
   @Output() poiSelected: EventEmitter<Poi> = new EventEmitter<Poi>();
   @Output() sectionSelected: EventEmitter<string> = new EventEmitter<string>();

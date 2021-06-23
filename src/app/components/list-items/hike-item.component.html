@@ -2,7 +2,7 @@
   <div class="metadata">
     <mat-chip-list>
       <mat-chip class="no-mouse" color="accent" selected>
-        <span [innerHTML]="data.coords | distance: userLocation"></span>
+        <span [innerHTML]="data.coords | distance: useMetricSystem:userLocation"></span>
       </mat-chip>
       <mat-chip *ngIf="showCategory" class="no-mouse category" selected>
         <span>{{ 'HIKE' | translate | uppercase }}</span>
@@ -21,12 +21,18 @@
       >
       <mat-chip *ngIf="data.elevation?.low" class="chip" color="primary" selected
         ><mat-icon aria-hidden="false">arrow_downward</mat-icon>&nbsp;{{ 'MIN_ELEVATION' | translate }}:&nbsp;<strong
-          >{{ data.elevation.low }} mt.</strong
+          ><ng-container [ngSwitch]="useMetricSystem">
+            <ng-container *ngSwitchCase="true">{{ data.elevation?.low }} mt.</ng-container>
+            <ng-container *ngSwitchDefault>{{ data.elevation?.low | metric: 'meters_to_feet' }} ft.</ng-container>
+          </ng-container></strong
         ></mat-chip
       >
       <mat-chip *ngIf="data.elevation?.high" class="chip" color="primary" selected
         ><mat-icon aria-hidden="false">arrow_upward</mat-icon>&nbsp;{{ 'MAX_ELEVATION' | translate }}:&nbsp;<strong
-          >{{ data.elevation.high }} mt.</strong
+          ><ng-container [ngSwitch]="useMetricSystem">
+            <ng-container *ngSwitchCase="true">{{ data.elevation?.high }} mt.</ng-container>
+            <ng-container *ngSwitchDefault>{{ data.elevation?.high | metric: 'meters_to_feet' }} ft.</ng-container>
+          </ng-container></strong
         ></mat-chip
       >
       <mat-chip *ngIf="data.tracks?.length > 0" color="primary" selected

@@ -12,7 +12,7 @@
         <span *ngFor="let city of specialItems.locations" (click)="onCitySelected(city)"
           >{{ city['name'] }}
           <i class="suggestion-distance"
-            >(<i [innerHTML]="city['coords'] | distance: userLocation:false:false:false"></i>)</i
+            >(<i [innerHTML]="city['coords'] | distance: useMetricSystem:userLocation:false:false:false"></i>)</i
           ></span
         >
       </div>
@@ -23,6 +23,7 @@
           <div class="item crag">
             <wci-crag-list-item
               [data]="item"
+              [useMetricSystem]="useMetricSystem"
               [currentLocation]="currentLocation"
               [userLocation]="userLocation"
               [showCategory]="isSearchPage"
@@ -33,6 +34,7 @@
           <div class="item hike">
             <wci-hike-list-item
               [data]="item"
+              [useMetricSystem]="useMetricSystem"
               [currentLocation]="currentLocation"
               [userLocation]="userLocation"
               [showCategory]="isSearchPage"
@@ -43,6 +45,7 @@
           <div class="item shelter">
             <wci-shelter-list-item
               [data]="item"
+              [useMetricSystem]="useMetricSystem"
               [currentLocation]="currentLocation"
               [userLocation]="userLocation"
               [showCategory]="isSearchPage"
@@ -53,6 +56,7 @@
           <div class="item place">
             <wci-place-list-item
               [data]="item"
+              [useMetricSystem]="useMetricSystem"
               [currentLocation]="currentLocation"
               [userLocation]="userLocation"
               [showCategory]="isSearchPage"
@@ -63,6 +67,7 @@
           <div class="item competition">
             <wci-competition-list-item
               [data]="item"
+              [useMetricSystem]="useMetricSystem"
               [currentLocation]="currentLocation"
               [userLocation]="userLocation"
               [showCategory]="isSearchPage"
@@ -73,6 +78,7 @@
           <div class="item news">
             <wci-news-list-item
               [data]="item"
+              [useMetricSystem]="useMetricSystem"
               [currentLocation]="currentLocation"
               [userLocation]="userLocation"
               [showCategory]="isSearchPage"
