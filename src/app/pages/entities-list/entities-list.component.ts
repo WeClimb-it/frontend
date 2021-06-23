@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { GeoLocation } from 'src/app/classes/geolocation.class';
 import { SearchOptions } from 'src/app/components/header/header.component';
 import {
@@ -65,6 +66,8 @@ export class EntitiesListComponent implements OnInit, OnDestroy {
 
   useMetricSystem = false;
 
+  private subs$: Subscription[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -76,45 +79,49 @@ export class EntitiesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe((params: Params) => {
-      // Load data on query change
-      if (params.query && !this.firstLoad) {
-        this.doLoad();
-      }
-
-      if (params.page) {
-        if (isNaN(params.page)) {
-          this.router.navigate(['404']);
-          return;
+    this.subs$.push(
+      this.route.params.subscribe((params: Params) => {
+        // Load data on query change
+        if (params.query && !this.firstLoad) {
+          this.doLoad();
         }
 
-        const page = +params.page === 0 ? 1 : +params.page;
+        if (params.page) {
+          if (isNaN(params.page)) {
+            this.router.navigate(['404']);
+            return;
+          }
 
-        this.navCurrentPage = +params.page;
-        this.navStart = this.navPageSize * (page - 1);
-        this.navEnd = this.navStart + this.navPageSize;
-      }
-    });
+          const page = +params.page === 0 ? 1 : +params.page;
 
-    this.appStore.watchProperty('currentLocation').subscribe((location: GeoLocation) => {
-      if (location) {
-        this.currentLocation = location;
-        this.doLoad();
-      }
-    });
+          this.navCurrentPage = +params.page;
+          this.navStart = this.navPageSize * (page - 1);
+          this.navEnd = this.navStart + this.navPageSize;
+        }
+      }),
 
-    this.appStore.watchProperty('currentUserLocation').subscribe((location: GeoLocation) => {
-      if (location) {
-        this.userLocation = location;
-      }
-    });
+      this.appStore.watchProperty('currentLocation').subscribe((location: GeoLocation) => {
+        if (location) {
+          this.currentLocation = location;
+          this.doLoad();
+        }
+      }),
 
-    this.appStore.watchProperty('useMetricSystem').subscribe((flag: boolean) => {
-      this.useMetricSystem = flag;
-    });
+      this.appStore.watchProperty('currentUserLocation').subscribe((location: GeoLocation) => {
+        if (location) {
+          this.userLocation = location;
+        }
+      }),
+
+      this.appStore.watchProperty('useMetricSystem').subscribe((flag: boolean) => {
+        this.useMetricSystem = flag;
+      }),
+    );
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.subs$.forEach((sub$) => sub$.unsubscribe());
+  }
 
   /**
    *

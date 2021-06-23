@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FacebookLoginProvider, SocialAuthService, SocialUser } from 'angularx-social-login';
+import { Subscription } from 'rxjs';
 import { AppStoreService } from 'src/app/services/appState.service';
 
 @Component({
@@ -8,22 +9,28 @@ import { AppStoreService } from 'src/app/services/appState.service';
   styleUrls: ['login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserLoginComponent implements OnInit {
+export class UserLoginComponent implements OnInit, OnDestroy {
   @Output() userLoggedIn: EventEmitter<SocialUser> = new EventEmitter<SocialUser>();
   @Output() userLoggedOut: EventEmitter<void> = new EventEmitter<void>();
 
   loggedIn: boolean;
 
+  private authSub$: Subscription;
+
   constructor(private authService: SocialAuthService, private appStore: AppStoreService) {}
 
-  ngOnInit() {
-    this.authService.authState.subscribe((user) => {
+  ngOnInit(): void {
+    this.authSub$ = this.authService.authState.subscribe((user) => {
       this.loggedIn = user != null;
 
       if (user != null && user.authToken.length > 0) {
         this.userLoggedIn.emit(user);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.authSub$.unsubscribe();
   }
 
   /**

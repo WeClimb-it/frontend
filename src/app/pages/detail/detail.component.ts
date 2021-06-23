@@ -26,55 +26,45 @@ export class DetailComponent implements OnInit, OnDestroy {
   isLoading = true;
   isErrored = false;
 
-  private appStoreCurrentLocationSub$: Subscription;
-  private appStoreUserLocationSub$: Subscription;
-  private routeSub$: Subscription;
+  private subs$: Subscription[] = [];
 
   constructor(private route: ActivatedRoute, private api: WciApiService, private appStore: AppStoreService) {
     this.contentType = this.route.snapshot.data.type;
 
-    this.appStoreCurrentLocationSub$ = this.appStore
-      .watchProperty('currentLocation')
-      .subscribe((location: GeoLocation) => {
+    this.subs$.push(
+      this.appStore.watchProperty('currentLocation').subscribe((location: GeoLocation) => {
         if (location) {
           this.currentLocation = location;
         }
-      });
+      }),
 
-    this.appStoreUserLocationSub$ = this.appStore
-      .watchProperty('currentUserLocation')
-      .subscribe((location: GeoLocation) => {
+      this.appStore.watchProperty('currentUserLocation').subscribe((location: GeoLocation) => {
         if (location) {
           this.userLocation = location;
         }
-      });
+      }),
 
-    this.appStore.watchProperty('useMetricSystem').subscribe((flag: boolean) => {
-      this.useMetricSystem = flag;
-    });
+      this.appStore.watchProperty('useMetricSystem').subscribe((flag: boolean) => {
+        this.useMetricSystem = flag;
+      }),
+    );
   }
 
   ngOnInit(): void {
-    this.routeSub$ = this.route.params.subscribe((params: Params) => {
-      // Load data on slug change
-      if (params.slug || params.nodeId) {
-        this.loadData(params.slug || params.nodeId);
-      } else {
-        this.isErrored = true;
-      }
-    });
+    this.subs$.push(
+      this.route.params.subscribe((params: Params) => {
+        // Load data on slug change
+        if (params.slug || params.nodeId) {
+          this.loadData(params.slug || params.nodeId);
+        } else {
+          this.isErrored = true;
+        }
+      }),
+    );
   }
 
   ngOnDestroy(): void {
-    if (this.appStoreCurrentLocationSub$) {
-      this.appStoreCurrentLocationSub$.unsubscribe();
-    }
-    if (this.appStoreUserLocationSub$) {
-      this.appStoreUserLocationSub$.unsubscribe();
-    }
-    if (this.routeSub$) {
-      this.routeSub$.unsubscribe();
-    }
+    this.subs$.forEach((sub$) => sub$.unsubscribe());
   }
 
   /**

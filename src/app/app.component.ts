@@ -1,10 +1,11 @@
 import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { SocialUser } from 'angularx-social-login';
 import { debounce, isEmpty, isEqual } from 'lodash';
 import moment from 'moment-timezone';
+import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { GeoLocation } from './classes/geolocation.class';
 import { SearchOptions } from './components/header/header.component';
@@ -25,7 +26,7 @@ import { Poi } from './utils/Poi';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('mapInstance') mapInstance: MapComponent;
 
   zoom = 11;
@@ -70,6 +71,8 @@ export class AppComponent implements OnInit {
   // ms
   private mapInteractionDebounceTime = 250;
 
+  private subs$: Subscription[] = [];
+
   constructor(
     private translate: TranslateService,
     private api: WciApiService,
@@ -79,38 +82,40 @@ export class AppComponent implements OnInit {
     private location: Location,
     private appStore: AppStoreService,
   ) {
-    this.router.events.subscribe((event: RouterEvent) => {
-      if (event instanceof NavigationEnd) {
-        this.showContent = !!this.route.root.firstChild.snapshot.data.type;
-        this.isFloatingContent = this.route.root.firstChild.snapshot.data.isFloatingContent;
-      }
-    });
+    this.subs$.push(
+      this.router.events.subscribe((event: RouterEvent) => {
+        if (event instanceof NavigationEnd) {
+          this.showContent = !!this.route.root.firstChild.snapshot.data.type;
+          this.isFloatingContent = this.route.root.firstChild.snapshot.data.isFloatingContent;
+        }
+      }),
 
-    this.appStore.watchProperty('currentLocation').subscribe((location: GeoLocation) => {
-      if (location && !isEqual(location, this.currentLocation)) {
-        this.currentLocation = location;
-        // this.getLatest();
-        this.getNearby();
-      }
-    });
+      this.appStore.watchProperty('currentLocation').subscribe((location: GeoLocation) => {
+        if (location && !isEqual(location, this.currentLocation)) {
+          this.currentLocation = location;
+          // this.getLatest();
+          this.getNearby();
+        }
+      }),
 
-    this.appStore.watchProperty('currentUserLocation').subscribe((location: GeoLocation) => {
-      if (location && !isEqual(location, this.userLocation)) {
-        this.userLocation = location;
-      }
-    });
+      this.appStore.watchProperty('currentUserLocation').subscribe((location: GeoLocation) => {
+        if (location && !isEqual(location, this.userLocation)) {
+          this.userLocation = location;
+        }
+      }),
 
-    this.appStore.watchProperty('wciUser').subscribe((user: UserInfo) => {
-      this.user = user;
-    });
+      this.appStore.watchProperty('wciUser').subscribe((user: UserInfo) => {
+        this.user = user;
+      }),
 
-    this.appStore.watchProperty('socialUserPicture').subscribe((url: string) => {
-      this.userProfilePictureUrl = url;
-    });
+      this.appStore.watchProperty('socialUserPicture').subscribe((url: string) => {
+        this.userProfilePictureUrl = url;
+      }),
 
-    this.appStore.watchProperty('useMetricSystem').subscribe((flag: boolean) => {
-      this.useMetricSystem = flag;
-    });
+      this.appStore.watchProperty('useMetricSystem').subscribe((flag: boolean) => {
+        this.useMetricSystem = flag;
+      }),
+    );
 
     this.onMapReady = debounce(this.onMapReady, this.mapInteractionDebounceTime);
     this.onMapUpdate = debounce(this.onMapUpdate, this.mapInteractionDebounceTime);
@@ -120,6 +125,10 @@ export class AppComponent implements OnInit {
     this.registerAnalytics();
     this.handleShareableMapPosition();
     this.gatherUserInfoAndRegisterDeviceLocationHandlers();
+  }
+
+  ngOnDestroy(): void {
+    this.subs$.forEach((sub$) => sub$.unsubscribe());
   }
 
   /**
