@@ -92,8 +92,10 @@
   "IMPERIAL_UNIT_MEASURE": "Imperiale",
   "METRIC_UNIT_MEASURE": "Metrica",
   "LOCATION_ACCURACY": "Posizione attuale",
+  "LANGUAGE_PREFERENCES": "Lingua",
   "UNKNOWN": "sconosciuto",
   "OSM_PEAK_DESCRIPTION": "Cima con una elevazione di <strong>{{ele}} metri.</strong>",
   "ELLIPSIS_SHOW_MORE": "... altro",
-  "ELLIPSIS_SHOW_LESS": "mostra meno"
+  "ELLIPSIS_SHOW_LESS": "mostra meno",
+  "DELETE_HISTORY": "Pulisci cronologia"
 }

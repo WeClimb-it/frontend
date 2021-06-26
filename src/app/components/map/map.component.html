@@ -90,7 +90,7 @@
     source="pois"
     [filter]="['!has', 'point_count']"
     [layout]="{
-      'icon-image': '{marker-symbol}',
+      'icon-image': '{markerSymbol}',
       'icon-offset': [0, -22]
     }"
     (layerClick)="onMarkerClick($event)"
@@ -155,13 +155,13 @@
               </div>
               <div class="link">
                 <a
-                  *ngIf="selectedFeatures[0].properties.internal_link"
-                  routerLink="{{ selectedFeatures[0].properties.internal_link }}"
+                  *ngIf="selectedFeatures[0].properties.internalLink"
+                  (click)="routeTo(selectedFeatures[0].properties.internalLink)"
                   >{{ 'OPEN_DETAIL' | translate }}</a
                 >
                 <a
-                  *ngIf="selectedFeatures[0].properties.external_link"
-                  href="{{ selectedFeatures[0].properties.external_link }}"
+                  *ngIf="selectedFeatures[0].properties.externalLink"
+                  href="{{ selectedFeatures[0].properties.externalLink }}"
                   target="_blank"
                   >{{ 'OPEN_DETAIL' | translate }}</a
                 >
@@ -174,7 +174,7 @@
               <ng-container *ngIf="selectedFeatures[0].properties.wikipedia">
                 <iframe [src]="getMapItemWikipage(selectedFeatures[0])" class="external-resource-iframe"></iframe>
                 <div class="link">
-                  <a routerLink="{{ selectedFeatures[0].properties.internal_link }}">{{ 'OPEN_DETAIL' | translate }}</a>
+                  <a (click)="routeTo(selectedFeatures[0].properties.internalLink)">{{ 'OPEN_DETAIL' | translate }}</a>
                 </div>
               </ng-container>
 
@@ -186,7 +186,7 @@
                   [innerHTML]="'OSM_PEAK_DESCRIPTION' | translate: { ele: selectedFeatures[0].properties.ele }"
                 ></div>
                 <div class="link">
-                  <a routerLink="{{ selectedFeatures[0].properties.internal_link }}">{{ 'OPEN_DETAIL' | translate }}</a>
+                  <a (click)="routeTo(selectedFeatures[0].properties.internalLink)">{{ 'OPEN_DETAIL' | translate }}</a>
                 </div>
               </ng-container>
             </ng-container>
@@ -201,10 +201,10 @@
             <div class="popup-item" *ngFor="let item of selectedFeatures">
               <div class="category {{ getPoiCategoryClass(item) }}">{{ getPoiCategoryTag(item) }}</div>
               <h4 title="{{ getMapItemTitle(item) }}">
-                <a *ngIf="item.properties.internal_link" routerLink="{{ item.properties.internal_link }}">{{
+                <a *ngIf="item.properties.internalLink" (click)="routeTo(item.properties.internalLink)">{{
                   getMapItemTitle(item)
                 }}</a>
-                <a *ngIf="item.properties.external_link" href="{{ item.properties.external_link }}" target="_blank">{{
+                <a *ngIf="item.properties.externalLink" href="{{ item.properties.externalLink }}" target="_blank">{{
                   getMapItemTitle(item)
                 }}</a>
               </h4>

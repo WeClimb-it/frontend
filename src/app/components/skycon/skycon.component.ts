@@ -22,6 +22,7 @@ export class SkyconComponent implements AfterViewInit, OnDestroy {
   @Input() height: number;
   @Input() icon: string;
   @Input() color: string;
+  @Input() animate = false;
   @ViewChild('skycon') iconRef: ElementRef;
 
   skycons;
@@ -31,11 +32,15 @@ export class SkyconComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.skycons = new Skycons({ color: this.color || 'white' });
     this.skycons.add(this.iconRef.nativeElement, this.icon);
-    this.skycons.play();
+    if (this.animate) {
+      this.skycons.play();
+    }
   }
 
   ngOnDestroy(): void {
-    this.skycons.pause();
+    if (this.animate) {
+      this.skycons.pause();
+    }
     this.skycons.remove(this.id);
   }
 }

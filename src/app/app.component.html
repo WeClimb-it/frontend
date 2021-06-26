@@ -13,8 +13,12 @@
     <button color="primary" mat-mini-fab [matMenuTriggerFor]="menu">
       <mat-icon>menu</mat-icon>
     </button>
-    <button color="primary" mat-mini-fab [matMenuTriggerFor]="languagesMenu">
-      <mat-icon>language</mat-icon>
+    <button color="primary" mat-mini-fab [matMenuTriggerFor]="historyPanel" [disabled]="!historyItems">
+      <mat-icon
+        [matBadge]="historyItems?.length ? (historyItems.length > 9 ? '9+' : historyItems.length) : undefined"
+        matBadgeColor="warn"
+        >history</mat-icon
+      >
     </button>
 
     <button class="user-preferences" color="primary" mat-mini-fab [matMenuTriggerFor]="userPreferencesMenu">
@@ -66,15 +70,20 @@
       <div class="copyleft">(ɔ) - {{ year }} WeClimb.it</div>
     </mat-menu>
 
-    <!-- The languages panel -->
-    <mat-menu #languagesMenu="matMenu" class="languages-menu custom-menu">
-      <button
-        mat-menu-item
-        *ngFor="let language of environment.i18n.availableLangsLabels; let i = index"
-        (click)="onLanguageSelected(i)"
-      >
-        {{ language }}
-      </button>
+    <!-- The history panel -->
+    <mat-menu #historyPanel="matMenu" class="history-panel custom-menu">
+      <perfect-scrollbar>
+        <div mat-menu-item *ngFor="let item of historyItems" (click)="onPoiSelected(item)">
+          <div class="static-map"><img [src]="geoService.getStaticMapUrl(item.coords, 50, 50, 12)" /></div>
+          <div class="title">
+            {{ item.title || item.name }}
+            <div class="coords">{{ item.coords?.lat || 0 }}, {{ item.coords?.lng || 0 }}</div>
+          </div>
+        </div>
+        <a class="delete" href="" (click)="onClearHistory(); $event.preventDefault()">{{
+          'DELETE_HISTORY' | translate
+        }}</a>
+      </perfect-scrollbar>
     </mat-menu>
 
     <!-- The user preferences panel -->
@@ -114,15 +123,29 @@
           </div>
         </div>
       </div>
+      <div class="preferences-container">
+        <h5><mat-icon>language</mat-icon> {{ 'LANGUAGE_PREFERENCES' | translate }}</h5>
+        <div class="preferences-list">
+          <div class="preferences-list-item">
+            <mat-chip-list>
+              <mat-chip
+                *ngFor="let language of environment.i18n.availableLangsLabels; let i = index"
+                (click)="onLanguageSelected(i)"
+                >{{ language }}</mat-chip
+              >
+            </mat-chip-list>
+          </div>
+        </div>
+      </div>
     </mat-menu>
   </div>
 
   <!-- The header -->
   <div class="header-container">
+    <!-- (queryChanged)="onSearchQueryChanged($event)" -->
     <wci-header
       class="header"
       (search)="onSearch($event)"
-      (queryChanged)="onSearchQueryChanged($event)"
       (suggestionSelected)="onSuggestionSelected($event)"
       (optionsUpdated)="onOptionsUpdated($event)"
     ></wci-header>

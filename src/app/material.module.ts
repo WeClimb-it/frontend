@@ -1,6 +1,7 @@
 import { ObserversModule } from '@angular/cdk/observers';
 import { PlatformModule } from '@angular/cdk/platform';
 import { NgModule } from '@angular/core';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -14,6 +15,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Ng5SliderModule } from 'ng5-slider';
 
 /**
@@ -37,6 +39,8 @@ import { Ng5SliderModule } from 'ng5-slider';
     MatProgressSpinnerModule,
     MatSlideToggleModule,
     Ng5SliderModule,
+    MatBadgeModule,
+    MatTooltipModule,
   ],
 })
 export class MaterialModule {}

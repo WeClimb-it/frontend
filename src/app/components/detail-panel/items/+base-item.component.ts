@@ -4,11 +4,11 @@ import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { GeoLocation } from 'src/app/classes/geolocation.class';
 import { NearbyResult } from 'src/app/graphql/queries';
 import { Coords } from 'src/app/interfaces/graphql';
+import { GeoService } from 'src/app/services/geo.service';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { getSectionFromItem } from 'src/app/utils/ContentType';
 import { getGoogleMapsUrl } from 'src/app/utils/Map';
 import { Poi } from 'src/app/utils/Poi';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'wci-base-card-item',
@@ -23,7 +23,6 @@ export class BaseCardItemComponent implements OnChanges {
 
   @ViewChild('sideScrollbar') scrollbar: PerfectScrollbarComponent;
 
-  mapboxToken = environment.mapbox.token;
   staticMapSrc = '';
 
   expandDescription = false;
@@ -31,17 +30,14 @@ export class BaseCardItemComponent implements OnChanges {
   nearbyPois: Poi[] = [];
   // photos: Photo[] = [];
 
-  protected staticMapSizes = [360, 280];
-
   private nearbyItemsNumber = 4;
   private nearbyItemsDistance = 80;
 
-  constructor(protected router: Router, protected api: WciApiService) {}
+  constructor(protected router: Router, protected api: WciApiService, protected geoService: GeoService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data && changes.data.currentValue && changes.data.currentValue !== changes.data.previousValue) {
-      this.staticMapSrc = `https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/${this.data.coords.lng},${this.data.coords.lat},10.19,0/${this.staticMapSizes[0]}x${this.staticMapSizes[1]}@2x?access_token=${this.mapboxToken}`;
-
+      this.staticMapSrc = this.geoService.getStaticMapUrl(this.data.coords, 360, 280);
       this.getNearby();
     }
   }

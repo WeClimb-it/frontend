@@ -15,8 +15,8 @@ import { BaseItemWithDynamicMapComponent } from './+withDynamicMap-item.componen
 export class CragCardItemComponent extends BaseItemWithDynamicMapComponent implements OnChanges {
   data: Crag;
 
-  constructor(protected router: Router, protected api: WciApiService, protected geoApi: GeoService) {
-    super(router, api, geoApi);
+  constructor(protected router: Router, protected api: WciApiService, protected geoService: GeoService) {
+    super(router, api, geoService);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

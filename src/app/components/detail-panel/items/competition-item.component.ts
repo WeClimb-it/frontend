@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { Competition } from 'src/app/interfaces/graphql';
+import { GeoService } from 'src/app/services/geo.service';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { getSanitizedCompetitionProperties } from 'src/app/utils/Misc';
 
@@ -22,8 +23,8 @@ export class CompetitionCardItemComponent extends BaseCardItemComponent implemen
   startDate: Date;
   endDate: Date;
 
-  constructor(protected router: Router, protected api: WciApiService) {
-    super(router, api);
+  constructor(protected router: Router, protected api: WciApiService, protected geoService: GeoService) {
+    super(router, api, geoService);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

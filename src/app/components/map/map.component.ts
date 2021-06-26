@@ -4,12 +4,14 @@ import {
   Component,
   EventEmitter,
   Input,
+  NgZone,
   OnChanges,
   Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { each, size } from 'lodash';
 import { MapboxGeoJSONFeature } from 'mapbox-gl';
@@ -159,6 +161,8 @@ export class MapComponent implements OnChanges {
     private translateService: TranslateService,
     private ref: ChangeDetectorRef,
     private sanitizer: DomSanitizer,
+    private zone: NgZone,
+    private router: Router,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -220,6 +224,15 @@ export class MapComponent implements OnChanges {
    */
   flyTo(lat: number, lng: number): void {
     this.mapInstance.flyTo({ center: [lng, lat] });
+  }
+
+  /**
+   *
+   */
+  routeTo(internalLink: string): void {
+    this.zone.run(() => {
+      this.router.navigate([internalLink]);
+    });
   }
 
   /**
@@ -384,15 +397,16 @@ export class MapComponent implements OnChanges {
     isInternal = true,
   ): GeoJSONFeature[] {
     const output: GeoJSONFeature[] = [];
+
     each(entities, (e: Entity) => {
       const feature: GeoJSONFeature = {
         type: 'Feature',
         properties: {
           ...e,
           source: this.SOURCES.WCI,
-          'marker-symbol': type,
-          internal_link: isInternal ? `/${namespace}/${e.slug}` : undefined,
-          external_link: !isInternal ? e.resourceUrl : undefined,
+          markerSymbol: type,
+          internalLink: isInternal ? `/${namespace}/${e.slug}` : undefined,
+          externalLink: !isInternal ? e.resourceUrl : undefined,
         },
         geometry: {
           type: 'Point',
@@ -401,6 +415,7 @@ export class MapComponent implements OnChanges {
       };
       output.push(feature);
     });
+
     return output;
   }
 
@@ -436,9 +451,9 @@ export class MapComponent implements OnChanges {
         if (feature.properties[key] === value) {
           feature.properties = {
             ...feature.properties,
-            'marker-symbol': mapValue,
+            markerSymbol: mapValue,
             source: this.SOURCES.OSM,
-            internal_link: `/pois/${(feature.properties.id as string).split('/')[1]}`,
+            internalLink: `/pois/${(feature.properties.id as string).split('/')[1]}`,
           };
 
           features.push(feature);

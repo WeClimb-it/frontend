@@ -4,8 +4,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { getDistance } from 'geolib';
 import moment, { Duration } from 'moment';
 import { environment } from 'src/environments/environment';
-
 import { GeoLocation } from '../classes/geolocation.class';
+import { Coords } from '../interfaces/graphql';
 import { PersistanceService } from './persistanceService';
 
 const WINDOW: any = window || {};
@@ -27,6 +27,8 @@ export class GeoService {
   // in km/h
   private AVG_HUMAN_SPEED = 3.6;
   private AVG_CAR_SPEED = 85;
+
+  private mapboxToken = environment.mapbox.token;
 
   constructor(private httpClient: HttpClient, private translateService: TranslateService) {}
 
@@ -213,6 +215,14 @@ export class GeoService {
     } else {
       error();
     }
+  }
+
+  /**
+   *
+   *
+   */
+  getStaticMapUrl(coords: Coords, width: number = 360, height: number = 280, zoom: number = 10): string {
+    return `https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/${coords.lng},${coords.lat},${zoom},0/${width}x${height}@2x?access_token=${this.mapboxToken}`;
   }
 
   private getGeocoderInstance(): any {

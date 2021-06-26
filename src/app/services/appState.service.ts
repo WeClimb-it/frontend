@@ -12,7 +12,7 @@ export class AppStoreService {
    *
    */
   getProperty(key: string): unknown {
-    return this.state[key] ? this.state[key].getValue() : undefined;
+    return this.state[key]?.getValue();
   }
 
   /**
@@ -39,6 +39,10 @@ export class AppStoreService {
     }
 
     if (persist) {
+      if (typeof value === 'object') {
+        value = JSON.stringify(value);
+      }
+
       PersistanceService.set(key, String(value));
     }
   }

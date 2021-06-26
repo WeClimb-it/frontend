@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import togeojson from '@mapbox/togeojson';
 import { GeoJSONFeature } from 'src/app/interfaces/geo/GeoJSONFeature.interface';
@@ -39,8 +31,8 @@ export class BaseItemWithDynamicMapComponent extends BaseItemWithWeatherComponen
 
   gpxTrack;
 
-  constructor(protected router: Router, protected api: WciApiService, protected geoApi: GeoService) {
-    super(router, api);
+  constructor(protected router: Router, protected api: WciApiService, protected geoService: GeoService) {
+    super(router, api, geoService);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -73,7 +65,7 @@ export class BaseItemWithDynamicMapComponent extends BaseItemWithWeatherComponen
    *
    */
   downloadGpsTrack(url: string): void {
-    this.geoApi.openGpxFileContent(url);
+    this.geoService.openGpxFileContent(url);
   }
 
   /**
@@ -87,7 +79,7 @@ export class BaseItemWithDynamicMapComponent extends BaseItemWithWeatherComponen
    *
    */
   private async loadGPX(url: string): Promise<void> {
-    const gpx = await this.geoApi.getGpxFileContent(url);
+    const gpx = await this.geoService.getGpxFileContent(url);
     this.gpxTrack = togeojson.gpx(new DOMParser().parseFromString(gpx, 'text/xml'));
   }
 }

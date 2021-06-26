@@ -15,8 +15,8 @@ import { BaseItemWithDynamicMapComponent } from './+withDynamicMap-item.componen
 export class HikeCardItemComponent extends BaseItemWithDynamicMapComponent implements OnChanges {
   data: Hike;
 
-  constructor(protected router: Router, protected api: WciApiService, protected geoApi: GeoService) {
-    super(router, api, geoApi);
+  constructor(protected router: Router, protected api: WciApiService, protected geoService: GeoService) {
+    super(router, api, geoService);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

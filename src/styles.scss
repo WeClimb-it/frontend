@@ -195,6 +195,10 @@ a:visited {
         .mat-slide-toggle {
           transform: scale(0.8) translateX(-20px);
         }
+
+        .mat-chip {
+          cursor: pointer;
+        }
       }
     }
 
@@ -214,6 +218,66 @@ a:visited {
       text-transform: uppercase;
     }
   }
+
+  &.history-panel {
+    .delete {
+      font-size: 12px;
+      text-decoration: none;
+    }
+
+    .mat-menu-item {
+      padding: 0;
+      height: 54px;
+      line-height: 54px;
+      text-overflow: initial;
+      display: flex;
+
+      &:first-child {
+        padding-top: 0;
+      }
+      &:last-child {
+        padding-bottom: 0;
+      }
+    }
+
+    .static-map {
+      width: 50px;
+      height: 50px;
+      background-color: #e4e8eb;
+      margin-right: 5px;
+      vertical-align: top;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+
+    .title {
+      font-size: 13px;
+      width: calc(100% - 50px);
+      line-height: 15px;
+      margin-top: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      text-transform: lowercase;
+      &:first-letter {
+        text-transform: capitalize;
+      }
+
+      .coords {
+        font-size: 10px;
+        color: rgba(black, 0.45);
+      }
+    }
+  }
+}
+
+.mat-menu-panel.history-panel .mat-menu-content {
+  position: relative;
+  height: 320px !important;
+  overflow: hidden !important;
 }
 
 .media-dialog .mat-dialog-container {

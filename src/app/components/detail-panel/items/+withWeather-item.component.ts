@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, OnChanges, SimpleChanges } from '@a
 import { Router } from '@angular/router';
 import { ForecastResult } from 'src/app/graphql/queries';
 import { CurrentWeather, Forecast } from 'src/app/interfaces/graphql';
+import { GeoService } from 'src/app/services/geo.service';
 import { WciApiService } from 'src/app/services/wciApi.service';
-
 import { BaseCardItemComponent } from './+base-item.component';
 
 @Component({
@@ -19,8 +19,8 @@ export class BaseItemWithWeatherComponent extends BaseCardItemComponent implemen
   tomorrowForecast: Forecast;
   forecasts: Forecast[];
 
-  constructor(protected router: Router, protected api: WciApiService) {
-    super(router, api);
+  constructor(protected router: Router, protected api: WciApiService, protected geoService: GeoService) {
+    super(router, api, geoService);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

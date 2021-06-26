@@ -7,7 +7,7 @@ export class PersistanceService {
   /**
    *
    */
-  static get(key: string): string | boolean | number | null | undefined {
+  static get(key: string): string | boolean | number | object | null | undefined {
     const value = this.hasLocalStorage ? window.localStorage.getItem(key) : Cookies.get(key);
 
     if (value == null || typeof value === 'undefined') {
@@ -22,6 +22,8 @@ export class PersistanceService {
       return false;
     } else if (output === 'true') {
       return true;
+    } else if (output[0] === '[' || output[0] === '{') {
+      output = JSON.parse(output as string);
     } else {
       output = String(output);
     }

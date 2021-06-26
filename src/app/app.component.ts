@@ -1,5 +1,13 @@
 import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterContentChecked,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { SocialUser } from 'angularx-social-login';
@@ -15,6 +23,7 @@ import { MapUpdateEvent } from './interfaces/events/map-update.interface';
 import { ListResult, SearchResult, UserInfo, UserInfoInput } from './interfaces/graphql';
 import { AppStoreService } from './services/appState.service';
 import { GeoService, PlaceSuggestion } from './services/geo.service';
+import { HistoryService } from './services/history.service';
 import { I18nService } from './services/i18n.service';
 import { PersistanceService } from './services/persistanceService';
 import { WciApiService } from './services/wciApi.service';
@@ -24,9 +33,9 @@ import { Poi } from './utils/Poi';
   selector: 'wci-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   @ViewChild('mapInstance') mapInstance: MapComponent;
 
   zoom = 11;
@@ -57,6 +66,8 @@ export class AppComponent implements OnInit, OnDestroy {
   user: UserInfo;
   userProfilePictureUrl: string;
 
+  historyItems: Poi[] = [];
+
   private mapData: MapUpdateEvent;
   private userData: UserInfo;
   private latestSearchOptions: SearchOptions;
@@ -76,11 +87,13 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private translate: TranslateService,
     private api: WciApiService,
-    private geoService: GeoService,
     private router: Router,
     private route: ActivatedRoute,
-    private location: Location,
+    private locationService: Location,
     private appStore: AppStoreService,
+    private cdr: ChangeDetectorRef,
+    private historyService: HistoryService,
+    public geoService: GeoService,
   ) {
     this.subs$.push(
       this.router.events.subscribe((event: RouterEvent) => {
@@ -115,6 +128,10 @@ export class AppComponent implements OnInit, OnDestroy {
       this.appStore.watchProperty('useMetricSystem').subscribe((flag: boolean) => {
         this.useMetricSystem = flag;
       }),
+
+      this.appStore.watchProperty('history').subscribe((items: Poi[]) => {
+        this.historyItems = items;
+      }),
     );
 
     this.onMapReady = debounce(this.onMapReady, this.mapInteractionDebounceTime);
@@ -129,6 +146,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subs$.forEach((sub$) => sub$.unsubscribe());
+  }
+
+  ngAfterContentChecked(): void {
+    this.cdr.detectChanges();
   }
 
   /**
@@ -177,9 +198,9 @@ export class AppComponent implements OnInit, OnDestroy {
   /**
    *
    */
-  onSearchQueryChanged(query: string): void {
-    // Do nothing
-  }
+  // onSearchQueryChanged(query: string): void {
+  //   // Do nothing
+  // }
 
   /**
    *
@@ -283,6 +304,13 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   onUnitMeasureChanged(): void {
     this.appStore.setProperty('useMetricSystem', !this.useMetricSystem, true);
+  }
+
+  /**
+   *
+   */
+  onClearHistory(): void {
+    this.historyService.clear();
   }
 
   /**
@@ -590,7 +618,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // By design the shareable URL is supported only on the root level of the app,
     // data.type defines the section we are in.
     if (!this.route.root.firstChild?.snapshot.data.type) {
-      this.location.go(`/${geo.lat.toFixed(4)},${geo.lng.toFixed(4)}`);
+      this.locationService.go(`/${geo.lat.toFixed(4)},${geo.lng.toFixed(4)}`);
     }
   }
 }
