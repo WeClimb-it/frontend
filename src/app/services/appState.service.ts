@@ -53,7 +53,6 @@ export class AppStoreService {
   unsetProperty(key: string): void {
     if (this.state[key]) {
       this.state[key].next(undefined);
-      delete this.state[key];
       PersistanceService.unset(key);
     }
   }

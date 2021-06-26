@@ -130,7 +130,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
       }),
 
       this.appStore.watchProperty('history').subscribe((items: Poi[]) => {
-        this.historyItems = items;
+        this.historyItems = items || [];
       }),
     );
 

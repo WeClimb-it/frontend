@@ -13,7 +13,7 @@
     <button color="primary" mat-mini-fab [matMenuTriggerFor]="menu">
       <mat-icon>menu</mat-icon>
     </button>
-    <button color="primary" mat-mini-fab [matMenuTriggerFor]="historyPanel" [disabled]="!historyItems">
+    <button color="primary" mat-mini-fab [matMenuTriggerFor]="historyPanel" [disabled]="historyItems?.length === 0">
       <mat-icon
         [matBadge]="historyItems?.length ? (historyItems.length > 9 ? '9+' : historyItems.length) : undefined"
         matBadgeColor="warn"
