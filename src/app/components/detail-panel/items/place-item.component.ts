@@ -2,6 +2,7 @@ import { AfterViewChecked, ChangeDetectionStrategy, Component, OnChanges, Simple
 import { Router } from '@angular/router';
 import { Place } from 'src/app/interfaces/graphql';
 import { GeoService } from 'src/app/services/geo.service';
+import { MetaService } from 'src/app/services/meta.services';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { BaseCardItemComponent } from './+base-item.component';
 
@@ -17,8 +18,13 @@ const FB = window['FB'] || {};
 export class PlaceCardItemComponent extends BaseCardItemComponent implements AfterViewChecked, OnChanges {
   data: Place;
 
-  constructor(protected router: Router, protected api: WciApiService, protected geoService: GeoService) {
-    super(router, api, geoService);
+  constructor(
+    protected router: Router,
+    protected api: WciApiService,
+    protected geoService: GeoService,
+    protected metaService: MetaService,
+  ) {
+    super(router, api, geoService, metaService);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

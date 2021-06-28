@@ -5,6 +5,7 @@ import { GeoLocation } from 'src/app/classes/geolocation.class';
 import { NearbyResult } from 'src/app/graphql/queries';
 import { Coords } from 'src/app/interfaces/graphql';
 import { GeoService } from 'src/app/services/geo.service';
+import { MetaService } from 'src/app/services/meta.services';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { getSectionFromItem } from 'src/app/utils/ContentType';
 import { getGoogleMapsUrl } from 'src/app/utils/Map';
@@ -24,6 +25,7 @@ export class BaseCardItemComponent implements OnChanges {
   @ViewChild('sideScrollbar') scrollbar: PerfectScrollbarComponent;
 
   staticMapSrc = '';
+  shareableDescr = '';
 
   expandDescription = false;
 
@@ -33,12 +35,24 @@ export class BaseCardItemComponent implements OnChanges {
   private nearbyItemsNumber = 4;
   private nearbyItemsDistance = 80;
 
-  constructor(protected router: Router, protected api: WciApiService, protected geoService: GeoService) {}
+  constructor(
+    protected router: Router,
+    protected api: WciApiService,
+    protected geoService: GeoService,
+    protected metaService: MetaService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data && changes.data.currentValue && changes.data.currentValue !== changes.data.previousValue) {
       this.staticMapSrc = this.geoService.getStaticMapUrl(this.data.coords, 360, 280);
       this.getNearby();
+
+      this.shareableDescr = `${this.data['name'] || this.data['title'] || 'WeClimb.it'} @ ${this.data.coords.lat}, ${
+        this.data.coords.lng
+      }`;
+
+      // TODO: i18n
+      this.metaService.setDetailSocialMedia('Check this content on WeClimb.it', this.shareableDescr, location.href);
     }
   }
 

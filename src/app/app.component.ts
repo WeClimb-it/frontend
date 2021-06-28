@@ -25,6 +25,7 @@ import { AppStoreService } from './services/appState.service';
 import { GeoService, PlaceSuggestion } from './services/geo.service';
 import { HistoryService } from './services/history.service';
 import { I18nService } from './services/i18n.service';
+import { MetaService } from './services/meta.services';
 import { PersistanceService } from './services/persistanceService';
 import { WciApiService } from './services/wciApi.service';
 import { Poi } from './utils/Poi';
@@ -93,6 +94,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
     private appStore: AppStoreService,
     private cdr: ChangeDetectorRef,
     private historyService: HistoryService,
+    private metaService: MetaService,
     public geoService: GeoService,
   ) {
     this.subs$.push(
@@ -130,12 +132,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
       }),
 
       this.appStore.watchProperty('history').subscribe((items: Poi[]) => {
-        this.historyItems = items || [];
+        this.historyItems = items?.reverse() || [];
       }),
     );
 
     this.onMapReady = debounce(this.onMapReady, this.mapInteractionDebounceTime);
     this.onMapUpdate = debounce(this.onMapUpdate, this.mapInteractionDebounceTime);
+
+    this.metaService.setDefaultSocialMeta();
   }
 
   ngOnInit(): void {

@@ -1,9 +1,17 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { GeoLocation } from 'src/app/classes/geolocation.class';
 import { HistoryService } from 'src/app/services/history.service';
+import { MetaService } from 'src/app/services/meta.services';
 import { ContentType } from 'src/app/utils/ContentType';
-import { Poi } from 'src/app/utils/Poi';
 
 @Component({
   selector: 'wci-detail-panel',
@@ -11,9 +19,9 @@ import { Poi } from 'src/app/utils/Poi';
   styleUrls: ['./detail-panel.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class DetailPanelComponent implements OnChanges {
+export class DetailPanelComponent implements OnChanges, OnDestroy {
   @Input() type: ContentType;
-  @Input() data: Poi;
+  @Input() data: Record<string, any>;
   @Input() currentLocation: GeoLocation;
   @Input() userLocation: GeoLocation;
   @Input() useMetricSystem = false;
@@ -24,11 +32,15 @@ export class DetailPanelComponent implements OnChanges {
 
   disableScrollbar = false;
 
-  constructor(private historyService: HistoryService) {}
+  constructor(private historyService: HistoryService, private metaService: MetaService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data && changes.data.currentValue) {
       this.historyService.addToHistory(this.data);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.metaService.setDefaultSocialMeta();
   }
 }

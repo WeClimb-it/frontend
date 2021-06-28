@@ -6,6 +6,8 @@ import { EllipsisModule } from 'ngx-ellipsis';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { MomentModule } from 'ngx-moment';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { DetailNearbyComponent } from 'src/app/components/detail-panel/detail-nearby/detail-nearby.component';
 import { DetailPanelComponent } from 'src/app/components/detail-panel/detail-panel.component';
 import { CompetitionCardItemComponent } from 'src/app/components/detail-panel/items/competition-item.component';
@@ -18,7 +20,6 @@ import { SkyconComponent } from 'src/app/components/skycon/skycon.component';
 import { MaterialModule } from 'src/app/material.module';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { environment } from 'src/environments/environment';
-
 import { DetailRoutingModule } from './detail-routing.module';
 import { DetailComponent } from './detail.component';
 
@@ -51,6 +52,8 @@ const components = [
     }),
     PipesModule,
     EllipsisModule,
+    ShareButtonsModule,
+    ShareIconsModule,
   ],
   exports: [],
   declarations: [...components],

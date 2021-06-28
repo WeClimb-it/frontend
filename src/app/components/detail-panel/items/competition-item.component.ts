@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, OnChanges, SimpleChanges } from '@a
 import { Router } from '@angular/router';
 import { Competition } from 'src/app/interfaces/graphql';
 import { GeoService } from 'src/app/services/geo.service';
+import { MetaService } from 'src/app/services/meta.services';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { getSanitizedCompetitionProperties } from 'src/app/utils/Misc';
-
 import { BaseCardItemComponent } from './+base-item.component';
 
 @Component({
@@ -18,26 +18,30 @@ export class CompetitionCardItemComponent extends BaseCardItemComponent implemen
 
   hasBeenDisputed = false;
   types = [];
-  specialties = [];
-  categories = [];
+  specialtiesAndCategories: string[] = [];
   startDate: Date;
   endDate: Date;
 
-  constructor(protected router: Router, protected api: WciApiService, protected geoService: GeoService) {
-    super(router, api, geoService);
+  constructor(
+    protected router: Router,
+    protected api: WciApiService,
+    protected geoService: GeoService,
+    protected metaService: MetaService,
+  ) {
+    super(router, api, geoService, metaService);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     super.ngOnChanges(changes);
 
     if (changes.data && changes.data.currentValue !== changes.data.previousValue) {
-      const { disputed, types, specialties, categories, startDate, endDate } = getSanitizedCompetitionProperties(
+      const { disputed, types, specialtiesAndCategories, startDate, endDate } = getSanitizedCompetitionProperties(
         changes.data.currentValue,
       );
+
       this.hasBeenDisputed = disputed;
       this.types = types;
-      this.specialties = specialties;
-      this.categories = categories;
+      this.specialtiesAndCategories = specialtiesAndCategories;
       this.startDate = startDate;
       this.endDate = endDate;
     }

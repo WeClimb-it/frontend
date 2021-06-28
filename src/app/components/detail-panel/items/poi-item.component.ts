@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { GeoService } from 'src/app/services/geo.service';
+import { MetaService } from 'src/app/services/meta.services';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { BaseItemWithDynamicMapComponent } from './+withDynamicMap-item.component';
 
@@ -13,8 +14,13 @@ import { BaseItemWithDynamicMapComponent } from './+withDynamicMap-item.componen
 export class PoiCardItemComponent extends BaseItemWithDynamicMapComponent implements OnChanges {
   data: Record<string, any>;
 
-  constructor(protected router: Router, protected api: WciApiService, protected geoService: GeoService) {
-    super(router, api, geoService);
+  constructor(
+    protected router: Router,
+    protected api: WciApiService,
+    protected geoService: GeoService,
+    protected metaService: MetaService,
+  ) {
+    super(router, api, geoService, metaService);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -4,6 +4,21 @@
     <h4>{{ data.title }}</h4>
     <!-- -->
 
+    <!-- Social share -->
+    <div class="social-share">
+      <share-buttons
+        *ngIf="data"
+        [theme]="'modern-dark'"
+        [include]="['facebook', 'twitter', 'telegram', 'whatsapp', 'copy']"
+        [show]="5"
+        [size]="-4"
+        [title]="shareableDescr"
+        [description]="shareableDescr"
+        [autoSetMeta]="false"
+      ></share-buttons>
+    </div>
+    <!-- -->
+
     <div class="description">
       <div
         *ngIf="data.descr && !expandDescription; else noEllipsis"

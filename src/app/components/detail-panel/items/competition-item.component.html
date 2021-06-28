@@ -4,11 +4,26 @@
     <h4>{{ data.title }}</h4>
     <!-- -->
 
+    <!-- Social share -->
+    <div class="social-share">
+      <share-buttons
+        *ngIf="data"
+        [theme]="'modern-dark'"
+        [include]="['facebook', 'twitter', 'telegram', 'whatsapp', 'copy']"
+        [show]="5"
+        [size]="-4"
+        [title]="shareableDescr"
+        [description]="shareableDescr"
+        [autoSetMeta]="false"
+      ></share-buttons>
+    </div>
+    <!-- -->
+
     <!-- The competition categories -->
     <div class="categories">
       <mat-chip-list>
         <mat-chip *ngFor="let type of types" color="primary" selected>{{ type }}</mat-chip>
-        <mat-chip *ngFor="let specialty of specialties" color="primary" selected>{{ specialty }}</mat-chip>
+        <mat-chip *ngFor="let specialty of specialtiesAndCategories" color="primary" selected>{{ specialty }}</mat-chip>
       </mat-chip-list>
     </div>
     <!-- -->

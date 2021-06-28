@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ForecastResult } from 'src/app/graphql/queries';
 import { CurrentWeather, Forecast } from 'src/app/interfaces/graphql';
 import { GeoService } from 'src/app/services/geo.service';
+import { MetaService } from 'src/app/services/meta.services';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { BaseCardItemComponent } from './+base-item.component';
 
@@ -19,8 +20,13 @@ export class BaseItemWithWeatherComponent extends BaseCardItemComponent implemen
   tomorrowForecast: Forecast;
   forecasts: Forecast[];
 
-  constructor(protected router: Router, protected api: WciApiService, protected geoService: GeoService) {
-    super(router, api, geoService);
+  constructor(
+    protected router: Router,
+    protected api: WciApiService,
+    protected geoService: GeoService,
+    protected metaService: MetaService,
+  ) {
+    super(router, api, geoService, metaService);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

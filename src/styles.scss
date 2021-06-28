@@ -3,6 +3,8 @@
 @import 'colors';
 @import 'common';
 
+@import '~ngx-sharebuttons/themes/modern/modern-dark-theme';
+
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
@@ -115,7 +117,9 @@ a:visited {
   }
 }
 
-// Global MD customizations --
+//
+// Global MD customizations
+//
 .custom-menu {
   @include mat.elevation(3, black, 0.4);
 
@@ -318,10 +322,12 @@ a:visited {
 .mat-progress-bar {
   border-radius: 10px;
 }
-// --------------------------
+//
+// End Global MD customizations
+//
 
 //
-// LOADER
+// Loader
 //
 .loading {
   width: 100%;
@@ -378,5 +384,43 @@ a:visited {
   }
 }
 //
-// END LOADER
+// End Loader
+//
+
+//
+// Social share
+//
+share-buttons {
+  share-button {
+    --sb-margin: 1px !important;
+
+    opacity: 0.25;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .sb-group {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .sb-group,
+  .sb-button {
+    display: inline-flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .sb-wrapper {
+    min-width: 1em;
+    height: 2em;
+    line-height: 2em;
+    border-radius: 2px !important;
+    box-shadow: none !important;
+  }
+}
+//
+// End Social share
 //
