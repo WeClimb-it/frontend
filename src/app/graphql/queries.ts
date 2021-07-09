@@ -11,6 +11,7 @@ import {
   SearchResult as SearchResultType,
   Sector,
   Shelter,
+  Story,
   UserInfo,
 } from '../interfaces/graphql';
 import { Photo } from '../interfaces/photo.interface';
@@ -41,6 +42,8 @@ export type ForecastResult = ApolloQueryResult<{ forecast: ForecastResultType }>
 export type PhotosResult = ApolloQueryResult<{ photos: Photo[] }>;
 export type UserInfoResult = ApolloQueryResult<{ userInfo: UserInfo }>;
 export type WaveUserResult = ApolloQueryResult<{ waveUser: UserInfo }>;
+export type StoriesResult = ApolloQueryResult<{ stories: Story[] }>;
+export type StoryResult = ApolloQueryResult<{ story: Story }>;
 
 export default class {
   static get userInfo(): DocumentNode {
@@ -495,7 +498,7 @@ export default class {
 
   static get forecast(): DocumentNode {
     return gql`
-      query Forecast($lat: Float!, $lng: Float!) {
+      query GetForecast($lat: Float!, $lng: Float!) {
         forecast(lat: $lat, lng: $lng) {
           ...ForecastResult
         }
@@ -506,7 +509,7 @@ export default class {
 
   static get osmNodes(): DocumentNode {
     return gql`
-      query OsmNodes($lat: Float!, $lng: Float!, $distance: Float!) {
+      query GetOsmNodes($lat: Float!, $lng: Float!, $distance: Float!) {
         osmNodes(lat: $lat, lng: $lng, distance: $distance)
       }
     `;
@@ -514,7 +517,7 @@ export default class {
 
   static get googlePlaces(): DocumentNode {
     return gql`
-      query GooglePlaces($lat: Float!, $lng: Float!, $distance: Float!) {
+      query GetGooglePlaces($lat: Float!, $lng: Float!, $distance: Float!) {
         googlePlaces(lat: $lat, lng: $lng, distance: $distance) {
           items {
             ...Place
@@ -535,7 +538,7 @@ export default class {
 
   static get photos(): DocumentNode {
     return gql`
-      query Photos($query: String!) {
+      query GetPhotos($query: String!) {
         photos(query: $query)
       }
     `;
@@ -549,6 +552,28 @@ export default class {
         }
       }
       ${fragments.UserInfo}
+    `;
+  }
+
+  static get stories(): DocumentNode {
+    return gql`
+      query GetStories($start: Float, $end: Float) {
+        stories(start: $start, end: $end) {
+          ...Story
+        }
+      }
+      ${fragments.Story}
+    `;
+  }
+
+  static get story(): DocumentNode {
+    return gql`
+      query GetStory($slug: String!) {
+        story(slug: $slug) {
+          ...Story
+        }
+      }
+      ${fragments.Story}
     `;
   }
 }

@@ -852,6 +852,29 @@ export const UserGeo = `fragment UserGeo on UserGeo {
 }
 `;
 
+export const Story = `fragment Story on Story {
+  type
+  slug
+  pageTitle
+  description
+  thumbnailImage
+  coverImage
+  category
+  language
+  articles {
+    title
+    shortDescription
+    image
+    body
+    coords {
+      lat
+      lng
+    }
+    resourceUrl
+  }
+}
+`;
+
 export const SearchResult = `fragment SearchResult on SearchResult {
   locations {
     name

@@ -1,0 +1,61 @@
+<perfect-scrollbar class="content" [ngClass]="{ disabled: isMapMoving }" [config]="isMapMoving ? { handlers: [] } : {}">
+  <section *ngIf="story" class="story">
+    <div class="head" [style]="'background-image: url(/assets/stories/' + story.coverImage + ');'">
+      <div class="info">
+        <h2>"{{ story.pageTitle }}"</h2>
+        <h6>{{ story.description }}</h6>
+      </div>
+    </div>
+
+    <article *ngFor="let article of story.articles">
+      <div class="article-info">
+        <h4>{{ article.title }}</h4>
+        <h5>{{ article.shortDescription }}</h5>
+      </div>
+
+      <div class="article-head">
+        <div class="image" [style]="'background-image: url(/assets/stories/' + article.image + ');'"></div>
+        <div class="map">
+          <button mat-button color="primary" (click)="goToTheMap(article.coords)">
+            {{ 'SHOW_ON_MAP' | translate }}
+          </button>
+          <mgl-map
+            [style]="mapStyle"
+            [zoom]="[10]"
+            [center]="[article.coords?.lng, article.coords?.lat]"
+            (mapMouseOver)="onMapBusy(true)"
+            (mapMouseOut)="onMapBusy(false)"
+            (mapTouchStart)="onMapBusy(true)"
+            (mapTouchEnd)="onMapBusy(false)"
+          >
+            <!-- The current landing point -->
+            <mgl-geojson-source id="center" [data]="getGeoJsonFromArticle(article.coords)"></mgl-geojson-source>
+            <mgl-layer
+              id="center-point"
+              type="circle"
+              source="center"
+              [paint]="{
+                'circle-color': 'rgba(255, 95, 88, 0.9)',
+                'circle-radius': 8
+              }"
+            >
+            </mgl-layer>
+            <mgl-layer
+              id="center-point-2"
+              type="circle"
+              source="center"
+              [paint]="{
+                'circle-color': 'rgba(255, 95, 88, 0.5)',
+                'circle-radius': 20
+              }"
+            >
+            </mgl-layer>
+            <!-- / -->
+          </mgl-map>
+        </div>
+      </div>
+
+      <div class="article-content" [innerHTML]="article.body"></div>
+    </article>
+  </section>
+</perfect-scrollbar>

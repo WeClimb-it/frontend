@@ -97,5 +97,6 @@
   "OSM_PEAK_DESCRIPTION": "Cima con una elevazione di <strong>{{ele}} metri.</strong>",
   "ELLIPSIS_SHOW_MORE": "... altro",
   "ELLIPSIS_SHOW_LESS": "mostra meno",
-  "DELETE_HISTORY": "Pulisci cronologia"
+  "DELETE_HISTORY": "Pulisci cronologia",
+  "SHOW_ON_MAP": "Mostra sulla mappa"
 }

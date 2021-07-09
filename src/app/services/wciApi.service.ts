@@ -22,6 +22,8 @@ import Queries, {
   SectorResult,
   ShelterResult,
   SheltersResult,
+  StoriesResult,
+  StoryResult,
   UserInfoResult,
   WaveUserResult,
 } from '../graphql/queries';
@@ -46,6 +48,8 @@ import {
   SectorOnQueryArguments,
   ShelterOnQueryArguments,
   SheltersOnQueryArguments,
+  StoriesOnQueryArguments,
+  StoryOnQueryArguments,
   WaveUserOnQueryArguments,
 } from '../interfaces/graphql';
 import { ApolloService } from './apollo.service';
@@ -374,6 +378,26 @@ export class WciApiService {
     return from(
       this.service.client.query({
         query: Queries.waveUser,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
+  }
+
+  getStories(opts: StoriesOnQueryArguments): Observable<StoriesResult> {
+    return from(
+      this.service.client.query({
+        query: Queries.stories,
+        variables: opts,
+        fetchPolicy: this.noCacheFetchPolicy,
+      }),
+    );
+  }
+
+  getStory(opts: StoryOnQueryArguments): Observable<StoryResult> {
+    return from(
+      this.service.client.query({
+        query: Queries.story,
         variables: opts,
         fetchPolicy: this.noCacheFetchPolicy,
       }),

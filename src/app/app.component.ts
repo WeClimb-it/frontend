@@ -44,7 +44,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
 
   hasBrowserGeolocation = navigator && navigator.geolocation;
   hasActivatedBrowserGeolocation = false;
-  hasSharedPositionSet = false;
+  invalidateSharedPosition = false;
   currentLocation: GeoLocation = new GeoLocation(0, 0);
   currentOrientation: number | undefined;
   useMetricSystem = true;
@@ -57,6 +57,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
 
   showContent = false;
   isFloatingContent = false;
+  isArticle = false;
   isNearbyLoading = true;
   isOsmNearbyLoading = true;
   isGooglePlacesNearbyLoading = true;
@@ -102,6 +103,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
         if (event instanceof NavigationEnd) {
           this.showContent = !!this.route.root.firstChild.snapshot.data.type;
           this.isFloatingContent = this.route.root.firstChild.snapshot.data.isFloatingContent;
+          this.isArticle = this.route.root.firstChild.snapshot.data.isArticle;
+          this.handleShareableMapPosition();
         }
       }),
 
@@ -144,7 +147,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
 
   ngOnInit(): void {
     this.registerAnalytics();
-    this.handleShareableMapPosition();
     this.gatherUserInfoAndRegisterDeviceLocationHandlers();
   }
 
@@ -328,13 +330,30 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
    *
    */
   private handleShareableMapPosition() {
-    const urlParts = window.location.href.split('/');
-    const latLng = urlParts[urlParts.length - 1].split(',');
+    const localTempMapCenter = PersistanceService.get('tempMapCenter');
+    let latLngStr = '';
+    let setGracefully = true;
+
+    if (localTempMapCenter) {
+      latLngStr = localTempMapCenter as string;
+      PersistanceService.unset('tempMapCenter');
+      setGracefully = false;
+    } else {
+      const urlParts = window.location.href.split('/');
+      latLngStr = urlParts[urlParts.length - 1];
+    }
+
+    const latLng = latLngStr.split(',');
     const lat = +latLng[0];
     const lng = +latLng[1];
 
     if (!isNaN(lat) && !isNaN(lng)) {
-      this.urlLocation = new GeoLocation(lat, lng);
+      const newGeoLoc = new GeoLocation(lat, lng);
+      if (setGracefully) {
+        this.urlLocation = newGeoLoc;
+      } else {
+        this.currentLocation = newGeoLoc;
+      }
     }
   }
 
@@ -539,9 +558,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
     */
     const doUpdateLocations = (location: GeoLocation, storeCurrentLocation: boolean) => {
       // Use the position coming from the URL if not set yet and available.
-      if (!this.hasSharedPositionSet && this.urlLocation) {
+      if (!this.invalidateSharedPosition && this.urlLocation) {
         location = this.urlLocation;
-        this.hasSharedPositionSet = true;
+        this.invalidateSharedPosition = true;
       }
 
       if (storeCurrentLocation) {

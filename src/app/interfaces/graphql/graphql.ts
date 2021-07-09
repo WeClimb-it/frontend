@@ -20,6 +20,8 @@ export interface GraphQLResponseErrorLocation {
 
 export interface Query {
   __typename?: 'Query';
+  stories: Array<Story>;
+  story: Story;
   competitions: ListResult;
   upcomingCompetitions: ListResult;
   competition: Competition;
@@ -55,6 +57,23 @@ export interface Query {
   shelter: Shelter;
   userInfo: UserInfo;
   waveUser: UserInfo;
+}
+
+export interface StoriesOnQueryArguments {
+  /**
+   * @default 10
+   */
+  end?: number | null;
+
+  /**
+   * @default 0
+   */
+  start?: number | null;
+}
+
+export interface StoryOnQueryArguments {
+  slug?: string | null;
+  id?: string | null;
 }
 
 export interface CompetitionsOnQueryArguments {
@@ -389,13 +408,43 @@ export interface WaveUserOnQueryArguments {
   user: UserInfoInput;
 }
 
+export interface Story {
+  __typename?: 'Story';
+  _id: string;
+  slug: string;
+  pageTitle: string;
+  description: string;
+  thumbnailImage: string;
+  coverImage: string;
+  articles: Array<Article>;
+  category: string;
+  language: string;
+  type: string | null;
+}
+
+export interface Article {
+  __typename?: 'Article';
+  title: string;
+  shortDescription: string;
+  image: string;
+  body: string;
+  coords: Coords;
+  resourceUrl: string;
+}
+
+export interface Coords {
+  __typename?: 'Coords';
+  lat: number | null;
+  lng: number | null;
+}
+
 export interface ListResult {
   __typename?: 'ListResult';
   items: Array<Item>;
   pagination: Pagination | null;
 }
 
-export type Item = Crag | Place | Event | Sector | Route | Competition | News | Shelter | Hike;
+export type Item = Crag | Place | Event | Sector | Route | Competition | News | Shelter | Hike | Story;
 
 export interface Crag {
   __typename?: 'Crag';
@@ -422,12 +471,6 @@ export interface CragStats {
   __typename?: 'CragStats';
   routesCount: number;
   sectorsCount: number;
-}
-
-export interface Coords {
-  __typename?: 'Coords';
-  lat: number | null;
-  lng: number | null;
 }
 
 export interface QualityRank {

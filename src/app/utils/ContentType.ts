@@ -1,6 +1,6 @@
-import { Poi } from './Poi';
-import { GeoJSONFeature } from '../interfaces/geo/GeoJSONFeature.interface';
 import { each } from 'lodash';
+import { GeoJSONFeature } from '../interfaces/geo/GeoJSONFeature.interface';
+import { Poi } from './Poi';
 
 export enum ContentType {
   CRAGS = 'crags',
@@ -18,6 +18,7 @@ export enum ContentType {
   SEARCH = 'search',
   OSM_NODE = 'osmNode',
   DRINKING_WATER = 'drinkingWater',
+  STORY = 'story',
 }
 
 export const OSM_TYPE_MAP = {

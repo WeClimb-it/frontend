@@ -9,6 +9,8 @@ import { ContentType } from './utils/ContentType';
  * To solve this, we should add the geocords in the URL and use
  * them to override the user location in such a case.
  */
+// NOTE: The data.type attribute is used as condition in the app.component to determine if
+// we can update or not the URL when the map is moved (updateShareableURL)
 const routes: Routes = [
   {
     path: 'crags',
@@ -118,6 +120,12 @@ const routes: Routes = [
     path: 'search/:query/page/:page',
     loadChildren: () => import('./pages/entities-list/entities-list.module').then((m) => m.EntitiesListModule),
     data: { type: ContentType.SEARCH },
+  },
+
+  {
+    path: 'story/:category/:slug',
+    loadChildren: () => import('./pages/story/story.module').then((m) => m.StoryModule),
+    data: { type: ContentType.STORY, isArticle: true },
   },
 
   { path: '404', component: NotFoundComponent },

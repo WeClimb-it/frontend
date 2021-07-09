@@ -168,8 +168,8 @@ export class EntitiesListComponent implements OnInit, OnDestroy {
    */
   private loadData(opts: { lat: number; lng: number; start: number; end: number } | SearchOptions): void {
     let query;
-    let resultPayloadProperty: ContentType;
-    resultPayloadProperty = this.navCurrentEndpoint = this.route.snapshot.data.type;
+    let resultPayloadProperty: ContentType = this.route.snapshot.data.type;
+    this.navCurrentEndpoint = this.route.snapshot.data.type;
 
     switch (this.contentType) {
       default:
