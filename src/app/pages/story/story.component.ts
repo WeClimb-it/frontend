@@ -7,6 +7,7 @@ import { StoryResult } from 'src/app/graphql/queries';
 import { GeoJSONFeature } from 'src/app/interfaces/geo/GeoJSONFeature.interface';
 import { Coords, Story } from 'src/app/interfaces/graphql';
 import { AppStoreService } from 'src/app/services/appState.service';
+import { MetaService } from 'src/app/services/meta.services';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { getGeoJsonFromCoords } from 'src/app/utils/Map';
 import { environment } from 'src/environments/environment';
@@ -38,6 +39,7 @@ export class StoryComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private api: WciApiService,
     private appStore: AppStoreService,
+    private metaService: MetaService,
   ) {}
 
   ngOnInit() {
@@ -104,6 +106,13 @@ export class StoryComponent implements OnInit, OnDestroy {
 
         if (!res.loading) {
           this.story = res.data.story;
+
+          this.metaService.setDetailSocialMedia(
+            this.story.pageTitle,
+            this.story.description,
+            location.href,
+            `https://www.weclimb.it/assets/stories/${this.story.thumbnailImage}`,
+          );
         }
       });
   }

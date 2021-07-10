@@ -43,7 +43,7 @@ export class MetaService {
     }
   }
 
-  setDetailSocialMedia(title: string, descr: string, url: string): void {
+  setDetailSocialMedia(title: string, descr: string, url: string, image?: string): void {
     this.ngMetaService.updateTag({ name: 'twitter:card', content: descr }, "name='twitter:card'");
     this.ngMetaService.updateTag({ name: 'twitter:title', content: title }, "name='twitter:title'");
     this.ngMetaService.updateTag({ name: 'twitter:description', content: descr }, "name='twitter:description'");
@@ -51,5 +51,10 @@ export class MetaService {
     this.ngMetaService.updateTag({ property: 'og:url', content: url }, "property='og:url'");
     this.ngMetaService.updateTag({ property: 'og:title', content: title }, "property='og:title'");
     this.ngMetaService.updateTag({ property: 'og:description', content: descr }, "property='og:description'");
+
+    if (image) {
+      this.ngMetaService.updateTag({ name: 'twitter:image', content: image }, "name='twitter:image'");
+      this.ngMetaService.updateTag({ property: 'og:image', content: image }, "property='og:image'");
+    }
   }
 }
