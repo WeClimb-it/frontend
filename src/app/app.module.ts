@@ -3,12 +3,20 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, Injector, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { FacebookLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
+import { Ng5SliderModule } from 'ng5-slider';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import {
   PerfectScrollbarConfigInterface,
@@ -25,7 +33,6 @@ import { MediaPlayerComponent } from './components/media-player/media-player.com
 import { SharedModule } from './components/shared.module';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { UserLoginComponent } from './components/userAuth/login/login.component';
-import { MaterialModule } from './material.module';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { PipesModule } from './pipes/pipes.module';
 import { I18nService } from './services/i18n.service';
@@ -45,7 +52,17 @@ const appComponents = [
   BottomSheetComponent,
 ];
 
-const MaterialModules = [MatBottomSheetModule, MaterialModule];
+const MaterialModules = [
+  MatBottomSheetModule,
+  MatIconModule,
+  MatMenuModule,
+  MatBadgeModule,
+  MatChipsModule,
+  Ng5SliderModule,
+  MatProgressSpinnerModule,
+  MatButtonModule,
+  MatSlideToggleModule,
+];
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/lang/', '.json');

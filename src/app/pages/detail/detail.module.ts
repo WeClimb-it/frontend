@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { TranslateModule } from '@ngx-translate/core';
 import { EllipsisModule } from 'ngx-ellipsis';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
@@ -17,11 +23,11 @@ import { PlaceCardItemComponent } from 'src/app/components/detail-panel/items/pl
 import { PoiCardItemComponent } from 'src/app/components/detail-panel/items/poi-item.component';
 import { ShelterCardItemComponent } from 'src/app/components/detail-panel/items/shelter-item.component';
 import { SkyconComponent } from 'src/app/components/skycon/skycon.component';
-import { MaterialModule } from 'src/app/material.module';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { environment } from 'src/environments/environment';
 import { DetailRoutingModule } from './detail-routing.module';
 import { DetailComponent } from './detail.component';
+import { MatButtonModule } from '@angular/material/button';
 
 const components = [
   DetailComponent,
@@ -36,6 +42,17 @@ const components = [
   PoiCardItemComponent,
 ];
 
+const MaterialModules = [
+  MatSidenavModule,
+  MatChipsModule,
+  MatIconModule,
+  MatExpansionModule,
+  MatListModule,
+  MatProgressBarModule,
+  MatChipsModule,
+  MatButtonModule,
+];
+
 @NgModule({
   imports: [
     DetailRoutingModule,
@@ -43,7 +60,6 @@ const components = [
     PerfectScrollbarModule,
     MomentModule,
     FlexLayoutModule,
-    MaterialModule,
     NgxMapboxGLModule.withConfig({
       accessToken: environment.mapbox.token,
     }),
@@ -54,6 +70,7 @@ const components = [
     EllipsisModule,
     ShareButtonsModule,
     ShareIconsModule,
+    ...MaterialModules,
   ],
   exports: [],
   declarations: [...components],

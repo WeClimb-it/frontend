@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { MomentModule } from 'ngx-moment';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
@@ -11,9 +17,7 @@ import { NewsListItemComponent } from 'src/app/components/list-items/news-item.c
 import { PlaceListItemComponent } from 'src/app/components/list-items/place-item.component';
 import { ShelterListItemComponent } from 'src/app/components/list-items/shelter-item.component';
 import { SharedModule } from 'src/app/components/shared.module';
-import { MaterialModule } from 'src/app/material.module';
 import { PipesModule } from 'src/app/pipes/pipes.module';
-
 import { EntitiesListRoutingModule } from './entities-list-routing.module';
 import { EntitiesListComponent } from './entities-list.component';
 
@@ -27,6 +31,15 @@ const components = [
   NewsListItemComponent,
 ];
 
+const MaterialModules = [
+  MatChipsModule,
+  MatIconModule,
+  MatProgressBarModule,
+  MatPaginatorModule,
+  MatButtonModule,
+  MatDialogModule,
+];
+
 @NgModule({
   imports: [
     EntitiesListRoutingModule,
@@ -34,12 +47,12 @@ const components = [
     PerfectScrollbarModule,
     MomentModule,
     FlexLayoutModule,
-    MaterialModule,
     TranslateModule.forChild({
       isolate: false,
     }),
     PipesModule,
     SharedModule,
+    ...MaterialModules,
   ],
   exports: [],
   declarations: [...components],
