@@ -3,6 +3,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, Injector, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -17,6 +18,7 @@ import {
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BottomSheetComponent } from './components/bottom-sheet/bottom-sheet.component';
 import { HeaderComponent } from './components/header/header.component';
 import { MapComponent } from './components/map/map.component';
 import { MediaPlayerComponent } from './components/media-player/media-player.component';
@@ -40,7 +42,10 @@ const appComponents = [
   NotFoundComponent,
   MediaPlayerComponent,
   UserLoginComponent,
+  BottomSheetComponent,
 ];
+
+const MaterialModules = [MatBottomSheetModule, MaterialModule];
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/lang/', '.json');
@@ -78,7 +83,7 @@ export function appInitializerFactory(translateService: TranslateService, inject
     }),
     HttpClientModule,
     FlexLayoutModule,
-    MaterialModule,
+    ...MaterialModules,
     FormsModule,
     PerfectScrollbarModule,
     PipesModule,

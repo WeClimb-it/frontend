@@ -14,7 +14,9 @@ export const environment = {
   mapbox: {
     // Don't worry, referrers are white-listed ;-)
     token: 'pk.eyJ1Ijoid2VjbGltYml0IiwiYSI6ImNrOGtlZ2lvdzAwdW8zZ25vbjUxbHIycnAifQ.lwM-V6-SoRqiTWLWMEWDzw',
-    style: 'mapbox://styles/weclimbit/ck76qiur612ur1imof17kauyo',
+    style: 'mapbox://styles/weclimbit/ck76qiur612ur1imof17kauyo?optimize=true',
+    styleTerrain: 'mapbox://styles/weclimbit/ckq3k5yvg0i2e18nqrqpwu7rn?optimize=true',
+    styleLight: 'mapbox://styles/weclimbit/ckqxksvbb3xtl17mcs40bto4d?optimize=true',
   },
   facebookAppId: '253345021488136',
   facebookScopes: 'email,public_profile', // comma separated

@@ -98,5 +98,6 @@
   "ELLIPSIS_SHOW_MORE": "... more",
   "ELLIPSIS_SHOW_LESS": "show less",
   "DELETE_HISTORY": "Clear history",
-  "SHOW_ON_MAP": "Show on the map"
+  "SHOW_ON_MAP": "Show on the map",
+  "READ": "Read"
 }

@@ -5,10 +5,10 @@
 export const environment = {
   production: false,
   graphql: {
-    url: 'https://api.weclimb.it/graphql',
+    url: 'http://localhost:3000/graphql',
   },
   rest: {
-    url: 'https://api.weclimb.it/static',
+    url: 'http://localhost:3000/static',
   },
   i18n: {
     defaultLang: 'en',
@@ -18,8 +18,9 @@ export const environment = {
   mapbox: {
     // Don't worry, referrers are white-listed ;-)
     token: 'pk.eyJ1Ijoid2VjbGltYml0IiwiYSI6ImNrNzlha3B0YzA4aWgzbXJ6dDQ1ZXF4dWEifQ.NX6j-UOi0l9Ut3o-77FA4w',
-    style: 'mapbox://styles/weclimbit/ck76qiur612ur1imof17kauyo',
-    styleTerrain: 'mapbox://styles/weclimbit/ckq3k5yvg0i2e18nqrqpwu7rn',
+    style: 'mapbox://styles/weclimbit/ck76qiur612ur1imof17kauyo?optimize=true',
+    styleTerrain: 'mapbox://styles/weclimbit/ckq3k5yvg0i2e18nqrqpwu7rn?optimize=true',
+    styleLight: 'mapbox://styles/weclimbit/ckqxksvbb3xtl17mcs40bto4d?optimize=true',
   },
   facebookAppId: '253345021488136',
   facebookScopes: 'email,public_profile', // comma separated

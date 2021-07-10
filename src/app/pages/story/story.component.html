@@ -1,6 +1,9 @@
 <perfect-scrollbar class="content" [ngClass]="{ disabled: isMapMoving }" [config]="isMapMoving ? { handlers: [] } : {}">
   <section *ngIf="story" class="story">
     <div class="head" [style]="'background-image: url(/assets/stories/' + story.coverImage + ');'">
+      <div class="head-actions">
+        <button mat-stroked-button (click)="closeStory()"><mat-icon>public</mat-icon>{{ 'GO_MAP' | translate }}</button>
+      </div>
       <div class="info">
         <h2>"{{ story.pageTitle }}"</h2>
         <h6>{{ story.description }}</h6>

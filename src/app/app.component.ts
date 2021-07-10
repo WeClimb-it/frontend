@@ -8,19 +8,22 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { SocialUser } from 'angularx-social-login';
 import { debounce, isEmpty, isEqual } from 'lodash';
 import moment from 'moment-timezone';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { GeoLocation } from './classes/geolocation.class';
+import { BottomSheetComponent } from './components/bottom-sheet/bottom-sheet.component';
 import { SearchOptions } from './components/header/header.component';
 import { MapComponent } from './components/map/map.component';
-import { NearbyResult, UserInfoResult } from './graphql/queries';
+import { NearbyResult, StoriesResult, UserInfoResult } from './graphql/queries';
 import { MapUpdateEvent } from './interfaces/events/map-update.interface';
-import { ListResult, SearchResult, UserInfo, UserInfoInput } from './interfaces/graphql';
+import { ListResult, SearchResult, Story, UserInfo, UserInfoInput } from './interfaces/graphql';
 import { AppStoreService } from './services/appState.service';
 import { GeoService, PlaceSuggestion } from './services/geo.service';
 import { HistoryService } from './services/history.service';
@@ -62,12 +65,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   isOsmNearbyLoading = true;
   isGooglePlacesNearbyLoading = true;
   // isLatestLoading = true;
+  isBottomSheetOpened = false;
+  isBottomSheetDisabled = false;
 
   environment = environment;
 
   user: UserInfo;
   userProfilePictureUrl: string;
 
+  stories: Story[] = [];
   historyItems: Poi[] = [];
 
   private mapData: MapUpdateEvent;
@@ -97,6 +103,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
     private historyService: HistoryService,
     private metaService: MetaService,
     public geoService: GeoService,
+    private _bottomSheet: MatBottomSheet,
   ) {
     this.subs$.push(
       this.router.events.subscribe((event: RouterEvent) => {
@@ -104,7 +111,20 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
           this.showContent = !!this.route.root.firstChild.snapshot.data.type;
           this.isFloatingContent = this.route.root.firstChild.snapshot.data.isFloatingContent;
           this.isArticle = this.route.root.firstChild.snapshot.data.isArticle;
+
           this.handleShareableMapPosition();
+
+          if (this.stories?.length) {
+            this.openBottomSheet({
+              thumbnail: this.stories[0].thumbnailImage,
+              title: this.stories[0].pageTitle,
+              description: this.stories[0].description,
+              url: `story/${this.stories[0].category}/${this.stories[0].slug}`,
+              onClose: () => {
+                this.isBottomSheetDisabled = true;
+              },
+            });
+          }
         }
       }),
 
@@ -147,7 +167,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
 
   ngOnInit(): void {
     this.registerAnalytics();
-    this.gatherUserInfoAndRegisterDeviceLocationHandlers();
+    this.getUserInfoAndRegisterDeviceLocationHandlers();
+    this.getStories();
   }
 
   ngOnDestroy(): void {
@@ -226,7 +247,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
       undefined,
       (entity as any).title || (entity as any).name,
     );
-    this.updateCurrentLocationInStore();
+    this.updateCurrentLocationInStore(false);
   }
 
   /**
@@ -330,13 +351,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
    *
    */
   private handleShareableMapPosition() {
-    const localTempMapCenter = PersistanceService.get('tempMapCenter');
+    const tempMapCenter = this.appStore.getProperty('mapCenter');
     let latLngStr = '';
     let setGracefully = true;
 
-    if (localTempMapCenter) {
-      latLngStr = localTempMapCenter as string;
-      PersistanceService.unset('tempMapCenter');
+    if (tempMapCenter) {
+      latLngStr = tempMapCenter as string;
+      this.appStore.unsetProperty('mapCenter');
       setGracefully = false;
     } else {
       const urlParts = window.location.href.split('/');
@@ -360,21 +381,22 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   /**
    *
    */
-  private gatherUserInfoAndRegisterDeviceLocationHandlers() {
-    const sub$ = this.api.getUserInfo().subscribe((res: UserInfoResult) => {
-      if (res.errors) {
-        throw new Error('Something wrong happened loading the user info');
-      }
+  private getUserInfoAndRegisterDeviceLocationHandlers() {
+    this.api
+      .getUserInfo()
+      .pipe(first())
+      .subscribe((res: UserInfoResult) => {
+        if (res.errors) {
+          throw new Error('Something wrong happened loading the user info');
+        }
 
-      if (!res.loading) {
-        this.userData = res.data.userInfo;
+        if (!res.loading) {
+          this.userData = res.data.userInfo;
 
-        this.initMomentI18n();
-        this.registerDeviceMovementAndBrowserLocationHandlers();
-
-        sub$.unsubscribe();
-      }
-    });
+          this.initMomentI18n();
+          this.registerDeviceMovementAndBrowserLocationHandlers();
+        }
+      });
   }
 
   /**
@@ -412,7 +434,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
 
     this.nearbyQueryController = controller;
 
-    const sub$ = getNearby.subscribe((res: NearbyResult) => {
+    getNearby.pipe(first()).subscribe((res: NearbyResult) => {
       if (res.errors) {
         throw new Error('Something went wrong during the nearby query');
       }
@@ -420,7 +442,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
       if (!res.loading) {
         this.isNearbyLoading = false;
         this.nearbyPois = res.data.nearby;
-        sub$.unsubscribe();
       }
     });
   }
@@ -447,7 +468,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
 
     this.osmQueryController = controller;
 
-    const sub$ = getOpenStreetMapNodes.subscribe((res: { loading: boolean; data: Record<string, object> }) => {
+    getOpenStreetMapNodes.pipe(first()).subscribe((res: { loading: boolean; data: Record<string, object> }) => {
       if (!res.loading) {
         if (!isEmpty(res.data) && !isEmpty(res.data.osmNodes)) {
           const { osmNodes: pois } = res.data;
@@ -455,7 +476,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
         }
 
         this.isOsmNearbyLoading = false;
-        sub$.unsubscribe();
       }
     });
   }
@@ -482,7 +502,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
 
     this.googlePlacesQueryController = controller;
 
-    const sub$ = getGooglePlaces.subscribe((res: { loading: boolean; data: Record<string, ListResult> }) => {
+    getGooglePlaces.pipe(first()).subscribe((res: { loading: boolean; data: Record<string, ListResult> }) => {
       if (!res.loading) {
         if (!isEmpty(res.data) && !isEmpty(res.data.googlePlaces)) {
           const { googlePlaces } = res.data;
@@ -490,9 +510,35 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
         }
 
         this.isGooglePlacesNearbyLoading = false;
-        sub$.unsubscribe();
       }
     });
+  }
+
+  /**
+   *
+   */
+  private getStories(): void {
+    this.api
+      .getStories({ start: 0, end: 3 })
+      .pipe(first())
+      .subscribe((res: StoriesResult) => {
+        if (res.errors) {
+          throw new Error('Something wrong happened loading the user info');
+        }
+
+        if (!res.loading) {
+          this.stories = res.data.stories;
+          this.openBottomSheet({
+            thumbnail: this.stories[0].thumbnailImage,
+            title: this.stories[0].pageTitle,
+            description: this.stories[0].description,
+            url: `story/${this.stories[0].category}/${this.stories[0].slug}`,
+            onClose: () => {
+              this.isBottomSheetDisabled = true;
+            },
+          });
+        }
+      });
   }
 
   /**
@@ -524,9 +570,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   /**
    *
    */
-  private updateCurrentLocationInStore(): void {
+  private updateCurrentLocationInStore(updateShareableURL = true): void {
     this.appStore.setProperty('currentLocation', this.currentLocation);
-    this.updateShareableURL(this.currentLocation);
+
+    if (updateShareableURL) {
+      this.updateShareableURL(this.currentLocation);
+    }
   }
 
   /**
@@ -643,5 +692,31 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
     if (!this.route.root.firstChild?.snapshot.data.type) {
       this.locationService.go(`/${geo.lat.toFixed(4)},${geo.lng.toFixed(4)}`);
     }
+  }
+
+  /**
+   *
+   */
+  openBottomSheet(data: any): void {
+    if (this.isBottomSheetDisabled) {
+      return;
+    }
+
+    if (!this.showContent) {
+      this._bottomSheet.open(BottomSheetComponent, { hasBackdrop: false, data });
+      this.isBottomSheetOpened = true;
+    } else {
+      if (this.isBottomSheetOpened) {
+        this.closeBottomSheet();
+      }
+    }
+  }
+
+  /**
+   *
+   */
+  closeBottomSheet(): void {
+    this._bottomSheet.dismiss();
+    this.isBottomSheetOpened = false;
   }
 }

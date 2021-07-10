@@ -1,8 +1,6 @@
 @import '../../../common';
 @import '../../../colors';
 
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital@1&display=swap');
-
 .head {
   background-size: cover;
   position: relative;
@@ -10,6 +8,40 @@
   padding-top: 120px;
   padding-bottom: 20px;
   color: white;
+
+  .head-actions {
+    position: absolute;
+    z-index: $maxZIndex;
+
+    top: 15px;
+    right: 15px;
+
+    button {
+      min-height: 28px;
+
+      text-transform: uppercase;
+      letter-spacing: 0.25px;
+      cursor: pointer;
+      font-size: 13px;
+      color: rgba(white, 0.8);
+      margin-right: 10px;
+      border-radius: 100px;
+      background-color: rgba(white, 0.15);
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      mat-icon {
+        color: rgba(white, 0.8);
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        margin-left: -8px;
+        margin-right: 10px;
+      }
+    }
+  }
 
   .info {
     position: relative;
@@ -30,7 +62,8 @@
     h6 {
       font-family: 'Lora', serif !important;
       font-size: 20px;
-      font-weight: lighter;
+      font-weight: 400 !important;
+      font-style: italic;
       line-height: 27px;
       opacity: 0.8;
       width: 80%;
@@ -64,6 +97,7 @@ article {
 
     h4 {
       font-family: 'Lora', serif !important;
+      font-style: italic;
       font-size: 35px;
     }
 
@@ -154,6 +188,8 @@ article {
     margin-bottom: 20px;
 
     font-family: 'Lora', serif !important;
+    font-weight: 400;
+    font-style: italic;
     font-size: 18px;
     font-weight: lighter;
     line-height: 27px;

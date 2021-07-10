@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { isEmpty } from 'lodash';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { StoryResult } from 'src/app/graphql/queries';
 import { GeoJSONFeature } from 'src/app/interfaces/geo/GeoJSONFeature.interface';
 import { Coords, Story } from 'src/app/interfaces/graphql';
-import { PersistanceService } from 'src/app/services/persistanceService';
+import { AppStoreService } from 'src/app/services/appState.service';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { getGeoJsonFromCoords } from 'src/app/utils/Map';
 import { environment } from 'src/environments/environment';
@@ -16,7 +18,7 @@ import { environment } from 'src/environments/environment';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class StoryComponent implements OnInit, OnDestroy {
-  @Input() mapStyle = environment.mapbox.style;
+  @Input() mapStyle = environment.mapbox.styleLight;
 
   isMapMoving = false;
   isLoading = false;
@@ -31,7 +33,12 @@ export class StoryComponent implements OnInit, OnDestroy {
     }
   > = new Map();
 
-  constructor(private router: Router, private route: ActivatedRoute, private api: WciApiService) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private api: WciApiService,
+    private appStore: AppStoreService,
+  ) {}
 
   ngOnInit() {
     this.subs$.push(
@@ -68,26 +75,36 @@ export class StoryComponent implements OnInit, OnDestroy {
     this.isMapMoving = state;
   }
 
+  onMissingContent(): void {
+    this.router.navigate(['404']);
+  }
+
+  closeStory(): void {
+    this.router.navigate(['']);
+  }
+
   goToTheMap(coords: Coords): void {
-    PersistanceService.set('tempMapCenter', `${coords.lat.toFixed(4)},${coords.lng.toFixed(4)}`);
+    this.appStore.setProperty('mapCenter', `${coords.lat.toFixed(4)},${coords.lng.toFixed(4)}`);
     this.router.navigate([`${coords.lat.toFixed(4)},${coords.lng.toFixed(4)}`]);
   }
 
   private loadData(slug: string): void {
     this.isLoading = true;
 
-    const sub$ = this.api.getStory({ slug }).subscribe((res: StoryResult) => {
-      this.isLoading = res.loading;
+    this.api
+      .getStory({ slug })
+      .pipe(first())
+      .subscribe((res: StoryResult) => {
+        this.isLoading = res.loading;
 
-      if (res.errors) {
-        throw new Error('Something went wrong during the story query');
-      }
+        if (res.errors || isEmpty(res.data?.story)) {
+          this.onMissingContent();
+          return;
+        }
 
-      if (!res.loading) {
-        this.story = res.data.story;
-      }
-
-      sub$.unsubscribe();
-    });
+        if (!res.loading) {
+          this.story = res.data.story;
+        }
+      });
   }
 }

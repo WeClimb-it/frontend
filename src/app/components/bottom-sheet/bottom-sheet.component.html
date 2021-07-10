@@ -1,0 +1,16 @@
+<div class="bottom-card" (click)="onCardClicked()">
+  <div class="close-button" (click)="onClose($event)">
+    <button mat-icon-button>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="thumbnail" [style]="'background-image: url(/assets/stories/' + data.thumbnail + ');'"></div>
+  <div>
+    <div class="title">
+      <span>{{ 'READ' | translate }}:</span> {{ data.title }}
+    </div>
+    <div class="description">
+      {{ data.description }}
+    </div>
+  </div>
+</div>
