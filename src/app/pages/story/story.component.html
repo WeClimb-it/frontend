@@ -22,39 +22,11 @@
           <button mat-button color="primary" (click)="goToTheMap(article.coords)">
             {{ 'SHOW_ON_MAP' | translate }}
           </button>
-          <mgl-map
-            [style]="mapStyle"
-            [zoom]="[10]"
-            [center]="[article.coords?.lng, article.coords?.lat]"
-            (mapMouseOver)="onMapBusy(true)"
-            (mapMouseOut)="onMapBusy(false)"
-            (mapTouchStart)="onMapBusy(true)"
-            (mapTouchEnd)="onMapBusy(false)"
-          >
-            <!-- The current landing point -->
-            <mgl-geojson-source id="center" [data]="getGeoJsonFromArticle(article.coords)"></mgl-geojson-source>
-            <mgl-layer
-              id="center-point"
-              type="circle"
-              source="center"
-              [paint]="{
-                'circle-color': 'rgba(255, 95, 88, 0.9)',
-                'circle-radius': 8
-              }"
-            >
-            </mgl-layer>
-            <mgl-layer
-              id="center-point-2"
-              type="circle"
-              source="center"
-              [paint]="{
-                'circle-color': 'rgba(255, 95, 88, 0.5)',
-                'circle-radius': 20
-              }"
-            >
-            </mgl-layer>
-            <!-- / -->
-          </mgl-map>
+
+          <div class="static-map">
+            <div class="marker"></div>
+            <div class="map-image" [style]="'background-image: url(' + getStaticMapUrl(article) + ');'"></div>
+          </div>
         </div>
       </div>
 

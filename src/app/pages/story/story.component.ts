@@ -5,8 +5,9 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { StoryResult } from 'src/app/graphql/queries';
 import { GeoJSONFeature } from 'src/app/interfaces/geo/GeoJSONFeature.interface';
-import { Coords, Story } from 'src/app/interfaces/graphql';
+import { Article, Coords, Story } from 'src/app/interfaces/graphql';
 import { AppStoreService } from 'src/app/services/appState.service';
+import { GeoService } from 'src/app/services/geo.service';
 import { MetaService } from 'src/app/services/meta.services';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { getGeoJsonFromCoords } from 'src/app/utils/Map';
@@ -24,6 +25,7 @@ export class StoryComponent implements OnInit, OnDestroy {
   isMapMoving = false;
   isLoading = false;
   story: Story;
+  staticMapSrc = new Map();
 
   private subs$: Subscription[] = [];
   private articlesLocationMap: Map<
@@ -40,6 +42,7 @@ export class StoryComponent implements OnInit, OnDestroy {
     private api: WciApiService,
     private appStore: AppStoreService,
     private metaService: MetaService,
+    private geoService: GeoService,
   ) {}
 
   ngOnInit() {
@@ -88,6 +91,10 @@ export class StoryComponent implements OnInit, OnDestroy {
   goToTheMap(coords: Coords): void {
     this.appStore.setProperty('mapCenter', `${coords.lat.toFixed(4)},${coords.lng.toFixed(4)}`);
     this.router.navigate([`${coords.lat.toFixed(4)},${coords.lng.toFixed(4)}`]);
+  }
+
+  getStaticMapUrl(article: Article): string {
+    return this.geoService.getStaticMapUrl(article.coords, 673, 300);
   }
 
   private loadData(slug: string): void {
