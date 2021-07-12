@@ -22,7 +22,9 @@ export class AppStoreService {
     const persistedValue = PersistanceService.get(key);
 
     if (!this.state[key]) {
-      this.state[key] = new BehaviorSubject<unknown>(defaultValue || persistedValue);
+      this.state[key] = new BehaviorSubject<unknown>(
+        typeof persistedValue !== 'undefined' && persistedValue != null ? persistedValue : defaultValue,
+      );
     }
 
     return this.state[key].asObservable();

@@ -113,7 +113,7 @@ export class EntitiesListComponent implements OnInit, OnDestroy {
         }
       }),
 
-      this.appStore.watchProperty('useMetricSystem').subscribe((flag: boolean) => {
+      this.appStore.watchProperty('useMetricSystem', true).subscribe((flag: boolean) => {
         this.useMetricSystem = flag;
       }),
     );

@@ -150,7 +150,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
         this.userProfilePictureUrl = url;
       }),
 
-      this.appStore.watchProperty('useMetricSystem').subscribe((flag: boolean) => {
+      this.appStore.watchProperty('useMetricSystem', true).subscribe((flag: boolean) => {
         this.useMetricSystem = flag;
       }),
 
