@@ -213,9 +213,11 @@ mgl-map {
   z-index: $maxZIndex - 1;
 
   height: 40px;
+  line-height: 37px;
   border-radius: 40px;
 
-  background: rgba(black, 0.95);
+  background: rgba(white, 0.85);
+  @include mat.elevation(3, black, 0.4);
 
   .spinner {
     display: inline-block;

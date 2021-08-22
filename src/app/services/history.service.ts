@@ -1,26 +1,25 @@
 import { Injectable } from '@angular/core';
 import { find } from 'lodash';
 import { Poi } from '../utils/Poi';
-import { AppStoreService } from './appState.service';
-import { PersistanceService } from './persistanceService';
+import { StateProperties, StateService } from './state.service';
 
 @Injectable({ providedIn: 'root' })
 export class HistoryService {
   entities: Poi[] = [];
 
-  constructor(private appStore: AppStoreService) {
-    this.entities = (PersistanceService.get('history') as Poi[]) || [];
+  constructor(private state: StateService) {
+    this.entities = this.state.app.getProperty(StateProperties.HISTORY) || [];
   }
 
   addToHistory(entity: Poi): void {
     if (!find(this.entities, entity)) {
       this.entities.push(entity);
-      this.appStore.setProperty('history', this.entities, true);
+      this.state.app.setProperty(StateProperties.HISTORY, this.entities, true);
     }
   }
 
   clear(): void {
     this.entities = [];
-    this.appStore.unsetProperty('history');
+    this.state.app.unsetProperty(StateProperties.HISTORY);
   }
 }

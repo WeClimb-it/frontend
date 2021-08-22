@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client/core';
 import { environment } from 'src/environments/environment';
 import { getEntityCacheId } from '../utils/Poi';
-import { AppStoreService } from './appState.service';
 import { I18nService } from './i18n.service';
+import { StateProperties, StateService } from './state.service';
 
 @Injectable({ providedIn: 'root' })
 export class ApolloService {
@@ -11,7 +11,7 @@ export class ApolloService {
 
   private userSessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-  constructor(private appStore: AppStoreService) {}
+  constructor(private state: StateService) {}
 
   init(): void {
     const cache = new InMemoryCache({
@@ -57,8 +57,8 @@ export class ApolloService {
         throw new Error('forward is undefined');
       }
 
-      const userId = this.appStore.getProperty('socialUserId');
-      const userToken = this.appStore.getProperty('socialUserToken');
+      const userId = this.state.app.getProperty(StateProperties.SOCIAL_USER_ID);
+      const userToken = this.state.app.getProperty(StateProperties.SOCIAL_USER_TOKEN);
 
       if (userId && userToken) {
         operation.setContext(({ headers = {} }) => ({

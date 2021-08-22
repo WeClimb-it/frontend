@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FacebookLoginProvider, SocialAuthService, SocialUser } from 'angularx-social-login';
 import { Subscription } from 'rxjs';
-import { AppStoreService } from 'src/app/services/appState.service';
 
 @Component({
   selector: 'wci-user-login',
@@ -17,7 +16,7 @@ export class UserLoginComponent implements OnInit, OnDestroy {
 
   private authSub$: Subscription;
 
-  constructor(private authService: SocialAuthService, private appStore: AppStoreService) {}
+  constructor(private authService: SocialAuthService) {}
 
   ngOnInit(): void {
     this.authSub$ = this.authService.authState.subscribe((user) => {

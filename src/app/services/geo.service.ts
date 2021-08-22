@@ -6,7 +6,7 @@ import moment, { Duration } from 'moment';
 import { environment } from 'src/environments/environment';
 import { GeoLocation } from '../classes/geolocation.class';
 import { Coords } from '../interfaces/graphql';
-import { PersistanceService } from './persistanceService';
+import { StateProperties, StateService } from './state.service';
 
 const WINDOW: any = window || {};
 
@@ -30,7 +30,11 @@ export class GeoService {
 
   private mapboxToken = environment.mapbox.token;
 
-  constructor(private httpClient: HttpClient, private translateService: TranslateService) {}
+  constructor(
+    private httpClient: HttpClient,
+    private translateService: TranslateService,
+    private state: StateService,
+  ) {}
 
   /**
    *
@@ -152,7 +156,7 @@ export class GeoService {
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(
         (location) => {
-          PersistanceService.set('geoloc', '1');
+          this.state.app.setProperty(StateProperties.USE_GEOLOC, true);
           success(location);
         },
         error,
@@ -170,7 +174,7 @@ export class GeoService {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (location) => {
-          PersistanceService.set('geoloc', '1');
+          this.state.app.setProperty(StateProperties.USE_GEOLOC, true);
           success(location);
         },
         error,

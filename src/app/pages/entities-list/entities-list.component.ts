@@ -14,7 +14,7 @@ import {
   SheltersResult,
 } from 'src/app/graphql/queries';
 import { City } from 'src/app/interfaces/graphql';
-import { AppStoreService } from 'src/app/services/appState.service';
+import { StateProperties, StateService } from 'src/app/services/state.service';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { ContentType, typeOfItem } from 'src/app/utils/ContentType';
 import { Poi } from 'src/app/utils/Poi';
@@ -66,20 +66,20 @@ export class EntitiesListComponent implements OnInit, OnDestroy {
 
   useMetricSystem = false;
 
-  private subs$: Subscription[] = [];
+  private subs$ = new Subscription();
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private api: WciApiService,
-    private appStore: AppStoreService,
+    private state: StateService,
   ) {
     this.contentType = this.route.snapshot.data.type;
     this.isSearchPage = this.contentType === ContentType.SEARCH;
   }
 
   ngOnInit(): void {
-    this.subs$.push(
+    this.subs$.add(
       this.route.params.subscribe((params: Params) => {
         // Load data on query change
         if (params.query && !this.firstLoad) {
@@ -99,28 +99,36 @@ export class EntitiesListComponent implements OnInit, OnDestroy {
           this.navEnd = this.navStart + this.navPageSize;
         }
       }),
+    );
 
-      this.appStore.watchProperty('currentLocation').subscribe((location: GeoLocation) => {
+    this.subs$.add(
+      this.state.app.watchProperty<GeoLocation>(StateProperties.CURRENT_LOCATION).subscribe((location: GeoLocation) => {
         if (location) {
           this.currentLocation = location;
           this.doLoad();
         }
       }),
+    );
 
-      this.appStore.watchProperty('currentUserLocation').subscribe((location: GeoLocation) => {
-        if (location) {
-          this.userLocation = location;
-        }
-      }),
+    this.subs$.add(
+      this.state.app
+        .watchProperty<GeoLocation>(StateProperties.CURRENT_USER_LOCATION)
+        .subscribe((location: GeoLocation) => {
+          if (location) {
+            this.userLocation = location;
+          }
+        }),
+    );
 
-      this.appStore.watchProperty('useMetricSystem', true).subscribe((flag: boolean) => {
+    this.subs$.add(
+      this.state.app.watchProperty<boolean>(StateProperties.USE_METRIC_SYSTEM, true).subscribe((flag: boolean) => {
         this.useMetricSystem = flag;
       }),
     );
   }
 
   ngOnDestroy(): void {
-    this.subs$.forEach((sub$) => sub$.unsubscribe());
+    this.subs$.unsubscribe();
   }
 
   /**
@@ -139,7 +147,7 @@ export class EntitiesListComponent implements OnInit, OnDestroy {
    */
   onCitySelected(city: City): void {
     const cityLocation: GeoLocation = new GeoLocation(city.coords.lat, city.coords.lng, '', city.name);
-    this.appStore.setProperty('currentLocation', cityLocation);
+    this.state.app.setProperty(StateProperties.CURRENT_LOCATION, cityLocation);
     this.closeList();
   }
 
@@ -168,7 +176,7 @@ export class EntitiesListComponent implements OnInit, OnDestroy {
    */
   private loadData(opts: { lat: number; lng: number; start: number; end: number } | SearchOptions): void {
     let query;
-    let resultPayloadProperty: ContentType = this.route.snapshot.data.type;
+    const resultPayloadProperty: ContentType = this.route.snapshot.data.type;
     this.navCurrentEndpoint = this.route.snapshot.data.type;
 
     switch (this.contentType) {

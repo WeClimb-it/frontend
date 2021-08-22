@@ -24,12 +24,11 @@ import { MapComponent } from './components/map/map.component';
 import { NearbyResult, StoriesResult, UserInfoResult } from './graphql/queries';
 import { MapUpdateEvent } from './interfaces/events/map-update.interface';
 import { ListResult, SearchResult, Story, UserInfo, UserInfoInput } from './interfaces/graphql';
-import { AppStoreService } from './services/appState.service';
 import { GeoService, PlaceSuggestion } from './services/geo.service';
 import { HistoryService } from './services/history.service';
 import { I18nService } from './services/i18n.service';
 import { MetaService } from './services/meta.services';
-import { PersistanceService } from './services/persistanceService';
+import { StateProperties, StateService } from './services/state.service';
 import { WciApiService } from './services/wciApi.service';
 import { Poi } from './utils/Poi';
 
@@ -90,7 +89,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   // ms
   private mapInteractionDebounceTime = 250;
 
-  private subs$: Subscription[] = [];
+  private subs$ = new Subscription();
 
   constructor(
     private translate: TranslateService,
@@ -98,14 +97,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
     private router: Router,
     private route: ActivatedRoute,
     private locationService: Location,
-    private appStore: AppStoreService,
+    private state: StateService,
     private cdr: ChangeDetectorRef,
     private historyService: HistoryService,
     private metaService: MetaService,
     public geoService: GeoService,
-    private _bottomSheet: MatBottomSheet,
+    private bottomSheet: MatBottomSheet,
   ) {
-    this.subs$.push(
+    this.subs$.add(
       this.router.events.subscribe((event: RouterEvent) => {
         if (event instanceof NavigationEnd) {
           this.showContent = !!this.route.root.firstChild.snapshot.data.type;
@@ -120,41 +119,52 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
               title: this.stories[0].pageTitle,
               description: this.stories[0].description,
               url: `story/${this.stories[0].category}/${this.stories[0].slug}`,
-              onClose: () => {
-                this.isBottomSheetDisabled = true;
-              },
             });
           }
         }
       }),
+    );
 
-      this.appStore.watchProperty('currentLocation').subscribe((location: GeoLocation) => {
+    this.subs$.add(
+      this.state.app.watchProperty<GeoLocation>(StateProperties.CURRENT_LOCATION).subscribe((location: GeoLocation) => {
         if (location && !isEqual(location, this.currentLocation)) {
           this.currentLocation = location;
           // this.getLatest();
           this.getNearby();
         }
       }),
+    );
 
-      this.appStore.watchProperty('currentUserLocation').subscribe((location: GeoLocation) => {
-        if (location && !isEqual(location, this.userLocation)) {
-          this.userLocation = location;
-        }
-      }),
+    this.subs$.add(
+      this.state.app
+        .watchProperty<GeoLocation>(StateProperties.CURRENT_USER_LOCATION)
+        .subscribe((location: GeoLocation) => {
+          if (location && !isEqual(location, this.userLocation)) {
+            this.userLocation = location;
+          }
+        }),
+    );
 
-      this.appStore.watchProperty('wciUser').subscribe((user: UserInfo) => {
+    this.subs$.add(
+      this.state.app.watchProperty<UserInfo>(StateProperties.USER).subscribe((user: UserInfo) => {
         this.user = user;
       }),
+    );
 
-      this.appStore.watchProperty('socialUserPicture').subscribe((url: string) => {
+    this.subs$.add(
+      this.state.app.watchProperty<string>(StateProperties.USER_AVATAR).subscribe((url: string) => {
         this.userProfilePictureUrl = url;
       }),
+    );
 
-      this.appStore.watchProperty('useMetricSystem', true).subscribe((flag: boolean) => {
+    this.subs$.add(
+      this.state.app.watchProperty<boolean>(StateProperties.USE_METRIC_SYSTEM, true).subscribe((flag: boolean) => {
         this.useMetricSystem = flag;
       }),
+    );
 
-      this.appStore.watchProperty('history').subscribe((items: Poi[]) => {
+    this.subs$.add(
+      this.state.app.watchProperty<Poi[]>(StateProperties.HISTORY).subscribe((items: Poi[]) => {
         this.historyItems = items?.reverse() || [];
       }),
     );
@@ -172,7 +182,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   ngOnDestroy(): void {
-    this.subs$.forEach((sub$) => sub$.unsubscribe());
+    this.subs$.unsubscribe();
   }
 
   ngAfterContentChecked(): void {
@@ -204,7 +214,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
    */
   onSearch(searchOptions: SearchOptions): void {
     this.latestSearchOptions = searchOptions;
-    this.appStore.setProperty('searchOptions', searchOptions);
+    this.state.app.setProperty(StateProperties.SEARCH_OPTIONS, searchOptions);
     this.router.navigate(['search', searchOptions.query]);
   }
 
@@ -265,7 +275,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
     const lang = environment.i18n.availableLangs[index];
 
     I18nService.chosenUserLang = lang;
-    PersistanceService.set('lang', lang);
+    this.state.app.setProperty(StateProperties.LANG, lang, true);
 
     this.translate.use(lang);
     moment.locale(lang);
@@ -296,9 +306,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
    *
    */
   onUserLoggedIn(user: SocialUser): void {
-    this.appStore.setProperty('socialUserId', user.id);
-    this.appStore.setProperty('socialUserToken', user.authToken);
-    this.appStore.setProperty('socialUserPicture', user.photoUrl);
+    this.state.app.setProperty(StateProperties.SOCIAL_USER_ID, user.id);
+    this.state.app.setProperty(StateProperties.SOCIAL_USER_TOKEN, user.authToken);
+    this.state.app.setProperty(StateProperties.SOCIAL_USER_PICTURE, user.photoUrl);
 
     const userInfoInput: UserInfoInput = {
       socialId: user.id,
@@ -312,7 +322,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
         user: userInfoInput,
       })
       .subscribe((res) => {
-        this.appStore.setProperty('wciUser', res.data.waveUser);
+        this.state.app.setProperty(StateProperties.USER, res.data.waveUser, true);
       });
   }
 
@@ -320,17 +330,17 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
    *
    */
   onUserLoggedOut(): void {
-    this.appStore.unsetProperty('socialUserId');
-    this.appStore.unsetProperty('socialUserToken');
-    this.appStore.unsetProperty('socialUserPicture');
-    this.appStore.unsetProperty('wciUser');
+    this.state.app.unsetProperty(StateProperties.SOCIAL_USER_ID);
+    this.state.app.unsetProperty(StateProperties.SOCIAL_USER_TOKEN);
+    this.state.app.unsetProperty(StateProperties.SOCIAL_USER_PICTURE);
+    this.state.app.unsetProperty(StateProperties.USER);
   }
 
   /**
    *
    */
   onUnitMeasureChanged(): void {
-    this.appStore.setProperty('useMetricSystem', !this.useMetricSystem, true);
+    this.state.app.setProperty(StateProperties.USE_METRIC_SYSTEM, !this.useMetricSystem, true);
   }
 
   /**
@@ -351,13 +361,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
    *
    */
   private handleShareableMapPosition() {
-    const tempMapCenter = this.appStore.getProperty('mapCenter');
+    const tempMapCenter = this.state.app.getProperty(StateProperties.MAP_CENTER);
     let latLngStr = '';
     let setGracefully = true;
 
     if (tempMapCenter) {
       latLngStr = tempMapCenter as string;
-      this.appStore.unsetProperty('mapCenter');
+      this.state.app.unsetProperty(StateProperties.MAP_CENTER);
       setGracefully = false;
     } else {
       const urlParts = window.location.href.split('/');
@@ -571,7 +581,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
    *
    */
   private updateCurrentLocationInStore(updateShareableURL = true): void {
-    this.appStore.setProperty('currentLocation', this.currentLocation);
+    this.state.app.setProperty(StateProperties.CURRENT_LOCATION, this.currentLocation);
 
     if (updateShareableURL) {
       this.updateShareableURL(this.currentLocation);
@@ -582,7 +592,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
    *
    */
   private updateUserLocationInStore(): void {
-    this.appStore.setProperty('currentUserLocation', this.userLocation);
+    this.state.app.setProperty(StateProperties.CURRENT_USER_LOCATION, this.userLocation);
   }
 
   /**
@@ -698,12 +708,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
    *
    */
   openBottomSheet(data: any): void {
-    if (this.isBottomSheetDisabled) {
+    if (this.isBottomSheetDisabled || this.state.app.getProperty(StateProperties.SHOW_BOTTOM_SHEET) === false) {
       return;
     }
 
     if (!this.showContent) {
-      this._bottomSheet.open(BottomSheetComponent, { hasBackdrop: false, data });
+      this.bottomSheet.open(BottomSheetComponent, { hasBackdrop: false, data });
+      this.bottomSheet._openedBottomSheetRef.afterDismissed().subscribe(() => {
+        this.closeBottomSheet();
+      });
       this.isBottomSheetOpened = true;
     } else {
       if (this.isBottomSheetOpened) {
@@ -716,7 +729,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
    *
    */
   closeBottomSheet(): void {
-    this._bottomSheet.dismiss();
+    this.bottomSheet.dismiss();
     this.isBottomSheetOpened = false;
+    this.state.app.setProperty(StateProperties.SHOW_BOTTOM_SHEET, false, true);
   }
 }

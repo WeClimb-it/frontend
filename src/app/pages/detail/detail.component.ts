@@ -3,7 +3,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { GeoLocation } from 'src/app/classes/geolocation.class';
 import { CompetitionResult, CragResult, HikeResult, PlaceResult, ShelterResult } from 'src/app/graphql/queries';
-import { AppStoreService } from 'src/app/services/appState.service';
+import { StateProperties, StateService } from 'src/app/services/state.service';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { ContentType } from 'src/app/utils/ContentType';
 import { Poi } from 'src/app/utils/Poi';
@@ -26,32 +26,38 @@ export class DetailComponent implements OnInit, OnDestroy {
   isLoading = true;
   isErrored = false;
 
-  private subs$: Subscription[] = [];
+  private subs$ = new Subscription();
 
-  constructor(private route: ActivatedRoute, private api: WciApiService, private appStore: AppStoreService) {
+  constructor(private route: ActivatedRoute, private api: WciApiService, private state: StateService) {
     this.contentType = this.route.snapshot.data.type;
 
-    this.subs$.push(
-      this.appStore.watchProperty('currentLocation').subscribe((location: GeoLocation) => {
+    this.subs$.add(
+      this.state.app.watchProperty<GeoLocation>(StateProperties.CURRENT_LOCATION).subscribe((location: GeoLocation) => {
         if (location) {
           this.currentLocation = location;
         }
       }),
+    );
 
-      this.appStore.watchProperty('currentUserLocation').subscribe((location: GeoLocation) => {
-        if (location) {
-          this.userLocation = location;
-        }
-      }),
+    this.subs$.add(
+      this.state.app
+        .watchProperty<GeoLocation>(StateProperties.CURRENT_USER_LOCATION)
+        .subscribe((location: GeoLocation) => {
+          if (location) {
+            this.userLocation = location;
+          }
+        }),
+    );
 
-      this.appStore.watchProperty('useMetricSystem', true).subscribe((flag: boolean) => {
+    this.subs$.add(
+      this.state.app.watchProperty(StateProperties.USE_METRIC_SYSTEM, true).subscribe((flag: boolean) => {
         this.useMetricSystem = flag;
       }),
     );
   }
 
   ngOnInit(): void {
-    this.subs$.push(
+    this.subs$.add(
       this.route.params.subscribe((params: Params) => {
         // Load data on slug change
         if (params.slug || params.nodeId) {
@@ -64,7 +70,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subs$.forEach((sub$) => sub$.unsubscribe());
+    this.subs$.unsubscribe();
   }
 
   /**
@@ -138,7 +144,7 @@ export class DetailComponent implements OnInit, OnDestroy {
         undefined,
         (this.data as any).title || (this.data as any).name,
       );
-      this.appStore.setProperty('currentLocation', detailLocation);
+      this.state.app.setProperty(StateProperties.CURRENT_LOCATION, detailLocation);
     }
   }
 }

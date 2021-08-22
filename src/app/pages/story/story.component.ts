@@ -6,9 +6,9 @@ import { first } from 'rxjs/operators';
 import { StoryResult } from 'src/app/graphql/queries';
 import { GeoJSONFeature } from 'src/app/interfaces/geo/GeoJSONFeature.interface';
 import { Article, Coords, Story } from 'src/app/interfaces/graphql';
-import { AppStoreService } from 'src/app/services/appState.service';
 import { GeoService } from 'src/app/services/geo.service';
 import { MetaService } from 'src/app/services/meta.services';
+import { StateProperties, StateService } from 'src/app/services/state.service';
 import { WciApiService } from 'src/app/services/wciApi.service';
 import { getGeoJsonFromCoords } from 'src/app/utils/Map';
 import { environment } from 'src/environments/environment';
@@ -40,7 +40,7 @@ export class StoryComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private api: WciApiService,
-    private appStore: AppStoreService,
+    private state: StateService,
     private metaService: MetaService,
     private geoService: GeoService,
   ) {}
@@ -89,7 +89,7 @@ export class StoryComponent implements OnInit, OnDestroy {
   }
 
   goToTheMap(coords: Coords): void {
-    this.appStore.setProperty('mapCenter', `${coords.lat.toFixed(4)},${coords.lng.toFixed(4)}`);
+    this.state.app.setProperty(StateProperties.MAP_CENTER, `${coords.lat.toFixed(4)},${coords.lng.toFixed(4)}`);
     this.router.navigate([`${coords.lat.toFixed(4)},${coords.lng.toFixed(4)}`]);
   }
 
