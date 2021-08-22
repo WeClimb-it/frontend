@@ -132,11 +132,8 @@
           class="popup-content"
           [ngClass]="{
             'multi-items': false,
-            'wiki-content':
-              selectedFeatures[0].properties.source === SOURCES.OSM && selectedFeatures[0].properties.wikipedia,
             'no-descr':
-              (!(selectedFeatures[0].properties.source === SOURCES.OSM && selectedFeatures[0].properties.wikipedia) &&
-                !selectedFeatures[0].properties.descr) ||
+              (!(selectedFeatures[0].properties.source === SOURCES.OSM) && !selectedFeatures[0].properties.descr) ||
               selectedFeatures[0].properties.descr === 'null'
           }"
         >
@@ -170,16 +167,8 @@
 
             <!-- Content from OSM -->
             <ng-container *ngSwitchDefault>
-              <!-- External frame -->
-              <ng-container *ngIf="selectedFeatures[0].properties.wikipedia">
-                <iframe [src]="getMapItemWikipage(selectedFeatures[0])" class="external-resource-iframe"></iframe>
-                <div class="link">
-                  <a (click)="routeTo(selectedFeatures[0].properties.internalLink)">{{ 'OPEN_DETAIL' | translate }}</a>
-                </div>
-              </ng-container>
-
               <!-- Description -->
-              <ng-container *ngIf="!selectedFeatures[0].properties.wikipedia">
+              <ng-container>
                 <div
                   *ngIf="selectedFeatures[0].properties.ele"
                   class="description"
@@ -187,6 +176,12 @@
                 ></div>
                 <div class="link">
                   <a (click)="routeTo(selectedFeatures[0].properties.internalLink)">{{ 'OPEN_DETAIL' | translate }}</a>
+                  <ng-container *ngIf="selectedFeatures[0].properties.wikipedia">
+                    &bull;
+                    <a href="{{ getMapItemWikipage(selectedFeatures[0]) }}" target="_blank">{{
+                      'OPEN_EXTERNAL_RESOURCE' | translate
+                    }}</a>
+                  </ng-container>
                 </div>
               </ng-container>
             </ng-container>

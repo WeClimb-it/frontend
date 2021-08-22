@@ -10,7 +10,6 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { each, size } from 'lodash';
@@ -160,7 +159,6 @@ export class MapComponent implements OnChanges {
   constructor(
     private translateService: TranslateService,
     private ref: ChangeDetectorRef,
-    private sanitizer: DomSanitizer,
     private zone: NgZone,
     private router: Router,
   ) {}
@@ -310,14 +308,12 @@ export class MapComponent implements OnChanges {
   /**
    *
    */
-  getMapItemWikipage(item: GeoJSONFeature): SafeUrl {
+  getMapItemWikipage(item: GeoJSONFeature): string {
     if (!item.properties.wikipedia) {
       throw new Error('Cannot derive the wikipedia URL from the given feature');
     }
 
-    return this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://en.wikipedia.org/wiki/${item.properties.wikipedia}?printable=yes`,
-    );
+    return `https://en.wikipedia.org/wiki/${item.properties.wikipedia}`;
   }
 
   /**
