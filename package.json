@@ -40,7 +40,7 @@
     "classlist.js": "^1.1.20150312",
     "geolib": "^3.3.1",
     "graphql": "^15.5.1",
-    "ksss": "file:../../ksss/dist/ksss",
+    "js-cookie": "^3.0.0",
     "mapbox-gl": "^2.3.1",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
@@ -50,6 +50,7 @@
     "ngx-moment": "^5.0.0",
     "ngx-perfect-scrollbar": "^10.1.1",
     "ngx-sharebuttons": "^8.0.5",
+    "ngx-simple-state": "^0.0.2",
     "rxjs": "^7.2.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

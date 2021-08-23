@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SimpleStateService } from 'ksss';
+import { SimpleStateService } from 'ngx-simple-state';
 
 export enum StateProperties {
   CURRENT_LOCATION = 'wci.currentLocation',
