@@ -128,8 +128,14 @@ const routes: Routes = [
     data: { type: ContentType.STORY, isArticle: true },
   },
 
-  { path: '404', component: NotFoundComponent },
-  { path: '**', component: NotFoundComponent },
+  {
+    path: 'policies',
+    loadChildren: () => import('./pages/policies/policies.module').then((m) => m.PoliciesModule),
+    data: { type: ContentType.PAGE },
+  },
+
+  { path: '404', component: NotFoundComponent, data: { type: ContentType.PAGE } },
+  { path: '**', component: NotFoundComponent, data: { type: ContentType.PAGE } },
 ];
 
 @NgModule({

@@ -19,6 +19,7 @@ export enum ContentType {
   OSM_NODE = 'osmNode',
   DRINKING_WATER = 'drinkingWater',
   STORY = 'story',
+  PAGE = 'page',
 }
 
 export const OSM_TYPE_MAP = {
