@@ -360,6 +360,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   /**
    *
    */
+  // TODO: Handle 404 pages?
   private handleShareableMapPosition() {
     const tempMapCenter = this.state.app.getProperty(StateProperties.MAP_CENTER);
     let latLngStr = '';

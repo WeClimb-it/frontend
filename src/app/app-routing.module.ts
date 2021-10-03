@@ -135,7 +135,6 @@ const routes: Routes = [
   },
 
   { path: '404', component: NotFoundComponent, data: { type: ContentType.PAGE } },
-  { path: '**', component: NotFoundComponent, data: { type: ContentType.PAGE } },
 ];
 
 @NgModule({
