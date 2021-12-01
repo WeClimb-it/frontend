@@ -107,9 +107,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
     this.subs$.add(
       this.router.events.subscribe((event: RouterEvent) => {
         if (event instanceof NavigationEnd) {
-          this.showContent = !!this.route.root.firstChild.snapshot.data.type;
-          this.isFloatingContent = this.route.root.firstChild.snapshot.data.isFloatingContent;
-          this.isArticle = this.route.root.firstChild.snapshot.data.isArticle;
+          this.showContent = !!this.route?.root?.firstChild?.snapshot?.data?.type;
+          this.isFloatingContent = !!this.route?.root?.firstChild?.snapshot?.data?.isFloatingContent;
+          this.isArticle = !!this.route?.root?.firstChild?.snapshot?.data?.isArticle;
 
           this.handleShareableMapPosition();
 
@@ -176,6 +176,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   ngOnInit(): void {
+    this.handleShareableMapPosition();
+
     this.registerAnalytics();
     this.getUserInfoAndRegisterDeviceLocationHandlers();
     this.getStories();
