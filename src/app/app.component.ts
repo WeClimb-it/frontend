@@ -30,6 +30,7 @@ import { I18nService } from './services/i18n.service';
 import { MetaService } from './services/meta.services';
 import { StateProperties, StateService } from './services/state.service';
 import { WciApiService } from './services/wciApi.service';
+import { isMobile } from './utils/Misc';
 import { Poi } from './utils/Poi';
 
 @Component({
@@ -711,7 +712,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
    *
    */
   openBottomSheet(data: any): void {
-    if (this.isBottomSheetDisabled || this.state.app.getProperty(StateProperties.SHOW_BOTTOM_SHEET) === false) {
+    if (
+      isMobile() ||
+      this.isBottomSheetDisabled ||
+      this.state.app.getProperty(StateProperties.SHOW_BOTTOM_SHEET) === false
+    ) {
       return;
     }
 

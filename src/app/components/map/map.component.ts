@@ -73,6 +73,7 @@ export class MapComponent implements OnChanges {
 
   @Output() ready = new EventEmitter<MapUpdateEvent>();
   @Output() update = new EventEmitter<MapUpdateEvent>();
+  @Output() centerMapToUserLocation = new EventEmitter<void>();
 
   @ViewChild('userMarker') userMarker: MarkerComponent;
 
@@ -164,30 +165,28 @@ export class MapComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.centerLocation && this.centerLocation) {
-      this.centerCoords = this.centerLocation.toCoordinates();
+    if (changes.centerLocation?.currentValue) {
+      this.centerCoords = changes.centerLocation.currentValue.toCoordinates();
       this.updateCenterGeoJSON();
     }
 
-    if (changes.userLocation && this.userLocation) {
-      this.userCoords = this.userLocation.toCoordinates();
+    if (changes.userLocation?.currentValue) {
+      this.userCoords = changes.userLocation.currentValue.toCoordinates();
     }
 
-    if (changes.userOrientation && this.userOrientation) {
-      if (this.userMarker) {
-        this.userMarker.markerInstance.setRotation(this.userOrientation);
-      }
+    if (changes.userOrientation?.currentValue && this.userMarker) {
+      this.userMarker.markerInstance.setRotation(changes.userOrientation.currentValue);
     }
 
-    if (changes.pois && changes.pois.currentValue) {
+    if (changes.pois?.currentValue) {
       this.contructGeoJSONFromChange(changes.pois.currentValue);
     }
 
-    if (changes.osmPois && changes.osmPois.currentValue) {
+    if (changes.osmPois?.currentValue) {
       this.hydrateOsmGeoJSON(changes.osmPois.currentValue);
     }
 
-    if (changes.googlePlacesPois && changes.googlePlacesPois.currentValue) {
+    if (changes.googlePlacesPois?.currentValue) {
       this.hydrateGooglePlacesGeoJSON(changes.googlePlacesPois.currentValue);
     }
 

@@ -33,6 +33,26 @@ mgl-map {
     display: none;
   }
 
+  ::ng-deep .custom-control {
+    width: 30px;
+    height: 30px;
+    background: white;
+    border-radius: 6px;
+    border: 2px solid rgba(black, 0.15);
+    box-sizing: border-box;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+      background: #f1f1f1;
+    }
+
+    mat-icon {
+      font-size: 18px;
+      line-height: 25px;
+    }
+  }
+
   .popup-close-button {
     top: 5px;
     right: 10px;

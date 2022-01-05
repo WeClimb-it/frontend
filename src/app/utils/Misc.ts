@@ -39,3 +39,7 @@ export const getSanitizedCompetitionProperties = (
     endDate: item.endTime ? new Date(item.endTime) : undefined,
   };
 };
+
+export const isMobile = () => {
+  return window.matchMedia('only screen and (max-width: 760px)').matches;
+};

@@ -134,6 +134,11 @@ const routes: Routes = [
     data: { type: ContentType.PAGE },
   },
 
+  {
+    path: ':lat,:lng',
+    children: [],
+  },
+
   { path: '404', component: NotFoundComponent, data: { type: ContentType.PAGE } },
 ];
 

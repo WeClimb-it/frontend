@@ -13,7 +13,7 @@
     <h4 (click)="goToDetailUrl(data.slug)">{{ data.title }}</h4>
     <div class="description">{{ data.descr | capitalizeFirst }}</div>
     <div class="media">
-      <div class="image" *ngFor="let image of data.media.slice(0, 3)" (click)="openMediaDialog(data)">
+      <div class="image" *ngFor="let image of data.media?.slice(0, 3)" (click)="openMediaDialog(data)">
         <img src="{{ image }}" />
       </div>
     </div>

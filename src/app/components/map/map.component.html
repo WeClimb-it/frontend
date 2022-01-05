@@ -12,6 +12,9 @@
 >
   <!-- The map controls -->
   <mgl-control mglScale unit="metric" position="bottom-right"></mgl-control>
+  <mgl-control position="bottom-right">
+    <div class="custom-control"><mat-icon (click)="centerMapToUserLocation.emit()">gps_fixed</mat-icon></div>
+  </mgl-control>
   <mgl-control mglNavigation position="bottom-right"></mgl-control>
 
   <!-- The POIs source -->
@@ -216,9 +219,6 @@
   <div class="spinner">
     <mat-spinner [diameter]="30"></mat-spinner>
   </div>
-  <!-- <span class="text">
-    {{ 'LOADING_MAP' | translate }}
-  </span> -->
 </div>
 
 <!-- The style selectors -->

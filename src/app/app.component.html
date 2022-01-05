@@ -168,6 +168,7 @@
       [loadingGooglePlacesData]="isGooglePlacesNearbyLoading"
       (ready)="onMapReady($event)"
       (update)="onMapUpdate($event)"
+      (centerMapToUserLocation)="onEnableGeolocation()"
     ></wci-map>
   </div>
 
@@ -186,7 +187,7 @@
 
   <!-- The content container -->
   <div class="content" *ngIf="showContent && !isFloatingContent">
-    <div class="section" [ngClass]="{'article': isArticle}">
+    <div class="section" [ngClass]="{ article: isArticle }">
       <router-outlet></router-outlet>
     </div>
   </div>
