@@ -1,19 +1,58 @@
 import { Injectable } from '@angular/core';
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client/core';
-import { environment } from 'src/environments/environment';
-import { getEntityCacheId } from '../utils/Poi';
-import { I18nService } from './i18n.service';
-import { StateProperties, StateService } from './state.service';
+import { getEntityCacheId } from './utils/Poi';
+
+export interface ApolloServiceOptions {
+  useLoginMiddleware: boolean;
+  lang: string;
+  graphql: {
+    uri: string;
+  };
+  loginMiddlewareOptions?: {
+    socialUserId: string;
+    socialUserToken: string;
+  };
+}
+
+const defaultOptions = { useLoginMiddleware: false, lang: 'us', graphql: { uri: 'localhost' } };
 
 @Injectable({ providedIn: 'root' })
 export class ApolloService {
   client: ApolloClient<NormalizedCacheObject>;
 
   private userSessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  private options: ApolloServiceOptions = defaultOptions;
 
-  constructor(private state: StateService) {}
+  userLoginMiddleware() {
+    return new ApolloLink((operation, forward) => {
+      if (typeof forward === 'undefined') {
+        throw new Error('forward is undefined');
+      }
 
-  init(): void {
+      if (!this.options.loginMiddlewareOptions) {
+        throw new Error('Cannot init the Login middleware without options');
+      }
+
+      const userId = this.options.loginMiddlewareOptions.socialUserId;
+      const userToken = this.options.loginMiddlewareOptions.socialUserToken;
+
+      if (userId && userToken) {
+        operation.setContext(({ headers = {} }) => ({
+          headers: {
+            ...headers,
+            'x-usid': userId,
+            'x-utkn': userToken,
+          },
+        }));
+      }
+
+      return forward(operation);
+    });
+  }
+
+  init(options: ApolloServiceOptions): void {
+    this.options = options;
+
     const cache = new InMemoryCache({
       // Why this? B/c in certain cases we need an expanded version of the GraphQL item (i.e. crag with sectors)
       // since the same item might be loaded somewhere else w/o expanded props (i.e. sectors) and thus stored in the cache,
@@ -30,7 +69,7 @@ export class ApolloService {
       operation.setContext(({ headers = {} }) => ({
         headers: {
           ...headers,
-          'x-lang': I18nService.userLang,
+          'x-lang': this.options.lang,
         },
       }));
 
@@ -52,37 +91,17 @@ export class ApolloService {
       return forward(operation);
     });
 
-    const userLoginMiddleware = new ApolloLink((operation, forward) => {
-      if (typeof forward === 'undefined') {
-        throw new Error('forward is undefined');
-      }
+    let apolloLinks = [userSessionIdMiddleware, userLangMiddleware, new HttpLink({ uri: this.options.graphql.uri })];
 
-      const userId = this.state.app.getProperty(StateProperties.SOCIAL_USER_ID);
-      const userToken = this.state.app.getProperty(StateProperties.SOCIAL_USER_TOKEN);
-
-      if (userId && userToken) {
-        operation.setContext(({ headers = {} }) => ({
-          headers: {
-            ...headers,
-            'x-usid': userId,
-            'x-utkn': userToken,
-          },
-        }));
-      }
-
-      return forward(operation);
-    });
+    if (this.options.useLoginMiddleware) {
+      apolloLinks = [this.userLoginMiddleware(), ...apolloLinks];
+    }
 
     this.client = new ApolloClient({
       cache,
       ssrMode: false,
       queryDeduplication: false,
-      link: ApolloLink.from([
-        userSessionIdMiddleware,
-        userLangMiddleware,
-        userLoginMiddleware,
-        new HttpLink({ uri: environment.graphql.url }),
-      ]),
+      link: ApolloLink.from(apolloLinks),
     });
   }
 }

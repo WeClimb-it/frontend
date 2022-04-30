@@ -9,6 +9,9 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "paths": {
+      "@wci/data-access": ["dist/data-access/data-access", "dist/data-access"]
+    },
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
